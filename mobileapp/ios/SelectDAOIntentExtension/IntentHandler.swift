@@ -12,11 +12,14 @@ class IntentHandler: INExtension, SelectDAOIntentHandling {
   func provideDaoOptionsCollection(for intent: SelectDAOIntent, searchTerm: String?, with completion: @escaping (INObjectCollection<DAO>?, Error?) -> Void) {
     intentData.getSavedDAOs { daos in
       var daoOptions = daos.map { dao in
+        let url = URL(string: "https://api.builderwidgets.wtf/image/\(dao.address)/1")
+        let imageData = try? Data(contentsOf: url!)
+        
         let daoOption = DAO(
           identifier: dao.address,
           display: dao.name,
           subtitle: shortAddress(dao.address),
-          image: nil
+          image: imageData != nil ? INImage(imageData: imageData!) : nil
         )
         
         return daoOption
