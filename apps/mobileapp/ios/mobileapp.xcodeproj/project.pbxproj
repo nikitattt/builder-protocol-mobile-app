@@ -20,6 +20,7 @@
 		0A3802DC2A0B0264000C34A0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0A3802DB2A0B0264000C34A0 /* Alamofire */; };
 		0A3802E12A0B0711000C34A0 /* Proposals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3802E02A0B0711000C34A0 /* Proposals.swift */; };
 		0A3802E22A0B0711000C34A0 /* Proposals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3802E02A0B0711000C34A0 /* Proposals.swift */; };
+		0A8F1E1B2BEC243B005D59C0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0A8F1E1A2BEC243B005D59C0 /* Alamofire */; };
 		0A90E36429FC5FAB00FB320D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A90E36329FC5FAB00FB320D /* WidgetKit.framework */; };
 		0A90E36629FC5FAB00FB320D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A90E36529FC5FAB00FB320D /* SwiftUI.framework */; };
 		0A90E36D29FC5FAB00FB320D /* Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A90E36C29FC5FAB00FB320D /* Art.swift */; };
@@ -48,7 +49,6 @@
 		0AE29FD12A09B56D0035242E /* Auction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE29FD02A09B56D0035242E /* Auction.swift */; };
 		0AE29FD42A09B5700035242E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AE29FD32A09B5700035242E /* Assets.xcassets */; };
 		0AE29FDA2A09B5700035242E /* AuctionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0AE29FCA2A09B56D0035242E /* AuctionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		0AE29FDF2A09B5950035242E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0AE29FDE2A09B5950035242E /* Alamofire */; };
 		0AE29FE22A09BA480035242E /* SelectDAO.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 0A90E36E29FC5FAB00FB320D /* SelectDAO.intentdefinition */; };
 		0AE29FE72A09F0670035242E /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE29FE62A09F0670035242E /* Widgets.swift */; };
 		0AE29FE82A09F0670035242E /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE29FE62A09F0670035242E /* Widgets.swift */; };
@@ -236,7 +236,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AE29FDF2A09B5950035242E /* Alamofire in Frameworks */,
+				0A8F1E1B2BEC243B005D59C0 /* Alamofire in Frameworks */,
 				0AE29FCC2A09B56D0035242E /* SwiftUI.framework in Frameworks */,
 				0AE29FCB2A09B56D0035242E /* WidgetKit.framework in Frameworks */,
 			);
@@ -546,7 +546,7 @@
 			);
 			name = AuctionExtension;
 			packageProductDependencies = (
-				0AE29FDE2A09B5950035242E /* Alamofire */,
+				0A8F1E1A2BEC243B005D59C0 /* Alamofire */,
 			);
 			productName = AuctionExtension;
 			productReference = 0AE29FCA2A09B56D0035242E /* AuctionExtension.appex */;
@@ -1746,6 +1746,11 @@
 			package = 0A90E37D29FC620300FB320D /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
+		0A8F1E1A2BEC243B005D59C0 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A90E37D29FC620300FB320D /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		0A90E37E29FC620400FB320D /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0A90E37D29FC620300FB320D /* XCRemoteSwiftPackageReference "Alamofire" */;
@@ -1770,11 +1775,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0A90E38229FC63E500FB320D /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */;
 			productName = SwiftyUserDefaults;
-		};
-		0AE29FDE2A09B5950035242E /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0A90E37D29FC620300FB320D /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
 		};
 		0AE2A0082A09FCE40035242E /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
