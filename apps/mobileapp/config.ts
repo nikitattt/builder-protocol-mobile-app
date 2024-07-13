@@ -6,7 +6,7 @@ type AppConfig = {
 
 const app: AppConfig = {
   graphUrl:
-    'https://api.thegraph.com/subgraphs/name/neokry/nouns-builder-mainnet',
+    'https://api.goldsky.com/api/public/project_clkk1ucdyf6ak38svcatie9tf/subgraphs/nouns-builder-ethereum-mainnet/stable/gn',
   imageEndpoint: 'https://api.builderapp.wtf/image',
   daosAppGroup: 'group.com.nouns.ng.builder.daos'
 }

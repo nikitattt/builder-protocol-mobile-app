@@ -12,7 +12,7 @@ import TabBar from './src/components/TabBar'
 import { HomeTabParamList, RootStackParamList } from './src/navigation/types'
 import DaoScreen from './src/screens/DaoScreen'
 import { StatusBar } from 'react-native'
-import { WagmiConfig } from 'wagmi'
+import { WagmiProvider } from 'wagmi'
 
 import IntroScreen from './src/screens/IntroScreen'
 import WidgetsSetupInfoScreen from './src/screens/WidgetsSetupInfoScreen'
@@ -64,7 +64,7 @@ const App = () => {
     <>
       <StatusBar barStyle="dark-content" hidden={false} />
       <ApolloProvider client={graphClient}>
-        <WagmiConfig config={wagmiConfig}>
+        <WagmiProvider config={wagmiConfig}>
           <QueryClientProvider client={queryClient}>
             <NavigationContainer>
               <PostHogProvider client={posthogAsync}>
@@ -108,7 +108,7 @@ const App = () => {
               </PostHogProvider>
             </NavigationContainer>
           </QueryClientProvider>
-        </WagmiConfig>
+        </WagmiProvider>
       </ApolloProvider>
       <AppToast />
     </>
