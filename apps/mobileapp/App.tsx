@@ -14,7 +14,6 @@ import DaoScreen from './src/screens/DaoScreen'
 import { StatusBar } from 'react-native'
 import { WagmiConfig } from 'wagmi'
 
-import { wagmiConfig } from './src/constants/viemWagmi'
 import IntroScreen from './src/screens/IntroScreen'
 import WidgetsSetupInfoScreen from './src/screens/WidgetsSetupInfoScreen'
 import AppToast from './src/components/AppToast'
@@ -24,6 +23,8 @@ import FeedScreen from './src/screens/FeedScreen'
 import ProposalScreen from './src/screens/ProposalScreen'
 import BidScreen from './src/screens/BidScreen'
 import ProposalsScreen from './src/screens/ProposalsScreen'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { wagmiConfig } from './src/constants/viemWagmi'
 
 const RootStack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<HomeTabParamList>()
@@ -50,6 +51,8 @@ const HomeTabs = () => {
   )
 }
 
+const queryClient = new QueryClient()
+
 const App = () => {
   const { setColorScheme } = useColorScheme()
 
@@ -62,47 +65,49 @@ const App = () => {
       <StatusBar barStyle="dark-content" hidden={false} />
       <ApolloProvider client={graphClient}>
         <WagmiConfig config={wagmiConfig}>
-          <NavigationContainer>
-            <PostHogProvider client={posthogAsync}>
-              <RootStack.Navigator initialRouteName="Home">
-                <RootStack.Screen
-                  name="Home"
-                  component={HomeTabs}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="Dao"
-                  component={DaoScreen}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="Intro"
-                  component={IntroScreen}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="WidgetsSetupInfo"
-                  component={WidgetsSetupInfoScreen}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name="Proposal"
-                  component={ProposalScreen}
-                  options={{ headerShown: true, headerShadowVisible: true }}
-                />
-                <RootStack.Screen
-                  name="Proposals"
-                  component={ProposalsScreen}
-                  options={{ headerShown: true, headerShadowVisible: true }}
-                />
-                <RootStack.Screen
-                  name="Bid"
-                  component={BidScreen}
-                  options={{ headerShown: true, headerShadowVisible: true }}
-                />
-              </RootStack.Navigator>
-            </PostHogProvider>
-          </NavigationContainer>
+          <QueryClientProvider client={queryClient}>
+            <NavigationContainer>
+              <PostHogProvider client={posthogAsync}>
+                <RootStack.Navigator initialRouteName="Home">
+                  <RootStack.Screen
+                    name="Home"
+                    component={HomeTabs}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
+                    name="Dao"
+                    component={DaoScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
+                    name="Intro"
+                    component={IntroScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
+                    name="WidgetsSetupInfo"
+                    component={WidgetsSetupInfoScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <RootStack.Screen
+                    name="Proposal"
+                    component={ProposalScreen}
+                    options={{ headerShown: true, headerShadowVisible: true }}
+                  />
+                  <RootStack.Screen
+                    name="Proposals"
+                    component={ProposalsScreen}
+                    options={{ headerShown: true, headerShadowVisible: true }}
+                  />
+                  <RootStack.Screen
+                    name="Bid"
+                    component={BidScreen}
+                    options={{ headerShown: true, headerShadowVisible: true }}
+                  />
+                </RootStack.Navigator>
+              </PostHogProvider>
+            </NavigationContainer>
+          </QueryClientProvider>
         </WagmiConfig>
       </ApolloProvider>
       <AppToast />

@@ -12,8 +12,9 @@ import Svg, { Path } from 'react-native-svg'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { getAddress, isAddress } from 'viem'
 import { useAddressesStore } from '../../store/addresses'
-import { fetchEnsAddress } from '@wagmi/core'
+import { useEnsAddress } from 'wagmi'
 import { IntroNextAction, useIntroStore } from '../../store/intro'
+import { normalize } from 'viem/ens'
 
 const AddAddressButton = ({}) => {
   const introNextAction = useIntroStore(state => state.nextAction)
@@ -60,13 +61,13 @@ const AddAddressButton = ({}) => {
   const onConfirm = async () => {
     if (addressText.endsWith('.eth') && !checkingEns) {
       setCheckingEns(true)
-      const address = await fetchEnsAddress({
-        name: addressText
+      const address = await useEnsAddress({
+        name: normalize(addressText)
       })
       setCheckingEns(false)
 
-      if (address) {
-        setAddressAndClose(address)
+      if (address.data) {
+        setAddressAndClose(address.data)
       } else {
         setError(`Couldn't find ENS name`)
       }

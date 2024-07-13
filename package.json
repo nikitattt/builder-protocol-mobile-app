@@ -5,7 +5,7 @@
     "build:backend": "pnpm --filter \"./apps/backend\" build",
     "start:backend": "pnpm --filter \"./apps/backend\" start",
     "dev:backend": "pnpm --filter \"./apps/backend\" dev",
-    "start:mobileapp": "pnpm --filter \"./apps/mobileapp\" start",
+    "start:mobile": "pnpm --filter \"./apps/mobileapp\" start",
     "dev:website": "pnpm --filter \"./apps/website\" dev"
   },
   "devDependencies": {
