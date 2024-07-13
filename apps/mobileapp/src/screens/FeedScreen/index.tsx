@@ -62,6 +62,8 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
     )
   }
 
+  const haveDaos = savedDaos.length > 0
+
   return (
     <ScrollView
       className="flex flex-col h-full bg-white"
@@ -81,7 +83,14 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
           <View className="mb-3 flex flex-row items-center justify-between">
             <Text className="text-4xl font-extrabold">Feed</Text>
           </View>
-          {loading ? (
+          {!haveDaos ? (
+            <View className="mx-auto mt-[80%] max-w-[160px] text-center">
+              <Text className="max-w-[160px] text-center">
+                Add some DAOs to get started!
+              </Text>
+              <Text className="mt-2 text-center">⌐◨-◨</Text>
+            </View>
+          ) : loading ? (
             <View className="flex flex-col gap-3">
               {ShimmerBox(1)}
               {ShimmerBox(0.2)}
