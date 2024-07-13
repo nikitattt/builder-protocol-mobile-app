@@ -12,14 +12,18 @@ import Svg, { Path } from 'react-native-svg'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { getAddress, isAddress } from 'viem'
 import { useAddressesStore } from '../../store/addresses'
-import { fetchEnsAddress } from '@wagmi/core'
+import { getEnsAddress } from '@wagmi/core'
 import { IntroNextAction, useIntroStore } from '../../store/intro'
+import { normalize } from 'viem/ens'
+import { useConfig } from 'wagmi'
 
 const AddAddressButton = ({}) => {
   const introNextAction = useIntroStore(state => state.nextAction)
   const setIntroNextAction = useIntroStore(state => state.setNextAction)
 
   const addAddress = useAddressesStore(state => state.addManualAddress)
+
+  const config = useConfig()
 
   const [modalVisible, setModalVisible] = useState(false)
   const [addressText, setAddressText] = useState('')
@@ -60,8 +64,8 @@ const AddAddressButton = ({}) => {
   const onConfirm = async () => {
     if (addressText.endsWith('.eth') && !checkingEns) {
       setCheckingEns(true)
-      const address = await fetchEnsAddress({
-        name: addressText
+      const address = await getEnsAddress(config, {
+        name: normalize(addressText)
       })
       setCheckingEns(false)
 
