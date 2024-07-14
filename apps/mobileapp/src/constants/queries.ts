@@ -34,7 +34,12 @@ export const PROPS_QUERY = gql`
 
 export const DAO_QUERY = gql`
   query BuilderDAO($dao: String!) {
-    auctions(where: { dao: $dao, settled: false }) {
+    auctions(
+      where: { dao: $dao }
+      orderBy: endTime
+      orderDirection: desc
+      first: 2
+    ) {
       token {
         name
         image
