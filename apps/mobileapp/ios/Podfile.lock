@@ -1245,6 +1245,10 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNFS (2.20.0):
+    - React-Core
+  - RNOS (1.2.6):
+    - React
   - RNReactNativeSharedGroupPreferences (1.1.24):
     - React
   - RNScreens (3.32.0):
@@ -1342,6 +1346,8 @@ DEPENDENCIES:
   - "RNCClipboard (from `../../../node_modules/@react-native-clipboard/clipboard`)"
   - RNDeviceInfo (from `../../../node_modules/react-native-device-info`)
   - "RNFlashList (from `../../../node_modules/@shopify/flash-list`)"
+  - RNFS (from `../../../node_modules/react-native-fs`)
+  - RNOS (from `../../../node_modules/react-native-os`)
   - RNReactNativeSharedGroupPreferences (from `../../../node_modules/react-native-shared-group-preferences`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
   - RNSVG (from `../../../node_modules/react-native-svg`)
@@ -1482,6 +1488,10 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-device-info"
   RNFlashList:
     :path: "../../../node_modules/@shopify/flash-list"
+  RNFS:
+    :path: "../../../node_modules/react-native-fs"
+  RNOS:
+    :path: "../../../node_modules/react-native-os"
   RNReactNativeSharedGroupPreferences:
     :path: "../../../node_modules/react-native-shared-group-preferences"
   RNScreens:
@@ -1559,6 +1569,8 @@ SPEC CHECKSUMS:
   RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
   RNDeviceInfo: 59344c19152c4b2b32283005f9737c5c64b42fba
   RNFlashList: e9b57a5553639f9b528cc50ab53f25831722ed62
+  RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
+  RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   RNReactNativeSharedGroupPreferences: 29092869fc2e40d5baca5e15d82fa5c24a668977
   RNScreens: 5aeecbb09aa7285379b6e9f3c8a3c859bb16401c
   RNSVG: af3907ac5d4fa26a862b75a16d8f15bc74f2ceda
