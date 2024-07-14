@@ -7,8 +7,10 @@ export const getQuery = (
     ? `auctions(
         where: {
           dao: "${address}",
-          settled: false
         }
+        orderBy: endTime
+        orderDirection: desc
+        first: 1
       ) {
         token {
           name
