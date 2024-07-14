@@ -20,6 +20,10 @@
 		0A3802DC2A0B0264000C34A0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0A3802DB2A0B0264000C34A0 /* Alamofire */; };
 		0A3802E12A0B0711000C34A0 /* Proposals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3802E02A0B0711000C34A0 /* Proposals.swift */; };
 		0A3802E22A0B0711000C34A0 /* Proposals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3802E02A0B0711000C34A0 /* Proposals.swift */; };
+		0A6BED462C44257500C69715 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6BED452C44257500C69715 /* Double.swift */; };
+		0A6BED472C44257500C69715 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6BED452C44257500C69715 /* Double.swift */; };
+		0A6BED482C44257500C69715 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6BED452C44257500C69715 /* Double.swift */; };
+		0A6BED492C44257500C69715 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6BED452C44257500C69715 /* Double.swift */; };
 		0A8F1E1B2BEC243B005D59C0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0A8F1E1A2BEC243B005D59C0 /* Alamofire */; };
 		0A90E36429FC5FAB00FB320D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A90E36329FC5FAB00FB320D /* WidgetKit.framework */; };
 		0A90E36629FC5FAB00FB320D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A90E36529FC5FAB00FB320D /* SwiftUI.framework */; };
@@ -147,6 +151,7 @@
 		0A3802CE2A0AFE09000C34A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A3802D02A0AFE09000C34A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A3802E02A0B0711000C34A0 /* Proposals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proposals.swift; sourceTree = "<group>"; };
+		0A6BED452C44257500C69715 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		0A90E35D29FC357D00FB320D /* mobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = mobileapp.entitlements; path = mobileapp/mobileapp.entitlements; sourceTree = "<group>"; };
 		0A90E36229FC5FAB00FB320D /* ArtExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A90E36329FC5FAB00FB320D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -303,6 +308,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		0A6BED442C44256100C69715 /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				0A6BED452C44257500C69715 /* Double.swift */,
+			);
+			path = Extentions;
+			sourceTree = "<group>";
+		};
 		0A90E36729FC5FAB00FB320D /* Art */ = {
 			isa = PBXGroup;
 			children = (
@@ -404,6 +417,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				0A6BED442C44256100C69715 /* Extentions */,
 				0A3802DF2A0B06F9000C34A0 /* Views */,
 				0AE29FE52A09F0550035242E /* Data */,
 				0AE29FE12A09BA060035242E /* IntentDefinitions */,
@@ -890,6 +904,7 @@
 				0AE29FED2A09F1130035242E /* Types.swift in Sources */,
 				0A90E36D29FC5FAB00FB320D /* Art.swift in Sources */,
 				0AE29FE72A09F0670035242E /* Widgets.swift in Sources */,
+				0A6BED472C44257500C69715 /* Double.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -900,6 +915,7 @@
 				0A9D4AAC2A01DA1000183302 /* SelectDAO.intentdefinition in Sources */,
 				0A9D4AB22A01E7C100183302 /* Data.swift in Sources */,
 				0A9D4AA42A01D9E700183302 /* IntentHandler.swift in Sources */,
+				0A6BED482C44257500C69715 /* Double.swift in Sources */,
 				0AA7E8D62A05DD88000B0F4D /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -910,6 +926,7 @@
 			files = (
 				0AE29FCF2A09B56D0035242E /* AuctionBundle.swift in Sources */,
 				0AE29FD12A09B56D0035242E /* Auction.swift in Sources */,
+				0A6BED492C44257500C69715 /* Double.swift in Sources */,
 				0AE29FE22A09BA480035242E /* SelectDAO.intentdefinition in Sources */,
 				0AE29FEE2A09F1130035242E /* Types.swift in Sources */,
 				0AE29FE82A09F0670035242E /* Widgets.swift in Sources */,
@@ -938,6 +955,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				0A6BED462C44257500C69715 /* Double.swift in Sources */,
 				0A90E37329FC5FAD00FB320D /* SelectDAO.intentdefinition in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -982,6 +1000,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-mobileapp-mobileappTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1009,6 +1028,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-mobileapp-mobileappTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = mobileappTests/Info.plist;
@@ -1574,10 +1594,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -1647,10 +1664,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

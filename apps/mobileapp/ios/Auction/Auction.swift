@@ -89,15 +89,21 @@ struct AuctionEntryView : View {
               .font(.system(size: 12, weight: .bold))
           }
           
+          let bid = entry.auction!.currentBid.toThreeDecimalPlaces()
+          
           VStack(alignment: .leading, spacing: 0) {
             Text(timeToGo == 0 ? "Winning bid" : "Current bid")
               .font(.system(size: 12))
-            Text("\(String(entry.auction!.currentBid)) Ξ")
+            Text("\(String(bid)) Ξ")
               .font(.system(size: 18, weight: .black))
+              .lineLimit(2)
             HStack(alignment: .center, spacing: 2) {
               Image("ArrowCirclePath")
                 .resizable()
                 .frame(width: 10, height: 10)
+//              Text("As of")
+//                .font(.system(size: 10))
+//                .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.55))
               Text(entry.date, style: .time)
                 .font(.system(size: 10))
                 .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.55))
