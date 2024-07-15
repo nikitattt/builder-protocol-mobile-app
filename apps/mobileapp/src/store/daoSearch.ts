@@ -1,8 +1,10 @@
 import { create } from 'zustand'
+import { CHAIN_ID } from '../utils/types'
 
 export type SearchDao = {
   address: string
   name: string
+  chainId: CHAIN_ID
 }
 
 export enum DaoSearchStatus {

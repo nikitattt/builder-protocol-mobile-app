@@ -2259,6 +2259,21 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type BuilderDaOsPropsQueryVariables = Exact<{
+  where: Proposal_Filter;
+  first: Scalars['Int']['input'];
+}>;
+
+
+export type BuilderDaOsPropsQuery = { __typename?: 'Query', proposals: Array<{ __typename?: 'Proposal', proposalNumber: number, proposalId: any, title?: string | null, voteStart: any, voteEnd: any, executableFrom?: any | null, expiresAt?: any | null, executed: boolean, canceled: boolean, abstainVotes: number, againstVotes: number, forVotes: number, quorumVotes: any, dao: { __typename?: 'DAO', tokenAddress: any }, votes: Array<{ __typename?: 'ProposalVote', voter: any, support: ProposalVoteSupport }> }> };
+
+export type AuctionQueryVariables = Exact<{
+  dao: Scalars['String']['input'];
+}>;
+
+
+export type AuctionQuery = { __typename?: 'Query', auctions: Array<{ __typename?: 'Auction', endTime: any, token: { __typename?: 'Token', name: string, image?: string | null, tokenId: any }, highestBid?: { __typename?: 'AuctionBid', id: string, amount: any, bidder: any } | null }> };
+
 export type DaoQueryVariables = Exact<{
   dao: Scalars['ID']['input'];
 }>;
@@ -2266,5 +2281,24 @@ export type DaoQueryVariables = Exact<{
 
 export type DaoQuery = { __typename?: 'Query', dao?: { __typename?: 'DAO', treasuryAddress: any } | null };
 
+export type SearchDaoQueryVariables = Exact<{
+  where: Dao_Filter;
+  first: Scalars['Int']['input'];
+}>;
 
+
+export type SearchDaoQuery = { __typename?: 'Query', daos: Array<{ __typename?: 'DAO', name: string, tokenAddress: any }> };
+
+export type DaOsForAddressesQueryVariables = Exact<{
+  where: DaoTokenOwner_Filter;
+}>;
+
+
+export type DaOsForAddressesQuery = { __typename?: 'Query', daotokenOwners: Array<{ __typename?: 'DAOTokenOwner', dao: { __typename?: 'DAO', name: string, tokenAddress: any } }> };
+
+
+export const BuilderDaOsPropsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BuilderDAOsProps"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Proposal_filter"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"first"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"proposals"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"first"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"timeCreated"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"desc"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"proposalNumber"}},{"kind":"Field","name":{"kind":"Name","value":"proposalId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"voteStart"}},{"kind":"Field","name":{"kind":"Name","value":"voteEnd"}},{"kind":"Field","name":{"kind":"Name","value":"executableFrom"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"executed"}},{"kind":"Field","name":{"kind":"Name","value":"canceled"}},{"kind":"Field","name":{"kind":"Name","value":"abstainVotes"}},{"kind":"Field","name":{"kind":"Name","value":"againstVotes"}},{"kind":"Field","name":{"kind":"Name","value":"forVotes"}},{"kind":"Field","name":{"kind":"Name","value":"quorumVotes"}},{"kind":"Field","name":{"kind":"Name","value":"dao"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokenAddress"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voter"}},{"kind":"Field","name":{"kind":"Name","value":"support"}}]}}]}}]}}]} as unknown as DocumentNode<BuilderDaOsPropsQuery, BuilderDaOsPropsQueryVariables>;
+export const AuctionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Auction"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"dao"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"auctions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"dao"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dao"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"endTime"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"desc"}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"2"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"tokenId"}}]}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}},{"kind":"Field","name":{"kind":"Name","value":"highestBid"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"bidder"}}]}}]}}]}}]} as unknown as DocumentNode<AuctionQuery, AuctionQueryVariables>;
 export const DaoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"DAO"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"dao"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dao"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dao"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"treasuryAddress"}}]}}]}}]} as unknown as DocumentNode<DaoQuery, DaoQueryVariables>;
+export const SearchDaoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SearchDAO"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DAO_filter"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"first"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"daos"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"first"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tokenAddress"}}]}}]}}]} as unknown as DocumentNode<SearchDaoQuery, SearchDaoQueryVariables>;
+export const DaOsForAddressesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"DAOsForAddresses"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DAOTokenOwner_filter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"daotokenOwners"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dao"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tokenAddress"}}]}}]}}]}}]} as unknown as DocumentNode<DaOsForAddressesQuery, DaOsForAddressesQueryVariables>;

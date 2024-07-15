@@ -5,6 +5,7 @@ import { zustandStorage } from '../storage/zustand'
 import Toast from 'react-native-toast-message'
 import { track } from '../utils/track'
 import { isAddressEqual } from 'viem'
+import { CHAIN_ID } from '../utils/types'
 
 const showErrorToast = (text: string) => {
   Toast.show({
@@ -16,6 +17,7 @@ const showErrorToast = (text: string) => {
 export type SavedDao = {
   address: string
   name: string
+  chainId: CHAIN_ID
 }
 
 interface DaosState {

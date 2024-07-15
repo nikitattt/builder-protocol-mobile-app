@@ -1,9 +1,9 @@
-import { AddressType, CHAIN_ID } from '../utils/types'
+import { AddressType } from '../utils/types'
 import { L2_CHAINS } from '../constants/chains'
 import { L2_MIGRATION_DEPLOYER, NULL_ADDRESS } from '../constants/addresses'
 import { unpackOptionalArray } from '../utils/helpers'
 import { L2DeployerABI } from '../abis/L2MigrationDeployer'
-import { readContract, readContracts } from 'wagmi/actions'
+import { readContracts } from 'wagmi/actions'
 import { wagmiConfig } from '../constants/viemWagmi'
 
 export async function daoMigrated(l1Treasury: AddressType) {

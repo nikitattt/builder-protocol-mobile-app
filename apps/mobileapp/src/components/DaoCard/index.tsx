@@ -23,7 +23,7 @@ const DaoCard = ({ dao }: DaoCardProps) => {
   const { loading, error, auction } = useAuction(dao.address)
   const { data: migratedData, error: migratedError } = useDaoMigrated(
     dao.address as AddressType,
-    1
+    dao.chainId
   )
 
   const migrated = migratedData?.data?.migrated

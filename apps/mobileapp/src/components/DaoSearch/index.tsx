@@ -19,23 +19,25 @@ const DaoSearch = () => {
 
   const inputRef = React.useRef<TextInput>(null)
 
-  const { data, loading, error } = useDaoSearch(
-    searchText,
-    () => {
-      if (data) {
-        setSearchStatus(DaoSearchStatus.SUCCESS)
-        const daos = data.daos.map((dao: any) => ({
-          name: dao.name,
-          address: dao.tokenAddress
-        }))
-        setSearchResults(daos)
-      }
-    },
-    e => {
-      console.log(e)
+  const { data, loading, error } = useDaoSearch(searchText)
+
+  useEffect(() => {
+    if (data) {
+      setSearchStatus(DaoSearchStatus.SUCCESS)
+      const daos = data.map(dao => ({
+        name: dao.name,
+        address: dao.tokenAddress,
+        chainId: dao.chainId
+      }))
+      setSearchResults(daos)
+    }
+  }, [data, error])
+
+  useEffect(() => {
+    if (error) {
       setSearchStatus(DaoSearchStatus.ERROR)
     }
-  )
+  }, [error])
 
   useEffect(() => {
     if (focusRequested) {
@@ -52,7 +54,7 @@ const DaoSearch = () => {
     if (text.length === 0) clearSearchResults()
   }
 
-  const noDaos = data && data.daos.length === 0
+  const noDaos = data && data.length === 0
 
   return (
     <View className="mb-3 justify-center">

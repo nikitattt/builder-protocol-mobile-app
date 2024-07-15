@@ -64,14 +64,23 @@ export const daoQueryDocument = graphql(/* GraphQL */ `
   }
 `)
 
-export const SEARCH_DAO_QUERY = gql`
+export const daoSearchQueryDocument = graphql(/* GraphQL */ `
   query SearchDAO($where: DAO_filter!, $first: Int!) {
     daos(where: $where, first: $first) {
       name
       tokenAddress
     }
   }
-`
+`)
+
+// export const SEARCH_DAO_QUERY = gql`
+//   query SearchDAO($where: DAO_filter!, $first: Int!) {
+//     daos(where: $where, first: $first) {
+//       name
+//       tokenAddress
+//     }
+//   }
+// `
 
 export const DAOS_FOR_ADDRESS_QUERY = gql`
   query DAOsForAddresses($where: DAOTokenOwner_filter!) {
