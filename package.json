@@ -6,6 +6,7 @@
     "start:backend": "pnpm --filter \"./apps/backend\" start",
     "dev:backend": "pnpm --filter \"./apps/backend\" dev",
     "start:mobile": "pnpm --filter \"./apps/mobileapp\" start",
+    "codegen:mobile": "pnpm --filter \"./apps/mobileapp\" codegen",
     "dev:website": "pnpm --filter \"./apps/website\" dev"
   },
   "devDependencies": {

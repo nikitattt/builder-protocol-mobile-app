@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { graphql } from '../gql'
 
 export const PROPS_QUERY = gql`
   query BuilderDAOsProps($where: Proposal_filter!, $first: Int!) {
@@ -32,8 +33,8 @@ export const PROPS_QUERY = gql`
   }
 `
 
-export const DAO_QUERY = gql`
-  query BuilderDAO($dao: String!) {
+export const AUCTION_QUERY = gql`
+  query Auction($dao: String!) {
     auctions(
       where: { dao: $dao }
       orderBy: endTime
@@ -52,11 +53,16 @@ export const DAO_QUERY = gql`
         bidder
       }
     }
-    auctionConfig(id: $dao) {
-      duration
-    }
   }
 `
+
+export const daoQueryDocument = graphql(/* GraphQL */ `
+  query DAO($dao: ID!) {
+    dao(id: $dao) {
+      treasuryAddress
+    }
+  }
+`)
 
 export const SEARCH_DAO_QUERY = gql`
   query SearchDAO($where: DAO_filter!, $first: Int!) {
