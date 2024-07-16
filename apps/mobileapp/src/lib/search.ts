@@ -2,9 +2,10 @@ import request from 'graphql-request'
 import { daoSearchQueryDocument } from '../constants/queries'
 import { PUBLIC_SUBGRAPH_URL } from '../constants/subgraph'
 import { CHAINS } from '../constants/chains'
+import { Dao_Filter } from '../gql/graphql'
 
 export async function search(searchText: string) {
-  const where =
+  const where: Dao_Filter =
     searchText.includes('0x') && searchText.length >= 6
       ? {
           tokenAddress_contains: searchText
