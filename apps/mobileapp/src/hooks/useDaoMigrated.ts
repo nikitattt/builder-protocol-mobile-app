@@ -16,7 +16,7 @@ export default function useDaoMigrated(address: AddressType, chain: CHAIN_ID) {
   const enabled = chain === CHAIN_ID.ETHEREUM
 
   const daoData = useQuery({
-    queryKey: [QUERY_KEYS.DAO, address],
+    queryKey: [QUERY_KEYS.DAO, chain, address],
     queryFn: async () => dao(address, chain),
     staleTime: CACHE_TIMES.DAO.query,
     enabled: enabled
@@ -25,7 +25,7 @@ export default function useDaoMigrated(address: AddressType, chain: CHAIN_ID) {
   const treasuryAddress = daoData.data?.dao?.treasuryAddress
 
   return useQuery({
-    queryKey: [QUERY_KEYS.DAO_MIGRATED, treasuryAddress],
+    queryKey: [QUERY_KEYS.DAO_MIGRATED, chain, treasuryAddress],
     queryFn: async () => {
       // TODO: check if data is loaded for non mainnet daos
       const data = await daoMigrated(treasuryAddress)

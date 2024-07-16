@@ -11,6 +11,7 @@ import Section from '../../components/Section'
 import { isAddressEqual } from 'viem'
 import Bid from '../../components/Bid'
 import { formatBid } from '../../utils/format'
+import { AddressType } from '../../utils/types'
 
 const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
   const { dao } = route.params
@@ -18,11 +19,12 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
   const removeFromSaved = useDaosStore(state => state.removeFromSaved)
   const save = useDaosStore(state => state.save)
 
-  const daoIsSaved = savedDaos.some(savedDao =>
-    isAddressEqual(
-      savedDao.address as `0x${string}`,
-      dao.address as `0x${string}`
-    )
+  const daoIsSaved = savedDaos.some(
+    savedDao =>
+      isAddressEqual(
+        savedDao.address as AddressType,
+        dao.address as AddressType
+      ) && savedDao.chainId === dao.chainId
   )
 
   const saveOrUnsave = () => {

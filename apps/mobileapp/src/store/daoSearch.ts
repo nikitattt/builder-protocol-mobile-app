@@ -1,8 +1,8 @@
 import { create } from 'zustand'
-import { CHAIN_ID } from '../utils/types'
+import { AddressType, CHAIN_ID } from '../utils/types'
 
 export type SearchDao = {
-  address: string
+  address: AddressType
   name: string
   chainId: CHAIN_ID
 }

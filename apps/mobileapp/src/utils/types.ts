@@ -14,9 +14,10 @@ export type CurrentAuction = {
 }
 
 export type DAO = {
-  address: string
+  address: AddressType
   name: string
   auction: CurrentAuction
+  chainId: CHAIN_ID
 }
 
 export type Proposal = {
@@ -36,7 +37,7 @@ export type Proposal = {
   canceled: boolean
   votes: Vote[]
   dao: {
-    tokenAddress: string
+    tokenAddress: AddressType
   }
 }
 
@@ -70,7 +71,7 @@ export type BuilderDAOsAuctionResponse = {
 export type DaoSearchPropsResponse = {
   daos: {
     name: string
-    tokenAddress: string
+    tokenAddress: AddressType
   }[]
 }
 

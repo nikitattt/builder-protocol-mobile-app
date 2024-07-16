@@ -33,13 +33,13 @@ export const PROPS_QUERY = gql`
   }
 `
 
-export const AUCTION_QUERY = gql`
+export const auctionQueryDocument = graphql(/* GraphQL */ `
   query Auction($dao: String!) {
     auctions(
       where: { dao: $dao }
       orderBy: endTime
       orderDirection: desc
-      first: 2
+      first: 1
     ) {
       token {
         name
@@ -54,7 +54,7 @@ export const AUCTION_QUERY = gql`
       }
     }
   }
-`
+`)
 
 export const daoQueryDocument = graphql(/* GraphQL */ `
   query DAO($dao: ID!) {
@@ -72,15 +72,6 @@ export const daoSearchQueryDocument = graphql(/* GraphQL */ `
     }
   }
 `)
-
-// export const SEARCH_DAO_QUERY = gql`
-//   query SearchDAO($where: DAO_filter!, $first: Int!) {
-//     daos(where: $where, first: $first) {
-//       name
-//       tokenAddress
-//     }
-//   }
-// `
 
 export const DAOS_FOR_ADDRESS_QUERY = gql`
   query DAOsForAddresses($where: DAOTokenOwner_filter!) {

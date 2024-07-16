@@ -9,7 +9,7 @@ import SvgDaoImage from '../SvgDaoImage'
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
 type DaoCardImageProps = {
-  image: string
+  image: string | undefined
   imageType?: 'thumbnail' | 'full'
 }
 

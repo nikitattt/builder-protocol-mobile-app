@@ -5,7 +5,7 @@ import { SavedDao } from '../../store/daos'
 import Countdown from '../Countdown'
 import DaoCardImage from '../DaoCardImage'
 import { useNavigation } from '@react-navigation/native'
-import { AddressType, DAO } from '../../utils/types'
+import { AddressType, CurrentAuction, DAO } from '../../utils/types'
 import clsx from 'clsx'
 import useAuction from '../../hooks/useAuction'
 import SaveDaoIconButton from '../SaveDaoIconButton'
@@ -20,7 +20,7 @@ const DaoCard = ({ dao }: DaoCardProps) => {
   const navigation = useNavigation()
   const activeSearch = useDaoSearchStore(state => state.active)
 
-  const { loading, error, auction } = useAuction(dao.address)
+  const { loading, error, auction } = useAuction(dao.address, dao.chainId)
   const { data: migratedData, error: migratedError } = useDaoMigrated(
     dao.address as AddressType,
     dao.chainId
@@ -63,7 +63,8 @@ const DaoCard = ({ dao }: DaoCardProps) => {
       const daoData: DAO = {
         name: dao.name,
         address: dao.address,
-        auction: auction
+        auction: auction as CurrentAuction,
+        chainId: dao.chainId
       }
 
       navigation.navigate('Dao', {
@@ -76,7 +77,7 @@ const DaoCard = ({ dao }: DaoCardProps) => {
     <TouchableOpacity activeOpacity={0.8} onPress={openDaoPage}>
       <View className="relative box-border h-36 w-full flex flex-row items-center mb-3 rounded-lg">
         <View className="rounded-lg h-full aspect-square">
-          <DaoCardImage image={auction.token.image} />
+          <DaoCardImage image={auction.token.image ?? undefined} />
         </View>
         {migrated ? (
           <View className="ml-4 w-full h-36 flex flex-col flex-shrink">

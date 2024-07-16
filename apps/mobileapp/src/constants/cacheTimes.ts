@@ -13,5 +13,8 @@ export const CACHE_TIMES = {
   },
   DAO: {
     query: ONE_WEEK
+  },
+  AUCTION: {
+    query: ONE_MINUTE * 5
   }
 }

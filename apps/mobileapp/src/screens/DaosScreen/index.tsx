@@ -101,9 +101,14 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
             <FlatList
               data={daos}
               renderItem={({ item }) => (
-                <DaoCard key={`${item.address}-${reloadKey}`} dao={item} />
+                <DaoCard
+                  key={`${item.name}-${item.chainId}-${item.address}-${reloadKey}`}
+                  dao={item}
+                />
               )}
-              keyExtractor={item => item.address}
+              keyExtractor={item =>
+                `${item.name}-${item.chainId}-${item.address}`
+              }
               showsVerticalScrollIndicator={false}
               scrollEnabled={false}
               keyboardShouldPersistTaps="handled"
