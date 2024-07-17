@@ -23,10 +23,10 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
 
   const {
     proposals: props,
-    loading,
+    isLoading,
     error,
     refetch
-  } = useNonFinishedProposals(savedDaos.map(dao => dao.address))
+  } = useNonFinishedProposals(savedDaos)
 
   const onRefresh = React.useCallback(() => {
     refetch()
@@ -90,7 +90,7 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
               </Text>
               <Text className="mt-2 text-center">⌐◨-◨</Text>
             </View>
-          ) : loading ? (
+          ) : isLoading ? (
             <View className="flex flex-col gap-3">
               {ShimmerBox(1)}
               {ShimmerBox(0.2)}

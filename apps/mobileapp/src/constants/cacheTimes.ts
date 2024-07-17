@@ -16,5 +16,8 @@ export const CACHE_TIMES = {
   },
   AUCTION: {
     query: ONE_MINUTE * 5
+  },
+  PROPOSALS: {
+    query: ONE_MINUTE * 5
   }
 }

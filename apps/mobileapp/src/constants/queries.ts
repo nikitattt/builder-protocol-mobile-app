@@ -1,8 +1,40 @@
 import { gql } from '@apollo/client'
 import { graphql } from '../gql'
 
-export const PROPS_QUERY = gql`
-  query BuilderDAOsProps($where: Proposal_filter!, $first: Int!) {
+// export const PROPS_QUERY = gql`
+//   query BuilderDAOsProps($where: Proposal_filter!, $first: Int!) {
+//     proposals(
+//       where: $where
+//       first: $first
+//       orderBy: timeCreated
+//       orderDirection: desc
+//     ) {
+//       proposalNumber
+//       proposalId
+//       title
+//       voteStart
+//       voteEnd
+//       executableFrom
+//       expiresAt
+//       executed
+//       canceled
+//       abstainVotes
+//       againstVotes
+//       forVotes
+//       quorumVotes
+//       dao {
+//         tokenAddress
+//       }
+//       votes {
+//         voter
+//         support
+//       }
+//     }
+//   }
+// `
+
+export const proposalQueryDocument = graphql(/* GraphQL */ `
+  query Proposals($where: Proposal_filter!, $first: Int!) {
     proposals(
       where: $where
       first: $first
@@ -31,7 +63,7 @@ export const PROPS_QUERY = gql`
       }
     }
   }
-`
+`)
 
 export const auctionQueryDocument = graphql(/* GraphQL */ `
   query Auction($dao: String!) {

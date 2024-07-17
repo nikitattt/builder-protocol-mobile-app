@@ -1,4 +1,5 @@
 import { Chain as WagmiChain } from 'viem'
+import { ProposalsQuery } from '../gql/graphql'
 
 export type CurrentAuction = {
   token: {
@@ -20,53 +21,40 @@ export type DAO = {
   chainId: CHAIN_ID
 }
 
-export type Proposal = {
-  proposalId: string
-  proposalNumber: number
+export type ProposalStatus = {
   status: string
-  title: string
-  voteEnd: number
-  voteStart: number
-  abstainVotes: number
-  againstVotes: number
-  forVotes: number
-  quorumVotes: number
-  executableFrom?: number
-  expiresAt?: number
-  executed: boolean
-  canceled: boolean
-  votes: Vote[]
-  dao: {
-    tokenAddress: AddressType
-  }
 }
+
+export type QueryProposal = ProposalsQuery['proposals'][number]
+
+export type Proposal = QueryProposal & ProposalStatus
 
 export type Vote = {
   voter: string
   support: string
 }
 
-export type BuilderDAOsPropsResponse = {
-  proposals: Proposal[]
-}
+// export type BuilderDAOsPropsResponse = {
+//   proposals: Proposal[]
+// }
 
-export type BuilderDAOsAuctionResponse = {
-  auctions: {
-    token: {
-      name: string
-      image: string
-      tokenId: string
-    }
-    endTime: number
-    highestBid: {
-      amount: string
-      bidder: string
-    }
-  }[]
-  auctionConfig: {
-    duration: string
-  }
-}
+// export type BuilderDAOsAuctionResponse = {
+//   auctions: {
+//     token: {
+//       name: string
+//       image: string
+//       tokenId: string
+//     }
+//     endTime: number
+//     highestBid: {
+//       amount: string
+//       bidder: string
+//     }
+//   }[]
+//   auctionConfig: {
+//     duration: string
+//   }
+// }
 
 export type DaoSearchPropsResponse = {
   daos: {
