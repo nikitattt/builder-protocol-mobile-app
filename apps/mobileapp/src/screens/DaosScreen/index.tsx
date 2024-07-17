@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, ScrollView, Text, View } from 'react-native'
+import { RefreshControl, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDaosStore } from '../../store/daos'
 import { HomeTabScreenProps } from '../../navigation/types'
@@ -6,11 +6,14 @@ import DaoSearch from '../../components/DaoSearch'
 import { useDaoSearchStore } from '../../store/daoSearch'
 import DaoCard from '../../components/DaoCard'
 import SearchButton from '../../components/SearchButton'
-import { useEffect, useReducer } from 'react'
+import { useEffect } from 'react'
 import { useAddressesStore } from '../../store/addresses'
 import { loadDaosForAddresses } from '../../data/addressDaos'
 import React from 'react'
 import { IntroNextAction, IntroStage, useIntroStore } from '../../store/intro'
+import { useQueryClient } from '@tanstack/react-query'
+import { QUERY_KEYS } from '../../constants/queryKeys'
+import { FlashList } from '@shopify/flash-list'
 
 const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
   const insets = useSafeAreaInsets()
@@ -28,11 +31,11 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
   const setSearchFocusRequested = useDaoSearchStore(
     state => state.setFocusRequested
   )
+  const queryClient = useQueryClient()
 
   const savedManualAddresses = useAddressesStore(state => state.manualAddresses)
 
   const [refreshing, setRefreshing] = React.useState(false)
-  const [reloadKey, reloadData] = useReducer(x => x + 1, 0)
 
   const fetchDaos = async (addresses: string[]) => {
     const daos = await loadDaosForAddresses(addresses)
@@ -44,15 +47,20 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
-    reloadData()
+
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.AUCTION]
+    })
+
     if (savedManualAddresses.length > 0) {
       fetchDaos(savedManualAddresses)
     }
-    const reloadTime = savedDaos.length > 0 ? 1420 : 400
+
+    const reloadTime = 400
     setTimeout(() => {
       setRefreshing(false)
     }, reloadTime)
-  }, [savedDaos])
+  }, [savedManualAddresses, queryClient, fetchDaos, setRefreshing])
 
   useEffect(() => {
     if (introNextAction === IntroNextAction.SEARCH_DAO) {
@@ -97,30 +105,30 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
             <SearchButton />
           </View>
           {searchActive && <DaoSearch />}
-          {daos.length > 0 ? (
-            <FlatList
-              data={daos}
-              renderItem={({ item }) => (
-                <DaoCard
-                  key={`${item.name}-${item.chainId}-${item.address}-${reloadKey}`}
-                  dao={item}
-                />
-              )}
-              keyExtractor={item =>
-                `${item.name}-${item.chainId}-${item.address}`
-              }
-              showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
-              keyboardShouldPersistTaps="handled"
-            />
-          ) : (
-            <View className="mx-auto mt-[80%] max-w-[160px] text-center">
-              <Text className="max-w-[160px] text-center">
-                Add some DAOs to enable widgets!
-              </Text>
-              <Text className="mt-2 text-center">⌐◨-◨</Text>
-            </View>
-          )}
+          <FlashList
+            data={daos}
+            estimatedItemSize={50}
+            renderItem={({ item }) => (
+              <DaoCard
+                key={`${item.name}-${item.chainId}-${item.address}`}
+                dao={item}
+              />
+            )}
+            keyExtractor={item =>
+              `${item.name}-${item.chainId}-${item.address}`
+            }
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
+            keyboardShouldPersistTaps="handled"
+            ListEmptyComponent={
+              <View className="mx-auto mt-[80%] max-w-[160px] text-center">
+                <Text className="max-w-[160px] text-center">
+                  Add some DAOs to enable widgets!
+                </Text>
+                <Text className="mt-2 text-center">⌐◨-◨</Text>
+              </View>
+            }
+          />
         </View>
       </SafeAreaView>
     </ScrollView>

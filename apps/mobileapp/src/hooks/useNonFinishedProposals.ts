@@ -15,9 +15,10 @@ export default function useNonFinishedProposals(daos: SavedDao[]) {
   const data = useQueries({
     queries: daos.map(dao => {
       return {
-        queryKey: [QUERY_KEYS.AUCTION, dao.chainId, dao.address],
+        queryKey: [QUERY_KEYS.PROPOSALS, dao.chainId, dao.address],
         queryFn: async () => nonFinishedProposals(dao.address, dao.chainId),
-        staleTime: CACHE_TIMES.PROPOSALS.query
+        staleTime: CACHE_TIMES.PROPOSALS.query,
+        gcTime: CACHE_TIMES.PROPOSALS.query
       }
     })
   })

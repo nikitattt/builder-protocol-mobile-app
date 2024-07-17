@@ -11,6 +11,7 @@ import useAuction from '../../hooks/useAuction'
 import SaveDaoIconButton from '../SaveDaoIconButton'
 import { formatBid } from '../../utils/format'
 import useDaoMigrated from '../../hooks/useDaoMigrated'
+import Shimmer from 'react-native-shimmer'
 
 type DaoCardProps = {
   dao: SavedDao | SearchDao
@@ -20,7 +21,10 @@ const DaoCard = ({ dao }: DaoCardProps) => {
   const navigation = useNavigation()
   const activeSearch = useDaoSearchStore(state => state.active)
 
-  const { loading, error, auction } = useAuction(dao.address, dao.chainId)
+  const { isFetching, isPending, error, auction } = useAuction(
+    dao.address,
+    dao.chainId
+  )
   const { data: migratedData, error: migratedError } = useDaoMigrated(
     dao.address as AddressType,
     dao.chainId
@@ -92,28 +96,42 @@ const DaoCard = ({ dao }: DaoCardProps) => {
           </View>
         ) : (
           <View className="ml-4 w-full h-36 flex flex-col flex-shrink justify-evenly">
-            <Text className="text-xl font-bold flex-shrink leading-6">
-              {loading ? dao.name : displayName}
-            </Text>
+            {isPending ? (
+              <Text className="text-xl font-bold flex-shrink leading-6">
+                {dao.name}
+              </Text>
+            ) : (
+              <Shimmer animating={isFetching}>
+                <Text className="text-xl font-bold flex-shrink leading-6">
+                  {displayName}
+                </Text>
+              </Shimmer>
+            )}
             <View className="flex flex-col gap-0.5">
               <View>
                 <Text className="text-sm text-grey-three">Highest Bid</Text>
-                {loading ? (
+                {isPending ? (
                   <View className="bg-grey-one rounded-md h-5 w-16" />
                 ) : (
-                  <Text className="text-base font-bold text-black">{bid}</Text>
+                  <Shimmer animating={isFetching}>
+                    <Text className="text-base font-bold text-black">
+                      {bid}
+                    </Text>
+                  </Shimmer>
                 )}
               </View>
               <View className="">
                 <Text className="text-sm text-grey-three">Ends In</Text>
-                {loading ? (
+                {isPending ? (
                   <View className="bg-grey-one rounded-md h-5 w-24" />
                 ) : (
-                  <Countdown
-                    timestamp={auction.endTime}
-                    style="text-base font-bold text-black"
-                    endText="Ended"
-                  />
+                  <Shimmer animating={isFetching}>
+                    <Countdown
+                      timestamp={auction.endTime}
+                      style="text-base font-bold text-black"
+                      endText="Ended"
+                    />
+                  </Shimmer>
                 )}
               </View>
             </View>

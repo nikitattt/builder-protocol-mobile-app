@@ -6,10 +6,11 @@ import { auction as auctionFn } from '../lib/auction'
 import { CACHE_TIMES } from '../constants/cacheTimes'
 
 export default function useAuction(address: AddressType, chain: CHAIN_ID) {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isFetching, isPending } = useQuery({
     queryKey: [QUERY_KEYS.AUCTION, chain, address],
     queryFn: async () => auctionFn(address, chain),
-    staleTime: CACHE_TIMES.AUCTION.query
+    staleTime: CACHE_TIMES.AUCTION.query,
+    gcTime: CACHE_TIMES.AUCTION.query
   })
 
   const auction = data?.auctions && data?.auctions[0]
@@ -18,5 +19,5 @@ export default function useAuction(address: AddressType, chain: CHAIN_ID) {
     auction.endTime = ensureMilliseconds(auction.endTime)
   }
 
-  return { auction, loading: isLoading, error }
+  return { auction, isFetching, isPending, error }
 }
