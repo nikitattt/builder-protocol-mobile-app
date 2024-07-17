@@ -91,7 +91,7 @@ const DaoCard = ({ dao }: DaoCardProps) => {
               </Text>
             </View>
             <View className="mt-3 w-8/12">
-              <Text className="text-sm text-grey-three">Migrate →</Text>
+              <Text className="text-sm text-grey-three">Update →</Text>
             </View>
           </View>
         ) : (
