@@ -1,4 +1,3 @@
-import { gql } from '@apollo/client'
 import { graphql } from '../gql'
 
 export const proposalQueryDocument = graphql(/* GraphQL */ `
@@ -83,14 +82,3 @@ export const daosForAddressQueryDocument = graphql(/* GraphQL */ `
     }
   }
 `)
-
-// export const DAOS_FOR_ADDRESS_QUERY = gql`
-//   query DAOsForAddresses($where: DAOTokenOwner_filter!) {
-//     daotokenOwners(where: $where) {
-//       dao {
-//         name
-//         tokenAddress
-//       }
-//     }
-//   }
-// `
