@@ -11,7 +11,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import TabBar from './src/components/TabBar'
 import { HomeTabParamList, RootStackParamList } from './src/navigation/types'
 import DaoScreen from './src/screens/DaoScreen'
-import { StatusBar } from 'react-native'
+import { AppState, AppStateStatus, Platform, StatusBar } from 'react-native'
 import { WagmiProvider } from 'wagmi'
 
 import IntroScreen from './src/screens/IntroScreen'
@@ -23,8 +23,20 @@ import FeedScreen from './src/screens/FeedScreen'
 import ProposalScreen from './src/screens/ProposalScreen'
 import BidScreen from './src/screens/BidScreen'
 import ProposalsScreen from './src/screens/ProposalsScreen'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+  focusManager,
+  onlineManager,
+  QueryClient,
+  QueryClientProvider
+} from '@tanstack/react-query'
 import { wagmiConfig } from './src/constants/viemWagmi'
+import NetInfo from '@react-native-community/netinfo'
+
+onlineManager.setEventListener(setOnline => {
+  return NetInfo.addEventListener(state => {
+    setOnline(!!state.isConnected)
+  })
+})
 
 const RootStack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator<HomeTabParamList>()
@@ -59,6 +71,19 @@ const App = () => {
   useEffect(() => {
     setColorScheme('dark')
   }, [setColorScheme])
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener(
+      'change',
+      (status: AppStateStatus) => {
+        if (Platform.OS !== 'web') {
+          focusManager.setFocused(status === 'active')
+        }
+      }
+    )
+
+    return () => subscription.remove()
+  }, [])
 
   return (
     <>

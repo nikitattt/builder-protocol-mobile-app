@@ -14,6 +14,7 @@ import { IntroNextAction, IntroStage, useIntroStore } from '../../store/intro'
 import { useQueryClient } from '@tanstack/react-query'
 import { QUERY_KEYS } from '../../constants/queryKeys'
 import { FlashList } from '@shopify/flash-list'
+import usePrefetchNonFinishedProposals from '../../hooks/usePrefetchNonFinishedProposals'
 
 const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
   const insets = useSafeAreaInsets()
@@ -36,6 +37,8 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
   const savedManualAddresses = useAddressesStore(state => state.manualAddresses)
 
   const [refreshing, setRefreshing] = React.useState(false)
+
+  usePrefetchNonFinishedProposals(savedDaos)
 
   const fetchDaos = async (addresses: string[]) => {
     const daos = await loadDaosForAddresses(addresses)

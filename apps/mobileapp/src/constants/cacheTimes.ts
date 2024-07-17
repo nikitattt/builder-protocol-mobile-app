@@ -19,6 +19,6 @@ export const CACHE_TIMES = {
     query: ONE_MINUTE * 5
   },
   PROPOSALS: {
-    query: ONE_MINUTE * 5
+    query: ONE_HOUR * 3
   }
 }
