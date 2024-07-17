@@ -68,8 +68,6 @@ const queryClient = new QueryClient()
 const App = () => {
   const { setColorScheme } = useColorScheme()
 
-  console.log('Add mounted')
-
   useEffect(() => {
     setColorScheme('dark')
   }, [setColorScheme])

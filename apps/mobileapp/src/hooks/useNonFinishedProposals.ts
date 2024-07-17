@@ -23,7 +23,8 @@ export default function useNonFinishedProposals(daos: SavedDao[]) {
     })
   })
 
-  const isLoading = data?.some(x => x.isLoading)
+  const isLoading = data?.some(x => x.isPending)
+  const isFetching = data?.some(x => x.isFetching)
   const error = data?.some(x => x.error)
   const refetch = () => data?.forEach(x => x.refetch())
 
@@ -38,5 +39,5 @@ export default function useNonFinishedProposals(daos: SavedDao[]) {
     })
   })
 
-  return { proposals, isLoading, error, refetch }
+  return { proposals, isLoading, isFetching, error, refetch }
 }

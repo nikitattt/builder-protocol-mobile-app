@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, ScrollView, Text, View } from 'react-native'
+import { RefreshControl, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDaosStore } from '../../store/daos'
 import { HomeTabScreenProps } from '../../navigation/types'
@@ -10,6 +10,8 @@ import LinearGradient from 'react-native-linear-gradient'
 import { filterAndSortProposals } from '../../utils/proposals'
 import { isAddressEqual } from 'viem'
 import useNonFinishedProposals from '../../hooks/useNonFinishedProposals'
+import { FlashList } from '@shopify/flash-list'
+import { AddressType } from '../../utils/types'
 
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
@@ -19,11 +21,10 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
   const savedDaos = useDaosStore(state => state.saved)
 
   const [refreshing, setRefreshing] = React.useState(false)
-  const [reloadKey, reloadData] = useReducer(x => x + 1, 0)
 
   const {
     proposals: props,
-    isLoading,
+    isFetching,
     error,
     refetch
   } = useNonFinishedProposals(savedDaos)
@@ -31,8 +32,8 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
   const onRefresh = React.useCallback(() => {
     refetch()
     setRefreshing(true)
-    reloadData()
-    const reloadTime = savedDaos.length > 0 ? 1420 : 400
+
+    const reloadTime = 400
     setTimeout(() => {
       setRefreshing(false)
     }, reloadTime)
@@ -90,7 +91,7 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
               </Text>
               <Text className="mt-2 text-center">⌐◨-◨</Text>
             </View>
-          ) : isLoading ? (
+          ) : isFetching ? (
             <View className="flex flex-col gap-3">
               {ShimmerBox(1)}
               {ShimmerBox(0.2)}
@@ -101,35 +102,37 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
                 Couldn't load proposals
               </Text>
             </View>
-          ) : proposals && proposals.length > 0 ? (
-            <FlatList
+          ) : (
+            <FlashList
               data={proposals}
+              estimatedItemSize={40}
               renderItem={({ item, index }) => (
                 <ProposalCard
                   proposal={item}
                   dao={
                     savedDaos.find(dao =>
                       isAddressEqual(
-                        dao.address as `0x${string}`,
-                        item.dao.tokenAddress as `0x${string}`
+                        dao.address as AddressType,
+                        item.dao.tokenAddress as AddressType
                       )
                     )!
                   }
-                  key={`${index}-${item.proposalId}-${reloadKey}`}
+                  key={`${index}-${item.dao.tokenAddress}-${item.proposalId}`}
                 />
               )}
               keyExtractor={item => item.proposalId}
               showsVerticalScrollIndicator={false}
               scrollEnabled={false}
               keyboardShouldPersistTaps="handled"
+              ListEmptyComponent={
+                <View className="mx-auto mt-[80%] max-w-[160px] text-center">
+                  <Text className="max-w-[160px] text-center">
+                    No active or pending proposals!
+                  </Text>
+                  <Text className="mt-2 text-center">⌐◨-◨</Text>
+                </View>
+              }
             />
-          ) : (
-            <View className="mx-auto mt-[80%] max-w-[160px] text-center">
-              <Text className="max-w-[160px] text-center">
-                No active or pending proposals!
-              </Text>
-              <Text className="mt-2 text-center">⌐◨-◨</Text>
-            </View>
           )}
         </View>
       </SafeAreaView>
