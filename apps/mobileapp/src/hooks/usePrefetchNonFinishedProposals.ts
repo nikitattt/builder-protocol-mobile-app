@@ -3,7 +3,7 @@ import { useQueries } from '@tanstack/react-query'
 import { QUERY_KEYS } from '../constants/queryKeys'
 import { SavedDao } from '../store/daos'
 import { CACHE_TIMES } from '../constants/cacheTimes'
-import { nonFinishedProposals } from '../lib/proposals'
+import { nonFinishedProposals } from '../functions/proposals'
 
 /**
  * Custom hook that retrieves non-finished proposals based on the provided saved DAOs.

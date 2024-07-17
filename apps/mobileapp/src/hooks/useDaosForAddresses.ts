@@ -2,7 +2,7 @@ import { AddressType } from '../utils/types'
 import { useQuery } from '@tanstack/react-query'
 import { QUERY_KEYS } from '../constants/queryKeys'
 import { CACHE_TIMES } from '../constants/cacheTimes'
-import { loadDaosForAddresses } from '../lib/loadDaosForAddresses'
+import { loadDaosForAddresses } from '../functions/loadDaosForAddresses'
 
 export default function useDaosForAddresses(addresses: AddressType[]) {
   const { data, error, isLoading } = useQuery({

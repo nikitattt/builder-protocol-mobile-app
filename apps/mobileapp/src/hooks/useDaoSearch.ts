@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { search } from '../lib/search'
+import { search } from '../functions/search'
 import { QUERY_KEYS } from '../constants/queryKeys'
 
 export default function useDaoSearch(searchText: string) {

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { AddressType, CHAIN_ID } from '../utils/types'
-import { daoMigrated } from '../lib/migrated'
+import { daoMigrated } from '../functions/migrated'
 import { CACHE_TIMES } from '../constants/cacheTimes'
-import { dao } from '../lib/dao'
+import { dao } from '../functions/dao'
 import { QUERY_KEYS } from '../constants/queryKeys'
 
 const getStaleTime = (data: any) => {
