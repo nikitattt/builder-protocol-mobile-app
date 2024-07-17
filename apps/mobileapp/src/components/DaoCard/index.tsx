@@ -25,12 +25,10 @@ const DaoCard = ({ dao }: DaoCardProps) => {
     dao.address,
     dao.chainId
   )
-  const { data: migratedData, error: migratedError } = useDaoMigrated(
-    dao.address as AddressType,
+  const { migrated, error: migratedError } = useDaoMigrated(
+    dao.address,
     dao.chainId
   )
-
-  const migrated = migratedData?.data?.migrated
 
   if (error || !auction)
     return (
@@ -91,6 +89,9 @@ const DaoCard = ({ dao }: DaoCardProps) => {
               <Text className="text-sm text-grey-three">
                 This DAO has been migrated to L2.
               </Text>
+            </View>
+            <View className="mt-3 w-8/12">
+              <Text className="text-sm text-grey-three">Migrate →</Text>
             </View>
           </View>
         ) : (

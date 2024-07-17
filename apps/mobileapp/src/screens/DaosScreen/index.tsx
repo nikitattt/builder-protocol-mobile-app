@@ -8,7 +8,6 @@ import DaoCard from '../../components/DaoCard'
 import SearchButton from '../../components/SearchButton'
 import { useEffect } from 'react'
 import { useAddressesStore } from '../../store/addresses'
-import { loadDaosForAddresses } from '../../functions/loadDaosForAddresses'
 import React from 'react'
 import { IntroNextAction, IntroStage, useIntroStore } from '../../store/intro'
 import { useQueryClient } from '@tanstack/react-query'
@@ -46,7 +45,6 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
 
   useEffect(() => {
     if (daosFromManualAddresses) {
-      console.log('daosFromManualAddresses', daosFromManualAddresses)
       saveMultiple(daosFromManualAddresses)
     }
   }, [daosFromManualAddresses])

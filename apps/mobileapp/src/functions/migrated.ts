@@ -45,9 +45,11 @@ export async function daoMigrated(l1Treasury: AddressType) {
   }
 
   return {
-    migrated: migrated as {
-      l2TokenAddress: AddressType
-      chainId: number
+    migrated: {
+      l2TokenAddress: String(
+        migrated.l2TokenAddress
+      ).toLowerCase() as AddressType,
+      chainId: migrated.chainId
     }
   }
 }

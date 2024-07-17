@@ -24,7 +24,7 @@ export default function useDaoMigrated(address: AddressType, chain: CHAIN_ID) {
 
   const treasuryAddress = daoData.data?.dao?.treasuryAddress
 
-  return useQuery({
+  const { data, error } = useQuery({
     queryKey: [QUERY_KEYS.DAO_MIGRATED, chain, treasuryAddress],
     queryFn: async () => {
       // TODO: check if data is loaded for non mainnet daos
@@ -37,4 +37,8 @@ export default function useDaoMigrated(address: AddressType, chain: CHAIN_ID) {
     },
     enabled: !!treasuryAddress && enabled
   })
+
+  const migrated = data?.data.migrated ?? undefined
+
+  return { migrated, error }
 }
