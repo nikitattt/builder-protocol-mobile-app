@@ -58,7 +58,7 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
       queryKey: [QUERY_KEYS.AUCTION]
     })
 
-    const reloadTime = 400
+    const reloadTime = 600
     setTimeout(() => {
       setRefreshing(false)
     }, reloadTime)

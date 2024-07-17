@@ -1,23 +1,22 @@
 import { Chain as WagmiChain } from 'viem'
 import { ProposalsQuery } from '../gql/graphql'
 
-export type CurrentAuction = {
-  token: {
-    name: string
-    image: string
-    tokenId: string
-  }
-  endTime: number
-  highestBid?: {
-    amount: string
-    bidder: string
-  }
-}
+// export type CurrentAuction = {
+//   token: {
+//     name: string
+//     image: string
+//     tokenId: string
+//   }
+//   endTime: number
+//   highestBid?: {
+//     amount: string
+//     bidder: string
+//   }
+// }
 
 export type DAO = {
   address: AddressType
   name: string
-  auction: CurrentAuction
   chainId: CHAIN_ID
 }
 
@@ -56,12 +55,12 @@ export type Vote = {
 //   }
 // }
 
-export type DaoSearchPropsResponse = {
-  daos: {
-    name: string
-    tokenAddress: AddressType
-  }[]
-}
+// export type DaoSearchPropsResponse = {
+//   daos: {
+//     name: string
+//     tokenAddress: AddressType
+//   }[]
+// }
 
 export interface Duration {
   seconds?: number

@@ -2,7 +2,7 @@ import { RefreshControl, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDaosStore } from '../../store/daos'
 import { HomeTabScreenProps } from '../../navigation/types'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import ProposalCard from '../../components/ProposalCard'
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import LinearGradient from 'react-native-linear-gradient'
@@ -19,7 +19,7 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
 
   const savedDaos = useDaosStore(state => state.saved)
 
-  const [refreshing, setRefreshing] = React.useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   const {
     proposals: props,
@@ -28,11 +28,11 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
     refetch
   } = useNonFinishedProposals(savedDaos)
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = useCallback(() => {
     refetch()
     setRefreshing(true)
 
-    const reloadTime = 400
+    const reloadTime = 600
     setTimeout(() => {
       setRefreshing(false)
     }, reloadTime)

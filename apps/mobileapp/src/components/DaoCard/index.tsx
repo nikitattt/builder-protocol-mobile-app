@@ -5,7 +5,7 @@ import { SavedDao } from '../../store/daos'
 import Countdown from '../Countdown'
 import DaoCardImage from '../DaoCardImage'
 import { useNavigation } from '@react-navigation/native'
-import { AddressType, CurrentAuction, DAO } from '../../utils/types'
+import { AddressType, DAO } from '../../utils/types'
 import clsx from 'clsx'
 import useAuction from '../../hooks/useAuction'
 import SaveDaoIconButton from '../SaveDaoIconButton'
@@ -67,7 +67,6 @@ const DaoCard = ({ dao }: DaoCardProps) => {
       const daoData: DAO = {
         name: dao.name,
         address: dao.address,
-        auction: auction as CurrentAuction,
         chainId: dao.chainId
       }
 
