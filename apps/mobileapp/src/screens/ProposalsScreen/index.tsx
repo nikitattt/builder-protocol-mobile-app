@@ -1,9 +1,8 @@
 import { RootStackScreenProps } from '../../navigation/types'
 import React from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import { WebView } from 'react-native-webview'
-import { manualDaos } from '../../constants/manualDaos'
-import { isAddressEqual } from 'viem'
+import { PUBLIC_CHAINS } from '../../constants/chains'
 
 const ProposalsScreen = ({
   route,
@@ -12,23 +11,20 @@ const ProposalsScreen = ({
   const [loading, setLoading] = React.useState(true)
 
   const dao = route.params.dao
+  const chain = PUBLIC_CHAINS.find(c => c.id === dao.chainId)
 
-  let uri
-
-  const manualDao = manualDaos.find(d =>
-    isAddressEqual(
-      d.collectionAddress as `0x${string}`,
-      dao.address as `0x${string}`
+  if (!chain) {
+    return (
+      <View className="flex-1">
+        <View className="absolute h-full w-full bg-white items-center justify-center">
+          <Text className="text-black text-center">Error happened:</Text>
+          <Text className="text-black text-center">Unsupported DAO.</Text>
+        </View>
+      </View>
     )
-  )
-
-  if (manualDao && manualDao.name === 'Nouns') {
-    uri = `https://nouns.wtf/vote`
-  } else if (manualDao && manualDao.name === 'Lil Nouns') {
-    uri = `https://lilnouns.wtf/vote`
-  } else {
-    uri = `https://proposals.builderapp.wtf/dao/${dao.address}`
   }
+
+  let uri = `https://proposals.builderapp.wtf/dao/${chain.slug}/${dao.address}`
 
   return (
     <View className="flex-1">

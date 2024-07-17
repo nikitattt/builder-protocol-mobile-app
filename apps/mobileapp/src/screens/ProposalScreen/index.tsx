@@ -1,7 +1,8 @@
 import { RootStackScreenProps } from '../../navigation/types'
 import React from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import { WebView } from 'react-native-webview'
+import { PUBLIC_CHAINS } from '../../constants/chains'
 
 const ProposalScreen = ({
   route,
@@ -10,7 +11,21 @@ const ProposalScreen = ({
   const [loading, setLoading] = React.useState(true)
 
   const proposal = route.params.proposal
-  const uri = `https://proposals.builderapp.wtf/dao/${proposal.dao.tokenAddress}/vote/${proposal.proposalId}`
+  const chainId = route.params.chainId
+  const chain = PUBLIC_CHAINS.find(c => c.id === chainId)
+
+  if (!chain) {
+    return (
+      <View className="flex-1">
+        <View className="absolute h-full w-full bg-white items-center justify-center">
+          <Text className="text-black text-center">Error happened:</Text>
+          <Text className="text-black text-center">Unsupported DAO.</Text>
+        </View>
+      </View>
+    )
+  }
+
+  const uri = `https://proposals.builderapp.wtf/dao/${chain.slug}/${proposal.dao.tokenAddress}/vote/${proposal.proposalId}`
 
   return (
     <View className="flex-1">
