@@ -8,13 +8,14 @@ import DaoCard from '../../components/DaoCard'
 import SearchButton from '../../components/SearchButton'
 import { useEffect } from 'react'
 import { useAddressesStore } from '../../store/addresses'
-import { loadDaosForAddresses } from '../../data/addressDaos'
+import { loadDaosForAddresses } from '../../lib/loadDaosForAddresses'
 import React from 'react'
 import { IntroNextAction, IntroStage, useIntroStore } from '../../store/intro'
 import { useQueryClient } from '@tanstack/react-query'
 import { QUERY_KEYS } from '../../constants/queryKeys'
 import { FlashList } from '@shopify/flash-list'
 import usePrefetchNonFinishedProposals from '../../hooks/usePrefetchNonFinishedProposals'
+import useDaosForAddresses from '../../hooks/useDaosForAddresses'
 
 const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
   const insets = useSafeAreaInsets()
@@ -40,13 +41,15 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
 
   usePrefetchNonFinishedProposals(savedDaos)
 
-  const fetchDaos = async (addresses: string[]) => {
-    const daos = await loadDaosForAddresses(addresses)
+  const { daos: daosFromManualAddresses } =
+    useDaosForAddresses(savedManualAddresses)
 
-    if (daos) {
-      saveMultiple(daos)
+  useEffect(() => {
+    if (daosFromManualAddresses) {
+      console.log('daosFromManualAddresses', daosFromManualAddresses)
+      saveMultiple(daosFromManualAddresses)
     }
-  }
+  }, [daosFromManualAddresses])
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
@@ -55,15 +58,11 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
       queryKey: [QUERY_KEYS.AUCTION]
     })
 
-    if (savedManualAddresses.length > 0) {
-      fetchDaos(savedManualAddresses)
-    }
-
     const reloadTime = 400
     setTimeout(() => {
       setRefreshing(false)
     }, reloadTime)
-  }, [savedManualAddresses, queryClient, fetchDaos, setRefreshing])
+  }, [savedManualAddresses, queryClient, setRefreshing])
 
   useEffect(() => {
     if (introNextAction === IntroNextAction.SEARCH_DAO) {
@@ -72,12 +71,6 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
       setIntroNextAction(IntroNextAction.NONE)
     }
   }, [introNextAction])
-
-  useEffect(() => {
-    if (savedManualAddresses.length > 0) {
-      fetchDaos(savedManualAddresses)
-    }
-  }, [savedManualAddresses])
 
   useEffect(() => {
     if (introStage !== IntroStage.DONE) {

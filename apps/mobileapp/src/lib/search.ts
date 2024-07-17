@@ -31,7 +31,7 @@ export async function search(searchText: string) {
 
   const data = requests
     .filter(x => x.data.daos.length > 0)
-    .map(x =>
+    .flatMap(x =>
       x.data.daos.map(d => {
         return {
           name: d.name,
@@ -40,7 +40,6 @@ export async function search(searchText: string) {
         }
       })
     )
-    .flat()
 
   return data
 }

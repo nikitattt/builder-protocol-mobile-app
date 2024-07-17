@@ -2,13 +2,14 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { zustandStorage } from '../storage/zustand'
 import { track } from '../utils/track'
+import { AddressType } from '../utils/types'
 
 interface AddressesState {
-  connectedAddress: string | undefined
-  manualAddresses: string[]
-  setConnectedAddress: (address: string | undefined) => void
-  addManualAddress: (address: string) => void
-  removeManualAddress: (address: string) => void
+  connectedAddress: AddressType | undefined
+  manualAddresses: AddressType[]
+  setConnectedAddress: (address: AddressType | undefined) => void
+  addManualAddress: (address: AddressType) => void
+  removeManualAddress: (address: AddressType) => void
 }
 
 export const useAddressesStore = create<AddressesState>()(
@@ -16,9 +17,9 @@ export const useAddressesStore = create<AddressesState>()(
     (set, get) => ({
       connectedAddress: undefined,
       manualAddresses: [],
-      setConnectedAddress: (address: string | undefined) =>
+      setConnectedAddress: (address: AddressType | undefined) =>
         set({ connectedAddress: address }),
-      addManualAddress: (address: string) => {
+      addManualAddress: (address: AddressType) => {
         const addresses = get().manualAddresses
 
         if (!addresses.includes(address)) {
@@ -26,7 +27,7 @@ export const useAddressesStore = create<AddressesState>()(
           track('Add Wallet Address')
         }
       },
-      removeManualAddress: (address: string) =>
+      removeManualAddress: (address: AddressType) =>
         set({
           manualAddresses: get().manualAddresses.filter(
             manualAddress => manualAddress !== address

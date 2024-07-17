@@ -20,5 +20,8 @@ export const CACHE_TIMES = {
   },
   PROPOSALS: {
     query: ONE_HOUR * 3
+  },
+  DAOS_FOR_ADDRESSES: {
+    query: ONE_DAY
   }
 }
