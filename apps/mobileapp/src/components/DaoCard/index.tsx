@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { SearchDao, useDaoSearchStore } from '../../store/daoSearch'
 import { SavedDao } from '../../store/daos'
 import Countdown from '../Countdown'
@@ -12,6 +12,7 @@ import SaveDaoIconButton from '../SaveDaoIconButton'
 import { formatBid } from '../../utils/format'
 import useDaoMigrated from '../../hooks/useDaoMigrated'
 import Shimmer from 'react-native-shimmer'
+import { CHAIN_ICON, PUBLIC_CHAINS } from '../../constants/chains'
 
 type DaoCardProps = {
   dao: SavedDao | SearchDao
@@ -58,6 +59,8 @@ const DaoCard = ({ dao }: DaoCardProps) => {
   const displayName = auction.token.name
   const bid = `${highestBid} Ξ`
 
+  const chainIcon = CHAIN_ICON[dao.chainId]
+
   const openDaoPage = () => {
     // Dao page won't open if dao was created,
     // but no token was minted yet
@@ -84,6 +87,14 @@ const DaoCard = ({ dao }: DaoCardProps) => {
           <View className="ml-4 w-full h-36 flex flex-col flex-shrink">
             <Text className="mt-3 text-xl font-bold flex-shrink leading-6">
               {dao.name}
+              <View className="pl-1.5 h-5 w-5">
+                <Image
+                  width={20}
+                  height={20}
+                  className="mt-px h-5 w-5"
+                  source={chainIcon}
+                />
+              </View>
             </Text>
             <View className="mt-3 w-8/12">
               <Text className="text-sm text-grey-three">
@@ -99,11 +110,27 @@ const DaoCard = ({ dao }: DaoCardProps) => {
             {isPending ? (
               <Text className="text-xl font-bold flex-shrink leading-6">
                 {dao.name}
+                <View className="pl-1.5 h-5 w-5">
+                  <Image
+                    width={20}
+                    height={20}
+                    className="mt-px h-5 w-5"
+                    source={chainIcon}
+                  />
+                </View>
               </Text>
             ) : (
               <Shimmer animating={isFetching}>
                 <Text className="text-xl font-bold flex-shrink leading-6">
                   {displayName}
+                  <View className="pl-1.5 h-5 w-5">
+                    <Image
+                      width={20}
+                      height={20}
+                      className="mt-px h-5 w-5"
+                      source={chainIcon}
+                    />
+                  </View>
                 </Text>
               </Shimmer>
             )}

@@ -1,19 +1,6 @@
 import { Chain as WagmiChain } from 'viem'
 import { ProposalsQuery } from '../gql/graphql'
 
-// export type CurrentAuction = {
-//   token: {
-//     name: string
-//     image: string
-//     tokenId: string
-//   }
-//   endTime: number
-//   highestBid?: {
-//     amount: string
-//     bidder: string
-//   }
-// }
-
 export type DAO = {
   address: AddressType
   name: string
@@ -32,35 +19,6 @@ export type Vote = {
   voter: string
   support: string
 }
-
-// export type BuilderDAOsPropsResponse = {
-//   proposals: Proposal[]
-// }
-
-// export type BuilderDAOsAuctionResponse = {
-//   auctions: {
-//     token: {
-//       name: string
-//       image: string
-//       tokenId: string
-//     }
-//     endTime: number
-//     highestBid: {
-//       amount: string
-//       bidder: string
-//     }
-//   }[]
-//   auctionConfig: {
-//     duration: string
-//   }
-// }
-
-// export type DaoSearchPropsResponse = {
-//   daos: {
-//     name: string
-//     tokenAddress: AddressType
-//   }[]
-// }
 
 export interface Duration {
   seconds?: number
