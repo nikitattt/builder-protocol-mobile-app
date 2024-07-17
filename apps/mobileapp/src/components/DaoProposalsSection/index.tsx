@@ -16,12 +16,12 @@ type ProposalsSectionProps = {
   className?: string
 }
 
-const ProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
+const DaoProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
   const navigation = useNavigation()
 
   const {
     proposals: props,
-    isLoading,
+    isFetching,
     error,
     refetch
   } = useNonFinishedProposals([
@@ -41,7 +41,7 @@ const ProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
   return (
     <Section title="Proposals" className={className}>
       <View className="flex flex-col gap-3">
-        {isLoading ? (
+        {isFetching ? (
           <View className="h-12 bg-grey-one/30 rounded-lg">
             <ShimmerPlaceHolder
               duration={2500}
@@ -98,4 +98,4 @@ const ProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
   )
 }
 
-export default ProposalsSection
+export default DaoProposalsSection

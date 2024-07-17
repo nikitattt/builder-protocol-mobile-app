@@ -10,7 +10,7 @@ import { useDaosStore } from '../../store/daos'
 import { RootStackScreenProps } from '../../navigation/types'
 import clsx from 'clsx'
 import BackButton from '../../components/BackButton'
-import ProposalsSection from '../../components/ProposalsSection'
+import DaoProposalsSection from '../../components/DaoProposalsSection'
 import Section from '../../components/Section'
 import { isAddressEqual } from 'viem'
 import { AddressType } from '../../utils/types'
@@ -77,7 +77,7 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
         <View className="mx-4 h-full">
           <BackButton onPress={() => navigation.goBack()} />
           <DaoAuction dao={dao} />
-          <ProposalsSection dao={dao} className="mt-8" />
+          <DaoProposalsSection dao={dao} className="mt-8" />
           <Section title="Actions" className="mt-8 mb-4">
             <TouchableOpacity activeOpacity={0.6} onPress={saveOrUnsave}>
               <View
