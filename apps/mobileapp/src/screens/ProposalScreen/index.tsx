@@ -29,7 +29,7 @@ const ProposalScreen = ({
 
   const walletActionsStr = String(allowWalletActions)
 
-  const uri = `https://proposals.builderapp.wtf/dao/${chain.slug}/${proposal.dao.tokenAddress}/vote/${proposal.proposalId}?tab=activity&auct=false&walletActions=${walletActionsStr}`
+  const uri = `https://proposals.builderapp.wtf/dao/${chain.slug}/${proposal.dao.tokenAddress}/vote/${proposal.proposalId}?walletActions=${walletActionsStr}`
 
   return (
     <View className="flex-1">
