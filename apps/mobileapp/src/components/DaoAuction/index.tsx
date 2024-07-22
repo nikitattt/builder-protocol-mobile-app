@@ -12,6 +12,7 @@ import useDaoMigrated from '../../hooks/useDaoMigrated'
 import Svg, { Path } from 'react-native-svg'
 import { SavedDao, useDaosStore } from '../../store/daos'
 import useAllowWalletActions from '../../hooks/useAllowWalletActions'
+import SolidButton from '../SolidButton'
 
 type ProposalsSectionProps = {
   dao: DAO
@@ -132,14 +133,13 @@ export default function DaoAuction({ dao, className }: ProposalsSectionProps) {
           </View>
         )}
         {allowWalletActions && !migrated && (
-          <TouchableOpacity
-            activeOpacity={0.6}
+          <SolidButton
             onPress={openBidPage}
-            className="mt-4">
-            <View className="bg-grey-one h-12 w-full rounded-lg items-center justify-center">
-              <Text className="text-black">Bid via in-app browser</Text>
-            </View>
-          </TouchableOpacity>
+            text="Bid via in-app browser"
+            icon="arrow-right"
+            className="mt-3"
+            theme="secondary"
+          />
         )}
       </View>
     </View>

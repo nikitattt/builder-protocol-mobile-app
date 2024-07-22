@@ -8,6 +8,7 @@ import { filterAndSortProposals } from '../../utils/proposals'
 import ProposalCard from '../ProposalCard'
 import Section from '../Section'
 import useNonFinishedProposals from '../../hooks/useNonFinishedProposals'
+import SolidButton from '../SolidButton'
 
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
@@ -40,7 +41,7 @@ const DaoProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
 
   return (
     <Section title="Proposals" className={className}>
-      <View className="flex flex-col gap-3">
+      <View className="flex flex-col">
         {isFetching ? (
           <View className="h-12 bg-grey-one/30 rounded-lg">
             <ShimmerPlaceHolder
@@ -85,14 +86,13 @@ const DaoProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
             <Text>No active or pending proposals ⌐◨-◨</Text>
           </View>
         )}
-        <TouchableOpacity
-          activeOpacity={0.6}
+        <SolidButton
           onPress={viewAllProposals}
-          className="mt-4">
-          <View className="bg-grey-one border border-grey-one h-12 w-full rounded-lg items-center justify-center">
-            <Text className="text-black">View all proposals in browser</Text>
-          </View>
-        </TouchableOpacity>
+          text="View all proposals in browser"
+          icon="arrow-right"
+          className="mt-3"
+          theme="secondary"
+        />
       </View>
     </Section>
   )
