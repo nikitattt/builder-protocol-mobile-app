@@ -131,7 +131,7 @@ export default function DaoAuction({ dao, className }: ProposalsSectionProps) {
             </TouchableOpacity>
           </View>
         )}
-        {allowWalletActions && (
+        {allowWalletActions && !migrated && (
           <TouchableOpacity
             activeOpacity={0.6}
             onPress={openBidPage}
