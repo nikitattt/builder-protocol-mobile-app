@@ -1,28 +1,35 @@
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { RefreshControl, ScrollView, View } from 'react-native'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDaosStore } from '../../store/daos'
 import { RootStackScreenProps } from '../../navigation/types'
-import clsx from 'clsx'
-import DaoCardImage from '../../components/DaoCardImage'
-import Countdown from '../../components/Countdown'
 import BackButton from '../../components/BackButton'
-import ProposalsSection from '../../components/ProposalsSection'
+import DaoProposalsSection from '../../components/DaoProposalsSection'
 import Section from '../../components/Section'
 import { isAddressEqual } from 'viem'
-import Bid from '../../components/Bid'
-import { formatBid } from '../../utils/format'
+import { AddressType } from '../../utils/types'
+import DaoAuction from '../../components/DaoAuction'
+import { useCallback, useState } from 'react'
+import { QUERY_KEYS } from '../../constants/queryKeys'
+import { useQueryClient } from '@tanstack/react-query'
+import OutlineButton from '../../components/OutlineButton'
 
 const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
   const { dao } = route.params
+
+  const insets = useSafeAreaInsets()
   const savedDaos = useDaosStore(state => state.saved)
   const removeFromSaved = useDaosStore(state => state.removeFromSaved)
   const save = useDaosStore(state => state.save)
+  const queryClient = useQueryClient()
 
-  const daoIsSaved = savedDaos.some(savedDao =>
-    isAddressEqual(
-      savedDao.address as `0x${string}`,
-      dao.address as `0x${string}`
-    )
+  const [refreshing, setRefreshing] = useState(false)
+
+  const daoIsSaved = savedDaos.some(
+    savedDao =>
+      isAddressEqual(
+        savedDao.address as AddressType,
+        dao.address as AddressType
+      ) && savedDao.chainId === dao.chainId
   )
 
   const saveOrUnsave = () => {
@@ -30,62 +37,57 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
     else save(dao)
   }
 
-  const displayName = dao.auction.token.name
-  const highestBid = formatBid(dao.auction?.highestBid?.amount || '0')
-  const bid = `${highestBid} Ξ`
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.AUCTION, dao.chainId, dao.address]
+    })
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.PROPOSALS, dao.chainId, dao.address]
+    })
+
+    const reloadTime = 600
+    setTimeout(() => {
+      setRefreshing(false)
+    }, reloadTime)
+  }, [savedDaos])
 
   return (
     <ScrollView
       className="flex flex-col h-full bg-white"
       showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled">
+      keyboardShouldPersistTaps="handled"
+      refreshControl={
+        <RefreshControl
+          colors={['#CCCCCC']}
+          tintColor={'#CCCCCC'}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          progressViewOffset={insets.top}
+        />
+      }>
       <SafeAreaView>
         <View className="mx-4 h-full">
           <BackButton onPress={() => navigation.goBack()} />
-          <View className="bg-grey-one rounded-lg w-full aspect-square">
-            <DaoCardImage image={dao.auction.token.image} />
-          </View>
-          <View className="mt-4">
-            <Text className="text-3xl font-bold flex-shrink leading-7 pt-2">
-              {displayName}
-            </Text>
-            <View className="mt-3 flex flex-row">
-              <View className="w-1/2">
-                <Text className="text-grey-three">Highest Bid</Text>
-                <Text className="text-xl font-bold text-black flex-shrink leading-5 pt-1.5">
-                  {bid}
-                </Text>
-              </View>
-              <View className="w-1/2 pl-[10%]">
-                <Text className="text-grey-three">Ends In</Text>
-                <Countdown
-                  timestamp={dao.auction.endTime}
-                  style="text-xl font-bold text-black"
-                  endText="Ended"
-                />
-              </View>
-            </View>
-            <Bid
-              address={dao.auction?.highestBid?.bidder || ''}
-              bid={dao.auction?.highestBid?.amount || '0'}
-              className="mt-4"
-            />
-          </View>
-          <ProposalsSection dao={dao} className="mt-8" />
+          <DaoAuction dao={dao} />
+          <DaoProposalsSection dao={dao} className="mt-8" />
           <Section title="Actions" className="mt-8 mb-4">
-            <TouchableOpacity activeOpacity={0.6} onPress={saveOrUnsave}>
-              <View
-                className={clsx(
-                  'border border-opacity-30 h-12 w-full rounded-lg items-center justify-center',
-                  daoIsSaved ? 'border-red' : 'border-grey-three'
-                )}>
-                {daoIsSaved ? (
-                  <Text className="text-red">Remove from saved</Text>
-                ) : (
-                  <Text className="text-black">Save</Text>
-                )}
-              </View>
-            </TouchableOpacity>
+            {daoIsSaved ? (
+              <OutlineButton
+                onPress={saveOrUnsave}
+                text="Remove from saved"
+                icon="bookmark-slash"
+                theme="destructive"
+              />
+            ) : (
+              <OutlineButton
+                onPress={saveOrUnsave}
+                text="Save"
+                icon="bookmark"
+                theme="primary"
+              />
+            )}
           </Section>
         </View>
       </SafeAreaView>

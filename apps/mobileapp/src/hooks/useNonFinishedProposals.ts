@@ -1,7 +1,9 @@
-import { useQuery, ApolloError } from '@apollo/client'
-import { PROPS_QUERY } from '../constants/queries'
-import { BuilderDAOsPropsResponse, Proposal } from '../utils/types'
 import { getProposalStatus } from '../utils/proposals'
+import { useQueries } from '@tanstack/react-query'
+import { QUERY_KEYS } from '../constants/queryKeys'
+import { SavedDao } from '../store/daos'
+import { CACHE_TIMES } from '../constants/cacheTimes'
+import { nonFinishedProposals } from '../functions/proposals'
 
 /**
  * Custom hook that retrieves non-finished proposals based on the provided saved DAOs.
@@ -9,35 +11,33 @@ import { getProposalStatus } from '../utils/proposals'
  * @param savedDaos - An array of saved DAOs.
  * @returns An object containing the non-finished proposals, loading state, error state, and a refetch function.
  */
-export default function useNonFinishedProposals(savedDaos: string[]) {
-  const {
-    data,
-    loading,
-    error,
-    refetch
-  }: {
-    loading: boolean
-    error?: ApolloError
-    data?: BuilderDAOsPropsResponse
-    refetch: () => void
-  } = useQuery(PROPS_QUERY, {
-    variables: {
-      where: {
-        dao_in: [...savedDaos],
-        executed: false,
-        canceled: false
-      },
-      first: 10 * savedDaos.length
-    },
-    pollInterval: 600000
+export default function useNonFinishedProposals(daos: SavedDao[]) {
+  const data = useQueries({
+    queries: daos.map(dao => {
+      return {
+        queryKey: [QUERY_KEYS.PROPOSALS, dao.chainId, dao.address],
+        queryFn: async () => nonFinishedProposals(dao.address, dao.chainId),
+        staleTime: CACHE_TIMES.PROPOSALS.query,
+        gcTime: CACHE_TIMES.PROPOSALS.query
+      }
+    })
   })
 
-  const proposals: Proposal[] | undefined = data?.proposals.map((prop: any) => {
-    return {
-      ...prop,
-      status: getProposalStatus(prop)
-    }
+  const isLoading = data?.some(x => x.isPending)
+  const isFetching = data?.some(x => x.isFetching)
+  const error = data?.some(x => x.error)
+  const refetch = () => data?.forEach(x => x.refetch())
+
+  const proposals = data.flatMap(query => {
+    if (!query.data?.proposals) return []
+
+    return query.data.proposals.map(prop => {
+      return {
+        ...prop,
+        status: getProposalStatus(prop)
+      }
+    })
   })
 
-  return { proposals, loading, error, refetch }
+  return { proposals, isLoading, isFetching, error, refetch }
 }

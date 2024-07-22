@@ -9,11 +9,11 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>22E261</string>
+	<string>23F79</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>14E222b</string>
+	<string>15F31d</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>14.3</string>
+	<string>15.4</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -105,7 +105,7 @@
 			<key>INTypeDisplayNameID</key>
 			<string>douCTk</string>
 			<key>INTypeLastPropertyTag</key>
-			<integer>101</integer>
+			<integer>103</integer>
 			<key>INTypeName</key>
 			<string>DAO</string>
 			<key>INTypeProperties</key>
@@ -159,6 +159,20 @@
 					<integer>4</integer>
 					<key>INTypePropertyType</key>
 					<string>SpeakableString</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDisplayName</key>
+					<string>Chain Id</string>
+					<key>INTypePropertyDisplayNameID</key>
+					<string>Ibt4Cx</string>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>5</integer>
+					<key>INTypePropertyName</key>
+					<string>chainId</string>
+					<key>INTypePropertyTag</key>
+					<integer>103</integer>
+					<key>INTypePropertyType</key>
+					<string>Integer</string>
 				</dict>
 			</array>
 		</dict>

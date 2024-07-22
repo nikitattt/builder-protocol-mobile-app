@@ -5,10 +5,14 @@ const { app: AppConfig } = config
 
 export const sharedGroupStorage = {
   setItem: async (key: string, value: any, appGroup: string) => {
-    return await SharedGroupPreferences.setItem(key, value, appGroup)
+    return await SharedGroupPreferences.setItem(key, value, appGroup, {
+      useAndroidSharedPreferences: true
+    })
   },
   getItem: async (key: string, appGroup: string): Promise<any | null> => {
-    return await SharedGroupPreferences.getItem(key, appGroup)
+    return await SharedGroupPreferences.getItem(key, appGroup, {
+      useAndroidSharedPreferences: true
+    })
   }
 }
 

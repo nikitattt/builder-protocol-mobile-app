@@ -1,26 +1,3 @@
-// const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
-// const path = require('path')
-
-// const projectRoot = path.join(__dirname)
-// const workspaceRoot = path.join(__dirname, '..', '..')
-
-// /**
-//  * Metro configuration
-//  * https://reactnative.dev/docs/metro
-//  *
-//  * @type {import('metro-config').MetroConfig}
-//  */
-// const config = {
-//     projectRoot: projectRoot,
-//     resolver: {
-//         unstable_enableSymlinks: true,
-//         unstable_enablePackageExports: true,
-//     },
-//     watchFolders: [path.join(workspaceRoot)],
-// };
-
-// module.exports = mergeConfig(getDefaultConfig(__dirname), config);
-
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const path = require('path');
 const nodeLibs = require('node-libs-react-native'); // Import node-libs-react-native for shimming
@@ -51,7 +28,7 @@ const config = {
             tls: require.resolve('tls-browserify'),
             fs: require.resolve('react-native-fs'),
             path: require.resolve('path-browserify'),
-            os: require.resolve('os-browserify'),
+            os: require.resolve('os-browserify')
         },
         unstable_conditionNames: [
             'browser',

@@ -16,6 +16,7 @@ import { getEnsAddress } from '@wagmi/core'
 import { IntroNextAction, useIntroStore } from '../../store/intro'
 import { normalize } from 'viem/ens'
 import { useConfig } from 'wagmi'
+import SolidButton from '../SolidButton'
 
 const AddAddressButton = ({}) => {
   const introNextAction = useIntroStore(state => state.nextAction)
@@ -156,14 +157,14 @@ const AddAddressButton = ({}) => {
           </Pressable>
         </KeyboardAvoidingView>
       </Modal>
-      <Pressable
+      <SolidButton
         onPress={() => {
           setModalVisible(true)
-        }}>
-        <View className="h-12 w-full bg-black rounded-lg items-center justify-center text-center">
-          <Text className="text-white">Add</Text>
-        </View>
-      </Pressable>
+        }}
+        text="Add"
+        icon="plus"
+        theme="primary"
+      />
     </View>
   )
 }
