@@ -24,7 +24,7 @@ struct ArtProvider: IntentTimelineProvider {
     let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)
     
     guard let address = address, let chain = chain else {
-      let entry = ArtEntry(date: Date(), image: nil, state: .noProjectSelected)
+      let entry = ArtEntry(date: Date(), image: nil, state: .noDaoSelected)
       let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
       let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
       completion(timeline)
@@ -48,7 +48,7 @@ struct ArtProvider: IntentTimelineProvider {
 }
 
 enum WidgetState {
-  case success, error, noProjectSelected
+  case success, error, noDaoSelected
 }
 
 struct ArtEntry: TimelineEntry {
@@ -78,7 +78,7 @@ struct ArtEntryView: View {
           .multilineTextAlignment(.center)
       }
       .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
-    case .noProjectSelected:
+    case .noDaoSelected:
       VStack(alignment: .center) {
         Image(systemName: "hand.tap.fill")
           .padding(.bottom, 2)
