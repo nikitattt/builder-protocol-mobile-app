@@ -18,6 +18,7 @@ import DaoAuction from '../../components/DaoAuction'
 import { useCallback, useState } from 'react'
 import { QUERY_KEYS } from '../../constants/queryKeys'
 import { useQueryClient } from '@tanstack/react-query'
+import OutlineButton from '../../components/OutlineButton'
 
 const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
   const { dao } = route.params
@@ -79,7 +80,22 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
           <DaoAuction dao={dao} />
           <DaoProposalsSection dao={dao} className="mt-8" />
           <Section title="Actions" className="mt-8 mb-4">
-            <TouchableOpacity activeOpacity={0.6} onPress={saveOrUnsave}>
+            {daoIsSaved ? (
+              <OutlineButton
+                onPress={saveOrUnsave}
+                text="Remove from saved"
+                icon="bookmark-slash"
+                theme="destructive"
+              />
+            ) : (
+              <OutlineButton
+                onPress={saveOrUnsave}
+                text="Save"
+                icon="bookmark"
+                theme="primary"
+              />
+            )}
+            {/* <TouchableOpacity activeOpacity={0.6} onPress={saveOrUnsave}>
               <View
                 className={clsx(
                   'border border-opacity-30 h-12 w-full rounded-lg items-center justify-center',
@@ -91,7 +107,7 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
                   <Text className="text-black">Save</Text>
                 )}
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </Section>
         </View>
       </SafeAreaView>
