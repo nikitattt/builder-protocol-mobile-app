@@ -3,12 +3,14 @@ import React from 'react'
 import { ActivityIndicator, Text, View } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { PUBLIC_CHAINS } from '../../constants/chains'
+import useAllowWalletActions from '../../hooks/useAllowWalletActions'
 
 const ProposalScreen = ({
   route,
   navigation
 }: RootStackScreenProps<'Proposal'>) => {
   const [loading, setLoading] = React.useState(true)
+  const allowWalletActions = useAllowWalletActions()
 
   const proposal = route.params.proposal
   const chainId = route.params.chainId
@@ -25,7 +27,9 @@ const ProposalScreen = ({
     )
   }
 
-  const uri = `https://proposals.builderapp.wtf/dao/${chain.slug}/${proposal.dao.tokenAddress}/vote/${proposal.proposalId}`
+  const walletActionsStr = String(allowWalletActions)
+
+  const uri = `https://proposals.builderapp.wtf/dao/${chain.slug}/${proposal.dao.tokenAddress}/vote/${proposal.proposalId}?tab=activity&auct=false&walletActions=${walletActionsStr}`
 
   return (
     <View className="flex-1">

@@ -11,6 +11,7 @@ import Shimmer from 'react-native-shimmer'
 import useDaoMigrated from '../../hooks/useDaoMigrated'
 import Svg, { Path } from 'react-native-svg'
 import { SavedDao, useDaosStore } from '../../store/daos'
+import useAllowWalletActions from '../../hooks/useAllowWalletActions'
 
 type ProposalsSectionProps = {
   dao: DAO
@@ -19,6 +20,8 @@ type ProposalsSectionProps = {
 
 export default function DaoAuction({ dao, className }: ProposalsSectionProps) {
   const navigation = useNavigation()
+  const allowWalletActions = useAllowWalletActions()
+
   const removeFromSaved = useDaosStore(state => state.removeFromSaved)
   const save = useDaosStore(state => state.save)
 
@@ -36,6 +39,15 @@ export default function DaoAuction({ dao, className }: ProposalsSectionProps) {
   const displayName = auction?.token.name
   const highestBid = formatBid(auction?.highestBid?.amount || '0')
   const bid = `${highestBid} Ξ`
+
+  const openBidPage = () => {
+    if (auction) {
+      navigation.navigate('Bid', {
+        dao: dao,
+        auctionId: auction.token.tokenId
+      })
+    }
+  }
 
   const updateToL2Dao = async () => {
     if (migrated) {
@@ -118,6 +130,16 @@ export default function DaoAuction({ dao, className }: ProposalsSectionProps) {
               </View>
             </TouchableOpacity>
           </View>
+        )}
+        {allowWalletActions && (
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={openBidPage}
+            className="mt-4">
+            <View className="bg-grey-one h-12 w-full rounded-lg items-center justify-center">
+              <Text className="text-black">Bid via in-app browser</Text>
+            </View>
+          </TouchableOpacity>
         )}
       </View>
     </View>

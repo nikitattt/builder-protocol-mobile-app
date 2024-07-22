@@ -2,30 +2,16 @@ import { RootStackScreenProps } from '../../navigation/types'
 import React from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { WebView } from 'react-native-webview'
-import { manualDaos } from '../../constants/manualDaos'
-import { isAddressEqual } from 'viem'
+import { PUBLIC_CHAINS } from '../../constants/chains'
 
 const BidScreen = ({ route, navigation }: RootStackScreenProps<'Bid'>) => {
   const [loading, setLoading] = React.useState(true)
 
   const dao = route.params.dao
+  const auctionId = route.params.auctionId
+  const chain = PUBLIC_CHAINS.find(c => c.id === dao.chainId)
 
-  let uri
-
-  const manualDao = manualDaos.find(d =>
-    isAddressEqual(
-      d.collectionAddress as `0x${string}`,
-      dao.address as `0x${string}`
-    )
-  )
-
-  if (manualDao && manualDao.name === 'Nouns') {
-    uri = `https://nouns.wtf/noun/${dao.auction.id}`
-  } else if (manualDao && manualDao.name === 'Lil Nouns') {
-    uri = `https://lilnouns.wtf/lilnoun/${dao.auction.id}`
-  } else {
-    uri = `https://nouns.build/dao/${dao.address}/${dao.auction.id}`
-  }
+  const uri = `https://nouns.build/dao/${chain?.slug}/${dao.address}/${auctionId}?tab=activity&auct=true&walletActions=true`
 
   return (
     <View className="flex-1">

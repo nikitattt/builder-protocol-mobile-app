@@ -29,6 +29,7 @@ import {
 } from '@tanstack/react-query'
 import { wagmiConfig } from './src/constants/viemWagmi'
 import NetInfo from '@react-native-community/netinfo'
+import { useUsageStore } from './src/store/usage'
 
 onlineManager.setEventListener(setOnline => {
   return NetInfo.addEventListener(state => {
@@ -65,6 +66,7 @@ const queryClient = new QueryClient()
 
 const App = () => {
   const { setColorScheme } = useColorScheme()
+  const incrementAppActive = useUsageStore(state => state.incrementAppActive)
 
   useEffect(() => {
     setColorScheme('dark')
@@ -74,8 +76,9 @@ const App = () => {
     const subscription = AppState.addEventListener(
       'change',
       (status: AppStateStatus) => {
-        if (Platform.OS !== 'web') {
-          focusManager.setFocused(status === 'active')
+        if (Platform.OS !== 'web' && status === 'active') {
+          incrementAppActive()
+          focusManager.setFocused(true)
         }
       }
     )
