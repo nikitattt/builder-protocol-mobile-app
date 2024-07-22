@@ -4,49 +4,58 @@ import SwiftUI
 struct Provider: IntentTimelineProvider {
   let dataLoader = WidgetDataLoader()
   
-  func placeholder(in context: Context) -> SimpleEntry {
-    return SimpleEntry(
-      date: Date(),
-      auction: AuctionData(
-        id: 136,
-        currentBid: 0.1234,
-        bidder: "0xf1...5b42",
-        endTime: 0,
-        image: UIImage(named: "ImagePlaceholder")!.pngData()!,
-        duration: 86400
+  private let placeholder = SimpleEntry(
+    date: Date(),
+    auction: AuctionData(
+      id: 136,
+      currentBid: 0.1234,
+      bidder: "0xf1...5b42",
+      endTime: 0,
+      image: UIImage(named: "ImagePlaceholder")!.pngData()!,
+      duration: 86400
+    ),
+    governance: [
+      ProposalData(
+        id: "0x1",
+        number: 1,
+        title: "Great Proposal for the DAO",
+        state: "ACTIVE",
+        endTime: 1683789333,
+        quorum: 18,
+        votes: ProposalVotes(yes: 20, no: 0, abstain: 0)
       ),
-      governance: [
-        ProposalData(id: "0x1", number: 1, title: "Placeholder Proposal N1", state: "ACTIVE", endTime: 1683789333, quorum: 18, votes: ProposalVotes(yes: 20, no: 0, abstain: 0)),
-        ProposalData(id: "0x2", number: 2, title: "Placeholder Proposal N2", state: "ACTIVE", endTime: 1683789333, quorum: 18, votes: ProposalVotes(yes: 12, no: 6, abstain: 6)),
-      ],
-      state: .success
-    )
+      ProposalData(
+        id: "0x2",
+        number: 2,
+        title: "Amazing Proposal No42",
+        state: "ACTIVE",
+        endTime: 1683789333,
+        quorum: 18,
+        votes: ProposalVotes(yes: 12, no: 6, abstain: 6)
+      ),
+    ],
+    state: .success
+  )
+  
+  func placeholder(in context: Context) -> SimpleEntry {
+    return placeholder
   }
   
   func getSnapshot(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-    let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
-    let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)!
-    
-    dataLoader.fetchAuctionAndGovernanceData(daoAddress: address, chain: chain) { data in
-      if let auction = data?.auction, let governance = data?.governance {
-        let entry = SimpleEntry(
-          date: Date(),
-          auction: auction,
-          governance: governance,
-          state: .success
-        )
-        
-        completion(entry)
-      } else {
-        let entry = SimpleEntry(date: Date(), auction: nil, governance: nil, state: .error)
-        completion(entry)
-      }
-    }
+    completion(placeholder)
   }
   
   func getTimeline(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-    let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
-    let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)!
+    let address = configuration.dao?.identifier
+    let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)
+    
+    guard let address = address, let chain = chain else {
+      let entry = SimpleEntry(date: Date(), auction: nil, governance: nil, state: .noDaoSelected)
+      let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
+      let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
+      completion(timeline)
+      return
+    }
     
     dataLoader.fetchAuctionAndGovernanceData(daoAddress: address, chain: chain) { data in
       if let auction = data?.auction, let governance = data?.governance {
@@ -71,7 +80,7 @@ struct Provider: IntentTimelineProvider {
 }
 
 enum WidgetState {
-  case success, error
+  case success, error, noDaoSelected
 }
 
 struct SimpleEntry: TimelineEntry {
@@ -170,9 +179,22 @@ struct AuctionGovernanceEntryView : View {
       .paddingForOlderVersions()
       .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
     case .error:
-      VStack {
-        Image(systemName: "xmark.octagon").padding(.bottom, 1)
+      VStack(alignment: .center) {
+        Image(systemName: "xmark.octagon")
+          .padding(.bottom, 2)
         Text("Error happened")
+          .font(.system(size: 12, weight: .bold))
+          .multilineTextAlignment(.center)
+      }
+      .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
+    case .noDaoSelected:
+      VStack(alignment: .center) {
+        Image(systemName: "hand.tap.fill")
+          .padding(.bottom, 2)
+        Text("Tap and hold to set up widget")
+          .font(.system(size: 12, weight: .bold))
+          .multilineTextAlignment(.center)
+        
       }
       .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
     }
