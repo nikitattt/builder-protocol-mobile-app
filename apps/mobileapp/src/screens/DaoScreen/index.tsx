@@ -1,14 +1,7 @@
-import {
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { RefreshControl, ScrollView, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDaosStore } from '../../store/daos'
 import { RootStackScreenProps } from '../../navigation/types'
-import clsx from 'clsx'
 import BackButton from '../../components/BackButton'
 import DaoProposalsSection from '../../components/DaoProposalsSection'
 import Section from '../../components/Section'
@@ -95,19 +88,6 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
                 theme="primary"
               />
             )}
-            {/* <TouchableOpacity activeOpacity={0.6} onPress={saveOrUnsave}>
-              <View
-                className={clsx(
-                  'border border-opacity-30 h-12 w-full rounded-lg items-center justify-center',
-                  daoIsSaved ? 'border-red' : 'border-grey-three'
-                )}>
-                {daoIsSaved ? (
-                  <Text className="text-red">Remove from saved</Text>
-                ) : (
-                  <Text className="text-black">Save</Text>
-                )}
-              </View>
-            </TouchableOpacity> */}
           </Section>
         </View>
       </SafeAreaView>
