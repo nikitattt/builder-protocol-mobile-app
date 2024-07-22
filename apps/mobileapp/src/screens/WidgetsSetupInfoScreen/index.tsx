@@ -1,10 +1,10 @@
-import { Linking, Text, TouchableOpacity, View } from 'react-native'
+import { Linking, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackScreenProps } from '../../navigation/types'
 import BackButton from '../../components/BackButton'
-import Svg, { Path } from 'react-native-svg'
 import Section from '../../components/Section'
 import { track } from '../../utils/track'
+import OutlineButton from '../../components/OutlineButton'
 
 const appleVideoGuideUrl = 'https://www.youtube.com/watch?v=x49NAAOQyRA'
 
@@ -42,29 +42,17 @@ const WidgetsSetupInfoScreen = ({
             </Text>
           </Section>
           <Section title="Video" className="mt-6">
-            <TouchableOpacity
-              activeOpacity={0.6}
+            <OutlineButton
               onPress={async () => {
                 track('Watch Apple Widgets Guide')
                 if (await Linking.canOpenURL(appleVideoGuideUrl)) {
                   await Linking.openURL(appleVideoGuideUrl)
                 }
-              }}>
-              <View className="h-12 w-full px-4 border border-grey-four rounded-lg items-center justify-between text-center flex flex-row">
-                <Text className="text-black">Guide from Apple Support</Text>
-                <Svg
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  className="w-6 h-6 stroke-grey-four">
-                  <Path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                  />
-                </Svg>
-              </View>
-            </TouchableOpacity>
+              }}
+              text="Guide from Apple Support"
+              icon="arrow-up-right"
+              theme="secondary"
+            />
           </Section>
         </View>
       </SafeAreaView>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { SearchDao, useDaoSearchStore } from '../../store/daoSearch'
 import { SavedDao } from '../../store/daos'
 import Countdown from '../Countdown'
@@ -10,6 +10,9 @@ import clsx from 'clsx'
 import useAuction from '../../hooks/useAuction'
 import SaveDaoIconButton from '../SaveDaoIconButton'
 import { formatBid } from '../../utils/format'
+import useDaoMigrated from '../../hooks/useDaoMigrated'
+import Shimmer from 'react-native-shimmer'
+import { CHAIN_ICON } from '../../constants/chains'
 
 type DaoCardProps = {
   dao: SavedDao | SearchDao
@@ -19,7 +22,14 @@ const DaoCard = ({ dao }: DaoCardProps) => {
   const navigation = useNavigation()
   const activeSearch = useDaoSearchStore(state => state.active)
 
-  const { loading, error, auction } = useAuction(dao.address)
+  const { isFetching, isPending, error, auction } = useAuction(
+    dao.address,
+    dao.chainId
+  )
+  const { migrated, error: migratedError } = useDaoMigrated(
+    dao.address,
+    dao.chainId
+  )
 
   if (error || !auction)
     return (
@@ -49,6 +59,8 @@ const DaoCard = ({ dao }: DaoCardProps) => {
   const displayName = auction.token.name
   const bid = `${highestBid} Ξ`
 
+  const chainIcon = CHAIN_ICON[dao.chainId]
+
   const openDaoPage = () => {
     // Dao page won't open if dao was created,
     // but no token was minted yet
@@ -56,7 +68,7 @@ const DaoCard = ({ dao }: DaoCardProps) => {
       const daoData: DAO = {
         name: dao.name,
         address: dao.address,
-        auction: auction
+        chainId: dao.chainId
       }
 
       navigation.navigate('Dao', {
@@ -69,35 +81,68 @@ const DaoCard = ({ dao }: DaoCardProps) => {
     <TouchableOpacity activeOpacity={0.8} onPress={openDaoPage}>
       <View className="relative box-border h-36 w-full flex flex-row items-center mb-3 rounded-lg">
         <View className="rounded-lg h-full aspect-square">
-          <DaoCardImage image={auction.token.image} />
+          <DaoCardImage image={auction.token.image ?? undefined} />
         </View>
-        <View className="ml-4 w-full h-36 flex flex-col flex-shrink justify-evenly">
-          <Text className="text-xl font-bold flex-shrink leading-6">
-            {loading ? dao.name : displayName}
-          </Text>
-          <View className="flex flex-col gap-0.5">
-            <View>
-              <Text className="text-sm text-grey-three">Highest Bid</Text>
-              {loading ? (
-                <View className="bg-grey-one rounded-md h-5 w-16" />
-              ) : (
-                <Text className="text-base font-bold text-black">{bid}</Text>
-              )}
+        {migrated ? (
+          <View className="ml-4 w-full h-36 flex flex-col flex-shrink">
+            <Text className="mt-3 text-xl font-bold flex-shrink leading-6 pr-6">
+              {dao.name}
+              <ChainIcon icon={chainIcon} />
+            </Text>
+            <View className="mt-3 w-8/12">
+              <Text className="text-sm text-grey-three">
+                This DAO has been migrated to L2.
+              </Text>
             </View>
-            <View className="">
-              <Text className="text-sm text-grey-three">Ends In</Text>
-              {loading ? (
-                <View className="bg-grey-one rounded-md h-5 w-24" />
-              ) : (
-                <Countdown
-                  timestamp={auction.endTime}
-                  style="text-base font-bold text-black"
-                  endText="Ended"
-                />
-              )}
+            <View className="mt-3 w-8/12">
+              <Text className="text-sm text-grey-three">Update →</Text>
             </View>
           </View>
-        </View>
+        ) : (
+          <View className="ml-4 w-full h-36 flex flex-col flex-shrink justify-evenly">
+            {isPending ? (
+              <Text className="text-xl font-bold flex-shrink leading-6 pr-6">
+                {dao.name}
+                <ChainIcon icon={chainIcon} />
+              </Text>
+            ) : (
+              <Shimmer animating={isFetching}>
+                <Text className="text-xl font-bold flex-shrink leading-6 pr-6">
+                  {displayName}
+                  <ChainIcon icon={chainIcon} />
+                </Text>
+              </Shimmer>
+            )}
+            <View className="flex flex-col gap-0.5">
+              <View>
+                <Text className="text-sm text-grey-three">Highest Bid</Text>
+                {isPending ? (
+                  <View className="bg-grey-one rounded-md h-5 w-16" />
+                ) : (
+                  <Shimmer animating={isFetching}>
+                    <Text className="text-base font-bold text-black">
+                      {bid}
+                    </Text>
+                  </Shimmer>
+                )}
+              </View>
+              <View className="">
+                <Text className="text-sm text-grey-three">Ends In</Text>
+                {isPending ? (
+                  <View className="bg-grey-one rounded-md h-5 w-24" />
+                ) : (
+                  <Shimmer animating={isFetching}>
+                    <Countdown
+                      timestamp={auction.endTime}
+                      style="text-base font-bold text-black"
+                      endText="Ended"
+                    />
+                  </Shimmer>
+                )}
+              </View>
+            </View>
+          </View>
+        )}
         {activeSearch && <SaveDaoIconButton dao={dao} />}
       </View>
     </TouchableOpacity>
@@ -105,3 +150,11 @@ const DaoCard = ({ dao }: DaoCardProps) => {
 }
 
 export default DaoCard
+
+function ChainIcon({ icon }: { icon: any }) {
+  return (
+    <View className="pl-1.5 h-5 w-5">
+      <Image width={20} height={20} className="mt-px h-5 w-5" source={icon} />
+    </View>
+  )
+}

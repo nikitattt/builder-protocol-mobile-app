@@ -18,6 +18,7 @@ class IntentHandler: INExtension, SelectDAOIntentHandling {
           subtitle: shortAddress(dao.address),
           image: nil
         )
+        daoOption.chainId = (dao.chainId) as NSNumber
         
         return daoOption
       }

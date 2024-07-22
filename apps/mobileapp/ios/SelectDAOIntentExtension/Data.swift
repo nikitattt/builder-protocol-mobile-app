@@ -4,6 +4,7 @@ import Intents
 struct DAOData: Codable {
   let name: String
   let address: String
+  let chainId: Int
 }
 
 class SelectDaoIntentData {

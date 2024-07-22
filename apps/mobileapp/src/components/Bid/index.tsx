@@ -3,19 +3,23 @@ import { Image, Text, View } from 'react-native'
 import { useEnsAvatar, useEnsName } from 'wagmi'
 import { shortAddress } from '../../utils/address'
 import { formatBid } from '../../utils/format'
+import { AddressType } from '../../utils/types'
+import Shimmer from 'react-native-shimmer'
+import { normalize } from 'viem/ens'
 
 type BidProps = {
   address: string
   bid: string
   className?: string
+  isFetching: boolean
 }
 
-const Bid = ({ address, bid, className }: BidProps) => {
+const Bid = ({ address, bid, className, isFetching }: BidProps) => {
   const { data: ens } = useEnsName({
-    address: address as `0x${string}`
+    address: address as AddressType
   })
   const { data: avatar } = useEnsAvatar({
-    name: ens
+    name: ens ? normalize(ens) : undefined
   })
 
   const noBid = Number(bid) === 0
@@ -31,7 +35,9 @@ const Bid = ({ address, bid, className }: BidProps) => {
         className
       )}>
       {noBid ? (
-        <Text className="my-auto">No bids!</Text>
+        <Shimmer animating={isFetching} className="my-auto">
+          <Text className="my-auto">No bids!</Text>
+        </Shimmer>
       ) : (
         <View className="-ml-1 h-full flex flex-row items-center justify-between">
           <View className="flex flex-row text-center items-center">
@@ -43,9 +49,13 @@ const Bid = ({ address, bid, className }: BidProps) => {
                 }}
               />
             )}
-            <Text className="text-black ml-1">{displayName}</Text>
+            <Shimmer animating={isFetching}>
+              <Text className="text-black ml-1">{displayName}</Text>
+            </Shimmer>
           </View>
-          <Text className="text-black">{displayBid}</Text>
+          <Shimmer animating={isFetching}>
+            <Text className="text-black">{displayBid}</Text>
+          </Shimmer>
         </View>
       )}
     </View>

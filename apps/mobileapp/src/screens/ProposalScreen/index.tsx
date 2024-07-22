@@ -1,16 +1,35 @@
 import { RootStackScreenProps } from '../../navigation/types'
 import React from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import { WebView } from 'react-native-webview'
+import { PUBLIC_CHAINS } from '../../constants/chains'
+import useAllowWalletActions from '../../hooks/useAllowWalletActions'
 
 const ProposalScreen = ({
   route,
   navigation
 }: RootStackScreenProps<'Proposal'>) => {
   const [loading, setLoading] = React.useState(true)
+  const allowWalletActions = useAllowWalletActions()
 
   const proposal = route.params.proposal
-  const uri = `https://proposals.builderapp.wtf/dao/${proposal.dao.tokenAddress}/vote/${proposal.proposalId}`
+  const chainId = route.params.chainId
+  const chain = PUBLIC_CHAINS.find(c => c.id === chainId)
+
+  if (!chain) {
+    return (
+      <View className="flex-1">
+        <View className="absolute h-full w-full bg-white items-center justify-center">
+          <Text className="text-black text-center">Error happened:</Text>
+          <Text className="text-black text-center">Unsupported DAO.</Text>
+        </View>
+      </View>
+    )
+  }
+
+  const walletActionsStr = String(allowWalletActions)
+
+  const uri = `https://proposals.builderapp.wtf/dao/${chain.slug}/${proposal.dao.tokenAddress}/vote/${proposal.proposalId}?walletActions=${walletActionsStr}`
 
   return (
     <View className="flex-1">

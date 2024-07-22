@@ -27,7 +27,8 @@ const ProposalCard = ({
 
   const openDaoPage = () => {
     navigation.navigate('Proposal', {
-      proposal: proposal
+      proposal: proposal,
+      chainId: dao.chainId
     })
   }
 

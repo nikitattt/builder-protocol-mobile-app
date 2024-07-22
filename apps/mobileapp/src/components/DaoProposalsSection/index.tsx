@@ -1,17 +1,14 @@
-import { ApolloError, useQuery } from '@apollo/client'
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { LinearGradient } from 'react-native-svg'
-import { BuilderDAOsPropsResponse, DAO } from '../../utils/types'
-import { PROPS_QUERY } from '../../constants/queries'
+import { DAO } from '../../utils/types'
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import { filterAndSortProposals } from '../../utils/proposals'
 import ProposalCard from '../ProposalCard'
 import Section from '../Section'
-import { manualDaos } from '../../constants/manualDaos'
-import { isAddressEqual } from 'viem'
 import useNonFinishedProposals from '../../hooks/useNonFinishedProposals'
+import SolidButton from '../SolidButton'
 
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
@@ -20,15 +17,21 @@ type ProposalsSectionProps = {
   className?: string
 }
 
-const ProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
+const DaoProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
   const navigation = useNavigation()
 
   const {
     proposals: props,
-    loading,
+    isFetching,
     error,
     refetch
-  } = useNonFinishedProposals([dao.address])
+  } = useNonFinishedProposals([
+    {
+      address: dao.address,
+      chainId: dao.chainId,
+      name: dao.name
+    }
+  ])
 
   const viewAllProposals = () => {
     navigation.navigate('Proposals', { dao })
@@ -38,8 +41,8 @@ const ProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
 
   return (
     <Section title="Proposals" className={className}>
-      <View className="flex flex-col gap-3">
-        {loading ? (
+      <View className="flex flex-col">
+        {isFetching ? (
           <View className="h-12 bg-grey-one/30 rounded-lg">
             <ShimmerPlaceHolder
               duration={2500}
@@ -83,17 +86,16 @@ const ProposalsSection = ({ dao, className }: ProposalsSectionProps) => {
             <Text>No active or pending proposals ⌐◨-◨</Text>
           </View>
         )}
-        <TouchableOpacity
-          activeOpacity={0.6}
+        <SolidButton
           onPress={viewAllProposals}
-          className="mt-4">
-          <View className="bg-grey-one border border-grey-one h-12 w-full rounded-lg items-center justify-center">
-            <Text className="text-black">View all proposals in browser</Text>
-          </View>
-        </TouchableOpacity>
+          text="View all proposals in browser"
+          icon="arrow-right"
+          className="mt-3"
+          theme="secondary"
+        />
       </View>
     </Section>
   )
 }
 
-export default ProposalsSection
+export default DaoProposalsSection

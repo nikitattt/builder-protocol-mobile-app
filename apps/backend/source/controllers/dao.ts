@@ -7,18 +7,16 @@ import {
   fallback,
   formatEther,
   http,
-  isAddress,
-  isAddressEqual
+  isAddress
 } from 'viem'
 import { mainnet } from 'viem/chains'
 
 import { Proposal } from '../types/nouns'
-import { loadImage, loadImageFromUrl } from '../data/images'
-import config from '../config'
+import { loadImageFromUrl } from '../data/images'
+import { PUBLIC_CHAINS } from '../constants/chains'
+import { PUBLIC_SUBGRAPH_URL } from '../constants/subgraph'
 
 require('dotenv').config()
-
-const { addresses } = config
 
 const ANKR_RPC_URL = process.env.ANKR_RPC_URL
 const BLOCKPI_RPC_URL = process.env.BLOCKPI_RPC_URL
@@ -26,13 +24,17 @@ const ALCHEMY_RPC_URL = process.env.ALCHEMY_RPC_UR
 
 const getData = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const address = req.params.slug
+    const chainFromParams = req.params.chain
+    const address = req.params.address
     const dataToLoad = String(req.query.data).split(',') ?? []
+
+    const chain = PUBLIC_CHAINS.find((c) => c.slug === chainFromParams)
 
     if (!address)
       return res.status(404).json({ message: 'Provide DAO address' })
     if (!isAddress(address))
       return res.status(400).json({ error: 'Incorrect DAO address' })
+    if (!chain) return res.status(400).json({ error: 'Incorrect chain' })
 
     const ankr = http(ANKR_RPC_URL)
     const blockpi = http(BLOCKPI_RPC_URL)
@@ -46,7 +48,9 @@ const getData = async (req: Request, res: Response, next: NextFunction) => {
     const currentTime = Math.floor(Date.now() / 1000)
     const query = getQuery(address, dataToLoad, currentTime)
 
-    let result: AxiosResponse = await axios.post(config.app.subgraph, {
+    const subgraphUrl = PUBLIC_SUBGRAPH_URL[chain.id]
+
+    let result: AxiosResponse = await axios.post(subgraphUrl, {
       query: query
     })
     const data = result.data.data
@@ -77,13 +81,7 @@ const getData = async (req: Request, res: Response, next: NextFunction) => {
         amount = auctionAmount
       }
 
-      const isNounsContract =
-        isAddressEqual(address, addresses.lilNounsToken) ||
-        isAddressEqual(address, addresses.nounsToken)
-
-      const pngBuffer = isNounsContract
-        ? await loadImage(client, address, auctionData.tokenId, 500)
-        : await loadImageFromUrl(auctionData.token.image, 500)
+      const pngBuffer = await loadImageFromUrl(auctionData.token.image, 500)
 
       const image = pngBuffer.toString('base64')
 

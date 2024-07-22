@@ -1,4 +1,4 @@
-import { Proposal } from './types'
+import { Proposal, QueryProposal } from './types'
 
 // Filters proposals by ACTIVE, PENDING, or QUEUED
 // and sorts them by their submission date
@@ -38,8 +38,9 @@ export const filterAndSortProposals = (proposals: Proposal[]) => {
 }
 
 // TODO: refactor
-export const getProposalStatus = (proposal: Proposal) => {
+export const getProposalStatus = (proposal: QueryProposal) => {
   const currentTime = Math.floor(Date.now() / 1000)
+  proposal
 
   if (proposal.voteStart > currentTime) {
     return 'PENDING'

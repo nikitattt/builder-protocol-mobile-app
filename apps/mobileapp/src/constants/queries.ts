@@ -1,7 +1,7 @@
-import { gql } from '@apollo/client'
+import { graphql } from '../gql'
 
-export const PROPS_QUERY = gql`
-  query BuilderDAOsProps($where: Proposal_filter!, $first: Int!) {
+export const proposalQueryDocument = graphql(/* GraphQL */ `
+  query Proposals($where: Proposal_filter!, $first: Int!) {
     proposals(
       where: $where
       first: $first
@@ -30,15 +30,15 @@ export const PROPS_QUERY = gql`
       }
     }
   }
-`
+`)
 
-export const DAO_QUERY = gql`
-  query BuilderDAO($dao: String!) {
+export const auctionQueryDocument = graphql(/* GraphQL */ `
+  query Auction($dao: String!) {
     auctions(
       where: { dao: $dao }
       orderBy: endTime
       orderDirection: desc
-      first: 2
+      first: 1
     ) {
       token {
         name
@@ -52,22 +52,27 @@ export const DAO_QUERY = gql`
         bidder
       }
     }
-    auctionConfig(id: $dao) {
-      duration
+  }
+`)
+
+export const daoQueryDocument = graphql(/* GraphQL */ `
+  query DAO($dao: ID!) {
+    dao(id: $dao) {
+      treasuryAddress
     }
   }
-`
+`)
 
-export const SEARCH_DAO_QUERY = gql`
+export const daoSearchQueryDocument = graphql(/* GraphQL */ `
   query SearchDAO($where: DAO_filter!, $first: Int!) {
     daos(where: $where, first: $first) {
       name
       tokenAddress
     }
   }
-`
+`)
 
-export const DAOS_FOR_ADDRESS_QUERY = gql`
+export const daosForAddressQueryDocument = graphql(/* GraphQL */ `
   query DAOsForAddresses($where: DAOTokenOwner_filter!) {
     daotokenOwners(where: $where) {
       dao {
@@ -76,4 +81,4 @@ export const DAOS_FOR_ADDRESS_QUERY = gql`
       }
     }
   }
-`
+`)

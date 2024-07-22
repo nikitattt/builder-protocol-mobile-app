@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { createPublicClient, fallback, http, isAddress } from 'viem'
 import { mainnet } from 'viem/chains'
-import { loadImage } from '../data/images'
+import { loadImage } from '../../data/images'
 
 require('dotenv').config()
 
