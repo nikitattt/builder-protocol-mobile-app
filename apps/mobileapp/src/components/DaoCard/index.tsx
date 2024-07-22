@@ -85,9 +85,9 @@ const DaoCard = ({ dao }: DaoCardProps) => {
         </View>
         {migrated ? (
           <View className="ml-4 w-full h-36 flex flex-col flex-shrink">
-            <Text className="mt-3 text-xl font-bold flex-shrink leading-6">
+            <Text className="mt-3 text-xl font-bold flex-shrink leading-6 pr-6">
               {dao.name}
-              {/* <ChainIcon icon={chainIcon} /> */}
+              <ChainIcon icon={chainIcon} />
             </Text>
             <View className="mt-3 w-8/12">
               <Text className="text-sm text-grey-three">
@@ -101,15 +101,15 @@ const DaoCard = ({ dao }: DaoCardProps) => {
         ) : (
           <View className="ml-4 w-full h-36 flex flex-col flex-shrink justify-evenly">
             {isPending ? (
-              <Text className="text-xl font-bold flex-shrink leading-6">
+              <Text className="text-xl font-bold flex-shrink leading-6 pr-6">
                 {dao.name}
-                {/* <ChainIcon icon={chainIcon} /> */}
+                <ChainIcon icon={chainIcon} />
               </Text>
             ) : (
               <Shimmer animating={isFetching}>
-                <Text className="text-xl font-bold flex-shrink leading-6">
+                <Text className="text-xl font-bold flex-shrink leading-6 pr-6">
                   {displayName}
-                  {/* <ChainIcon icon={chainIcon} /> */}
+                  <ChainIcon icon={chainIcon} />
                 </Text>
               </Shimmer>
             )}
