@@ -12,10 +12,16 @@ class IntentHandler: INExtension, SelectDAOIntentHandling {
   func provideDaoOptionsCollection(for intent: SelectDAOIntent, searchTerm: String?, with completion: @escaping (INObjectCollection<DAO>?, Error?) -> Void) {
     intentData.getSavedDAOs { daos in
       var daoOptions = daos.map { dao in
+        let chainId = ChainID(rawValue: dao.chainId)
+        let chainName = chainId?.stringValue.capitalizingFirstLetter() ?? "Ethereum"
+        
+        let shortAddress = shortAddress(dao.address) ?? dao.address
+        let subtitle = "\(chainName) chain. Token address: \(shortAddress)"
+        
         let daoOption = DAO(
           identifier: dao.address,
           display: dao.name,
-          subtitle: shortAddress(dao.address),
+          subtitle: subtitle,
           image: nil
         )
         daoOption.chainId = (dao.chainId) as NSNumber

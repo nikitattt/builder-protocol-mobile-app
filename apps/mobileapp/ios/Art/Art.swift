@@ -12,8 +12,9 @@ struct ArtProvider: IntentTimelineProvider {
   
   func getSnapshot(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (ArtEntry) -> Void) {
     let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
+    let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)!
     
-    dataLoader.fetchImageData(daoAddress: address) { imageData in
+    dataLoader.fetchImageData(daoAddress: address, chain: chain) { imageData in
       if let image = imageData {
         let entry = ArtEntry(date: Date(), image: image, state: .success)
         completion(entry)
@@ -26,8 +27,9 @@ struct ArtProvider: IntentTimelineProvider {
   
   func getTimeline(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
     let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
+    let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)!
     
-    dataLoader.fetchImageData(daoAddress: address) { imageData in
+    dataLoader.fetchImageData(daoAddress: address, chain: chain) { imageData in
       if let image = imageData {
         let entry = ArtEntry(date: Date(), image: image, state: .success)
         let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
@@ -44,7 +46,7 @@ struct ArtProvider: IntentTimelineProvider {
 }
 
 enum WidgetState {
-  case success, error
+  case success, error, noProjectSelected
 }
 
 struct ArtEntry: TimelineEntry {

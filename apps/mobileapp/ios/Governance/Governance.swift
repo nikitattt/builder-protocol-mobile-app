@@ -19,8 +19,9 @@ struct Provider: IntentTimelineProvider {
   func getSnapshot(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
     let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
     let daoName = configuration.dao?.displayString ?? dataLoader.placeholderDao.name
+    let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)!
     
-    dataLoader.fetchAuctionAndGovernanceData(daoAddress: address) { data in
+    dataLoader.fetchAuctionAndGovernanceData(daoAddress: address, chain: chain) { data in
       if let governance = data?.governance {
         let entry = SimpleEntry(
           date: Date(),
@@ -40,8 +41,9 @@ struct Provider: IntentTimelineProvider {
   func getTimeline(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
     let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
     let daoName = configuration.dao?.displayString ?? dataLoader.placeholderDao.name
+    let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)!
     
-    dataLoader.fetchGovernanceData(daoAddress: address) { data in
+    dataLoader.fetchGovernanceData(daoAddress: address, chain: chain) { data in
       if let governance = data?.governance {
         let entry = SimpleEntry(
           date: Date(),
