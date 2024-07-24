@@ -12,7 +12,7 @@ import SaveDaoIconButton from '../SaveDaoIconButton'
 import { formatBid } from '../../utils/format'
 import useDaoMigrated from '../../hooks/useDaoMigrated'
 import Shimmer from 'react-native-shimmer'
-import { CHAIN_ICON } from '../../constants/chains'
+import { CHAIN_ICON, PUBLIC_CHAINS } from '../../constants/chains'
 
 type DaoCardProps = {
   dao: SavedDao | SearchDao
@@ -60,6 +60,9 @@ const DaoCard = ({ dao }: DaoCardProps) => {
   const bid = `${highestBid} Ξ`
 
   const chainIcon = CHAIN_ICON[dao.chainId]
+  const migratedChainName = PUBLIC_CHAINS.find(
+    chain => chain.id === migrated?.chainId
+  )?.name
 
   const openDaoPage = () => {
     // Dao page won't open if dao was created,
@@ -94,9 +97,17 @@ const DaoCard = ({ dao }: DaoCardProps) => {
                 This DAO has been migrated to L2.
               </Text>
             </View>
-            <View className="mt-3 w-8/12">
-              <Text className="text-sm text-grey-three">Update →</Text>
-            </View>
+            {activeSearch && migratedChainName ? (
+              <View className="mt-3 w-8/12">
+                <Text className="text-sm text-grey-three">
+                  Save L2 DAO on {migratedChainName} chain.
+                </Text>
+              </View>
+            ) : (
+              <View className="mt-3 w-8/12">
+                <Text className="text-sm text-grey-three">Update →</Text>
+              </View>
+            )}
           </View>
         ) : (
           <View className="ml-4 w-full h-36 flex flex-col flex-shrink justify-evenly">

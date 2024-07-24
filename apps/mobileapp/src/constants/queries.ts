@@ -68,6 +68,11 @@ export const daoSearchQueryDocument = graphql(/* GraphQL */ `
     daos(where: $where, first: $first) {
       name
       tokenAddress
+      currentAuction {
+        token {
+          tokenId
+        }
+      }
     }
   }
 `)

@@ -16,7 +16,7 @@ const documents = {
     "\n  query Proposals($where: Proposal_filter!, $first: Int!) {\n    proposals(\n      where: $where\n      first: $first\n      orderBy: timeCreated\n      orderDirection: desc\n    ) {\n      proposalNumber\n      proposalId\n      title\n      voteStart\n      voteEnd\n      executableFrom\n      expiresAt\n      executed\n      canceled\n      abstainVotes\n      againstVotes\n      forVotes\n      quorumVotes\n      dao {\n        tokenAddress\n      }\n      votes {\n        voter\n        support\n      }\n    }\n  }\n": types.ProposalsDocument,
     "\n  query Auction($dao: String!) {\n    auctions(\n      where: { dao: $dao }\n      orderBy: endTime\n      orderDirection: desc\n      first: 1\n    ) {\n      token {\n        name\n        image\n        tokenId\n      }\n      endTime\n      highestBid {\n        id\n        amount\n        bidder\n      }\n    }\n  }\n": types.AuctionDocument,
     "\n  query DAO($dao: ID!) {\n    dao(id: $dao) {\n      treasuryAddress\n    }\n  }\n": types.DaoDocument,
-    "\n  query SearchDAO($where: DAO_filter!, $first: Int!) {\n    daos(where: $where, first: $first) {\n      name\n      tokenAddress\n    }\n  }\n": types.SearchDaoDocument,
+    "\n  query SearchDAO($where: DAO_filter!, $first: Int!) {\n    daos(where: $where, first: $first) {\n      name\n      tokenAddress\n      currentAuction {\n        token {\n          tokenId\n        }\n      }\n    }\n  }\n": types.SearchDaoDocument,
     "\n  query DAOsForAddresses($where: DAOTokenOwner_filter!) {\n    daotokenOwners(where: $where) {\n      dao {\n        name\n        tokenAddress\n      }\n    }\n  }\n": types.DaOsForAddressesDocument,
 };
 
@@ -49,7 +49,7 @@ export function graphql(source: "\n  query DAO($dao: ID!) {\n    dao(id: $dao) {
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query SearchDAO($where: DAO_filter!, $first: Int!) {\n    daos(where: $where, first: $first) {\n      name\n      tokenAddress\n    }\n  }\n"): (typeof documents)["\n  query SearchDAO($where: DAO_filter!, $first: Int!) {\n    daos(where: $where, first: $first) {\n      name\n      tokenAddress\n    }\n  }\n"];
+export function graphql(source: "\n  query SearchDAO($where: DAO_filter!, $first: Int!) {\n    daos(where: $where, first: $first) {\n      name\n      tokenAddress\n      currentAuction {\n        token {\n          tokenId\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query SearchDAO($where: DAO_filter!, $first: Int!) {\n    daos(where: $where, first: $first) {\n      name\n      tokenAddress\n      currentAuction {\n        token {\n          tokenId\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
