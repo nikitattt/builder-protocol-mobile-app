@@ -36,10 +36,21 @@ export async function search(searchText: string) {
         return {
           name: d.name,
           tokenAddress: d.tokenAddress,
-          chainId: x.chainId
+          chainId: x.chainId,
+          auction: d.currentAuction
+            ? {
+                id: d.currentAuction.token.tokenId
+              }
+            : undefined
         }
       })
     )
+    .sort((a, b) => {
+      const aAuction = a.auction ? Number(a.auction.id) : 0
+      const bAuction = b.auction ? Number(b.auction.id) : 0
+
+      return bAuction - aAuction
+    })
 
   return data
 }

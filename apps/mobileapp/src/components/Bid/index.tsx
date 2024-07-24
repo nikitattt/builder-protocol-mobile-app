@@ -5,7 +5,6 @@ import { shortAddress } from '../../utils/address'
 import { formatBid } from '../../utils/format'
 import { AddressType } from '../../utils/types'
 import Shimmer from 'react-native-shimmer'
-import { normalize } from 'viem/ens'
 
 type BidProps = {
   address: string
@@ -19,7 +18,7 @@ const Bid = ({ address, bid, className, isFetching }: BidProps) => {
     address: address as AddressType
   })
   const { data: avatar } = useEnsAvatar({
-    name: ens ? normalize(ens) : undefined
+    name: ens ? String(ens) : undefined
   })
 
   const noBid = Number(bid) === 0
