@@ -5,41 +5,40 @@ import Intents
 struct Provider: IntentTimelineProvider {
   let dataLoader = WidgetDataLoader()
   
+  private let placeholder = SimpleEntry(
+    date: Date(),
+    auction: AuctionData(
+      id: 136,
+      currentBid: 0.1234,
+      bidder: "-",
+      endTime: 0,
+      image: UIImage(named: "ImagePlaceholder")!.pngData()!,
+      duration: 86400
+    ),
+    state: .success
+  )
+  
   func placeholder(in context: Context) -> SimpleEntry {
-    return SimpleEntry(
-      date: Date(),
-      auction: AuctionData(
-        id: 136,
-        currentBid: 0.1234,
-        bidder: "-",
-        endTime: 0,
-        image: UIImage(named: "ImagePlaceholder")!.pngData()!,
-        duration: 86400
-      ),
-      state: .success
-    )
+    return placeholder
   }
   
   func getSnapshot(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-    let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
-    
-    dataLoader.fetchAuctionData(daoAddress: address) { auction in
-      if let auction = auction {
-        let entry = SimpleEntry(date: Date(), auction: auction, state: .success)
-        
-        completion(entry)
-      } else {
-        let entry = SimpleEntry(date: Date(), auction: nil, state: .error)
-        
-        completion(entry)
-      }
-    }
+    completion(placeholder)
   }
   
   func getTimeline(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-    let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
+    let address = configuration.dao?.identifier
+    let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)
     
-    dataLoader.fetchAuctionData(daoAddress: address) { auction in
+    guard let address = address, let chain = chain else {
+      let entry = SimpleEntry(date: Date(), auction: nil, state: .noDaoSelected)
+      let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
+      let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
+      completion(timeline)
+      return
+    }
+    
+    dataLoader.fetchAuctionData(daoAddress: address, chain: chain) { auction in
       if let auction = auction {
         let entry = SimpleEntry(date: Date(), auction: auction, state: .success)
         
@@ -59,7 +58,7 @@ struct Provider: IntentTimelineProvider {
 }
 
 enum WidgetState {
-  case success, error
+  case success, error, noDaoSelected
 }
 
 struct SimpleEntry: TimelineEntry {
@@ -96,14 +95,15 @@ struct AuctionEntryView : View {
               .font(.system(size: 12))
             Text("\(String(bid)) Ξ")
               .font(.system(size: 18, weight: .black))
-              .lineLimit(2)
+              .minimumScaleFactor(0.5)
+              .lineLimit(1)
             HStack(alignment: .center, spacing: 2) {
-              Image("ArrowCirclePath")
-                .resizable()
-                .frame(width: 10, height: 10)
-//              Text("As of")
-//                .font(.system(size: 10))
-//                .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.55))
+              //              Image("ArrowCirclePath")
+              //                .resizable()
+              //                .frame(width: 10, height: 10)
+              Text("As of")
+                .font(.system(size: 10))
+                .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.55))
               Text(entry.date, style: .time)
                 .font(.system(size: 10))
                 .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.55))
@@ -125,9 +125,22 @@ struct AuctionEntryView : View {
       .paddingForOlderVersions()
       .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
     case .error:
-      VStack {
-        Image(systemName: "xmark.octagon").padding(.bottom, 1)
+      VStack(alignment: .center) {
+        Image(systemName: "xmark.octagon")
+          .padding(.bottom, 2)
         Text("Error happened")
+          .font(.system(size: 12, weight: .bold))
+          .multilineTextAlignment(.center)
+      }
+      .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
+    case .noDaoSelected:
+      VStack(alignment: .center) {
+        Image(systemName: "hand.tap.fill")
+          .padding(.bottom, 2)
+        Text("Tap and hold to set up widget")
+          .font(.system(size: 12, weight: .bold))
+          .multilineTextAlignment(.center)
+        
       }
       .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
     }

@@ -24,6 +24,18 @@
 		0A6BED472C44257500C69715 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6BED452C44257500C69715 /* Double.swift */; };
 		0A6BED482C44257500C69715 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6BED452C44257500C69715 /* Double.swift */; };
 		0A6BED492C44257500C69715 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6BED452C44257500C69715 /* Double.swift */; };
+		0A72C4AF2C4EDEB200E86506 /* Chains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4AE2C4EDEB200E86506 /* Chains.swift */; };
+		0A72C4B02C4EDEB200E86506 /* Chains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4AE2C4EDEB200E86506 /* Chains.swift */; };
+		0A72C4B12C4EDEB200E86506 /* Chains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4AE2C4EDEB200E86506 /* Chains.swift */; };
+		0A72C4B22C4EDEB200E86506 /* Chains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4AE2C4EDEB200E86506 /* Chains.swift */; };
+		0A72C4B32C4EDEB200E86506 /* Chains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4AE2C4EDEB200E86506 /* Chains.swift */; };
+		0A72C4B42C4EDEB200E86506 /* Chains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4AE2C4EDEB200E86506 /* Chains.swift */; };
+		0A72C4B62C4EE11700E86506 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4B52C4EE11700E86506 /* String.swift */; };
+		0A72C4B72C4EE11700E86506 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4B52C4EE11700E86506 /* String.swift */; };
+		0A72C4B82C4EE11700E86506 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4B52C4EE11700E86506 /* String.swift */; };
+		0A72C4B92C4EE11700E86506 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4B52C4EE11700E86506 /* String.swift */; };
+		0A72C4BA2C4EE11700E86506 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4B52C4EE11700E86506 /* String.swift */; };
+		0A72C4BB2C4EE11700E86506 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72C4B52C4EE11700E86506 /* String.swift */; };
 		0A8F1E1B2BEC243B005D59C0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0A8F1E1A2BEC243B005D59C0 /* Alamofire */; };
 		0A90E36429FC5FAB00FB320D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A90E36329FC5FAB00FB320D /* WidgetKit.framework */; };
 		0A90E36629FC5FAB00FB320D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A90E36529FC5FAB00FB320D /* SwiftUI.framework */; };
@@ -152,6 +164,8 @@
 		0A3802D02A0AFE09000C34A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A3802E02A0B0711000C34A0 /* Proposals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proposals.swift; sourceTree = "<group>"; };
 		0A6BED452C44257500C69715 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		0A72C4AE2C4EDEB200E86506 /* Chains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chains.swift; sourceTree = "<group>"; };
+		0A72C4B52C4EE11700E86506 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		0A90E35D29FC357D00FB320D /* mobileapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = mobileapp.entitlements; path = mobileapp/mobileapp.entitlements; sourceTree = "<group>"; };
 		0A90E36229FC5FAB00FB320D /* ArtExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A90E36329FC5FAB00FB320D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -312,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				0A6BED452C44257500C69715 /* Double.swift */,
+				0A72C4B52C4EE11700E86506 /* String.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -364,6 +379,7 @@
 				0AE29FE62A09F0670035242E /* Widgets.swift */,
 				0AE29FE92A09F0F10035242E /* Utils.swift */,
 				0AE29FEC2A09F1130035242E /* Types.swift */,
+				0A72C4AE2C4EDEB200E86506 /* Chains.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -743,7 +759,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -753,9 +769,9 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/zsh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/zsh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
 		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -887,8 +903,10 @@
 				0A3802CD2A0AFE08000C34A0 /* Governance.swift in Sources */,
 				0A3802E22A0B0711000C34A0 /* Proposals.swift in Sources */,
 				0A3802D82A0AFECC000C34A0 /* Widgets.swift in Sources */,
+				0A72C4BB2C4EE11700E86506 /* String.swift in Sources */,
 				0A3802D72A0AFE12000C34A0 /* SelectDAO.intentdefinition in Sources */,
 				0A3802DA2A0AFED4000C34A0 /* Types.swift in Sources */,
+				0A72C4B42C4EDEB200E86506 /* Chains.swift in Sources */,
 				0A3802D92A0AFECE000C34A0 /* Utils.swift in Sources */,
 				0A9EBA922B4F301D00C817EA /* Extensions.swift in Sources */,
 			);
@@ -901,8 +919,10 @@
 				0AE29FEA2A09F0F10035242E /* Utils.swift in Sources */,
 				0A9EBA8F2B4F301D00C817EA /* Extensions.swift in Sources */,
 				0A90E37229FC5FAD00FB320D /* SelectDAO.intentdefinition in Sources */,
+				0A72C4B72C4EE11700E86506 /* String.swift in Sources */,
 				0AE29FED2A09F1130035242E /* Types.swift in Sources */,
 				0A90E36D29FC5FAB00FB320D /* Art.swift in Sources */,
+				0A72C4B02C4EDEB200E86506 /* Chains.swift in Sources */,
 				0AE29FE72A09F0670035242E /* Widgets.swift in Sources */,
 				0A6BED472C44257500C69715 /* Double.swift in Sources */,
 			);
@@ -916,7 +936,9 @@
 				0A9D4AB22A01E7C100183302 /* Data.swift in Sources */,
 				0A9D4AA42A01D9E700183302 /* IntentHandler.swift in Sources */,
 				0A6BED482C44257500C69715 /* Double.swift in Sources */,
+				0A72C4B82C4EE11700E86506 /* String.swift in Sources */,
 				0AA7E8D62A05DD88000B0F4D /* Utils.swift in Sources */,
+				0A72C4B12C4EDEB200E86506 /* Chains.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -926,12 +948,14 @@
 			files = (
 				0AE29FCF2A09B56D0035242E /* AuctionBundle.swift in Sources */,
 				0AE29FD12A09B56D0035242E /* Auction.swift in Sources */,
+				0A72C4B92C4EE11700E86506 /* String.swift in Sources */,
 				0A6BED492C44257500C69715 /* Double.swift in Sources */,
 				0AE29FE22A09BA480035242E /* SelectDAO.intentdefinition in Sources */,
 				0AE29FEE2A09F1130035242E /* Types.swift in Sources */,
 				0AE29FE82A09F0670035242E /* Widgets.swift in Sources */,
 				0AE29FEB2A09F0F10035242E /* Utils.swift in Sources */,
 				0A9EBA902B4F301D00C817EA /* Extensions.swift in Sources */,
+				0A72C4B22C4EDEB200E86506 /* Chains.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -942,8 +966,10 @@
 				0AE29FFA2A09FB470035242E /* AuctionGovernance.swift in Sources */,
 				0A3802E12A0B0711000C34A0 /* Proposals.swift in Sources */,
 				0AE2A0052A09FC570035242E /* Widgets.swift in Sources */,
+				0A72C4BA2C4EE11700E86506 /* String.swift in Sources */,
 				0AE2A0042A09FB6A0035242E /* SelectDAO.intentdefinition in Sources */,
 				0AE2A0072A09FC5C0035242E /* Types.swift in Sources */,
+				0A72C4B32C4EDEB200E86506 /* Chains.swift in Sources */,
 				0AE2A0062A09FC5A0035242E /* Utils.swift in Sources */,
 				0A9EBA912B4F301D00C817EA /* Extensions.swift in Sources */,
 			);
@@ -953,10 +979,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A72C4B62C4EE11700E86506 /* String.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				0A6BED462C44257500C69715 /* Double.swift in Sources */,
 				0A90E37329FC5FAD00FB320D /* SelectDAO.intentdefinition in Sources */,
+				0A72C4AF2C4EDEB200E86506 /* Chains.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

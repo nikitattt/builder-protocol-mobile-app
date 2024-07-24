@@ -11,23 +11,27 @@ struct ArtProvider: IntentTimelineProvider {
   }
   
   func getSnapshot(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (ArtEntry) -> Void) {
-    let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
-    
-    dataLoader.fetchImageData(daoAddress: address) { imageData in
-      if let image = imageData {
-        let entry = ArtEntry(date: Date(), image: image, state: .success)
-        completion(entry)
-      } else {
-        let entry = ArtEntry(date: Date(), image: nil, state: .error)
-        completion(entry)
-      }
-    }
+    let entry = ArtEntry(
+      date: Date(),
+      image: UIImage(named: "Placeholder")!.pngData()!,
+      state: .success
+    )
+    completion(entry)
   }
   
   func getTimeline(for configuration: SelectDAOIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
-    let address = configuration.dao?.identifier ?? dataLoader.placeholderDao.address
+    let address = configuration.dao?.identifier
+    let chain = ChainID(rawValue: configuration.dao?.chainId?.intValue ?? 1)
     
-    dataLoader.fetchImageData(daoAddress: address) { imageData in
+    guard let address = address, let chain = chain else {
+      let entry = ArtEntry(date: Date(), image: nil, state: .noDaoSelected)
+      let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
+      let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
+      completion(timeline)
+      return
+    }
+    
+    dataLoader.fetchImageData(daoAddress: address, chain: chain) { imageData in
       if let image = imageData {
         let entry = ArtEntry(date: Date(), image: image, state: .success)
         let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
@@ -44,7 +48,7 @@ struct ArtProvider: IntentTimelineProvider {
 }
 
 enum WidgetState {
-  case success, error
+  case success, error, noDaoSelected
 }
 
 struct ArtEntry: TimelineEntry {
@@ -67,10 +71,22 @@ struct ArtEntryView: View {
         .aspectRatio(contentMode: .fit)
         .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
     case .error:
-      VStack {
+      VStack(alignment: .center) {
         Image(systemName: "xmark.octagon")
-          .padding(.bottom, 1)
+          .padding(.bottom, 2)
         Text("Error happened")
+          .font(.system(size: 12, weight: .bold))
+          .multilineTextAlignment(.center)
+      }
+      .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
+    case .noDaoSelected:
+      VStack(alignment: .center) {
+        Image(systemName: "hand.tap.fill")
+          .padding(.bottom, 2)
+        Text("Tap and hold to set up widget")
+          .font(.system(size: 12, weight: .bold))
+          .multilineTextAlignment(.center)
+          
       }
       .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
     }

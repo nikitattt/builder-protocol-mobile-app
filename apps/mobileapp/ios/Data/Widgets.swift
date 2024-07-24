@@ -2,15 +2,16 @@ import Foundation
 import Alamofire
 
 class WidgetDataLoader {
-  private let baseApiUrl = "https://api.builderapp.wtf/dao/"
+  private let baseApiUrl = "https://api.builderapp.wtf"
   
   let placeholderDao = PlaceholderDao(
     address: "0xdf9b7d26c8fc806b1ae6273684556761ff02d422",
     name: "Builder"
   )
   
-  func fetchImageData(daoAddress: String, completion: @escaping (Data?) -> Void) {
-    let url = "\(baseApiUrl)\(daoAddress)?data=auction"
+  func fetchImageData(daoAddress: String, chain: ChainID, completion: @escaping (Data?) -> Void) {
+    let urlChain = chain.stringValue
+    let url = "\(baseApiUrl)/dao/\(urlChain)/\(daoAddress)?data=auction"
     
     AF.request(url).responseJSON { response in
       if let json = response.value as? [String: Any],
@@ -24,8 +25,9 @@ class WidgetDataLoader {
     }
   }
   
-  func fetchAuctionData(daoAddress: String, completion: @escaping (AuctionData?) -> Void) {
-    let url = "\(baseApiUrl)\(daoAddress)?data=auction"
+  func fetchAuctionData(daoAddress: String, chain: ChainID, completion: @escaping (AuctionData?) -> Void) {
+    let urlChain = chain.stringValue
+    let url = "\(baseApiUrl)/dao/\(urlChain)/\(daoAddress)?data=auction"
     
     AF.request(url).responseJSON { response in
       if let json = response.value as? [String: Any],
@@ -54,8 +56,9 @@ class WidgetDataLoader {
     }
   }
   
-  func fetchAuctionAndGovernanceData(daoAddress: String, completion: @escaping (WidgetData?) -> Void) {
-    let url = "\(baseApiUrl)\(daoAddress)?data=auction,governance"
+  func fetchAuctionAndGovernanceData(daoAddress: String, chain: ChainID, completion: @escaping (WidgetData?) -> Void) {
+    let urlChain = chain.stringValue
+    let url = "\(baseApiUrl)/dao/\(urlChain)/\(daoAddress)?data=auction,governance"
     
     AF.request(url).responseJSON { response in
       if let json = response.value as? [String: Any],
@@ -127,8 +130,9 @@ class WidgetDataLoader {
     }
   }
   
-  func fetchGovernanceData(daoAddress: String, completion: @escaping (WidgetData?) -> Void) {
-    let url = "\(baseApiUrl)\(daoAddress)?data=governance"
+  func fetchGovernanceData(daoAddress: String, chain: ChainID, completion: @escaping (WidgetData?) -> Void) {
+    let urlChain = chain.stringValue
+    let url = "\(baseApiUrl)/dao/\(urlChain)/\(daoAddress)?data=governance"
     
     AF.request(url).responseJSON { response in
       if let json = response.value as? [String: Any],

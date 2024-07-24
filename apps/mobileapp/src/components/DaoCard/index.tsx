@@ -12,7 +12,7 @@ import SaveDaoIconButton from '../SaveDaoIconButton'
 import { formatBid } from '../../utils/format'
 import useDaoMigrated from '../../hooks/useDaoMigrated'
 import Shimmer from 'react-native-shimmer'
-import { CHAIN_ICON } from '../../constants/chains'
+import { CHAIN_ICON, PUBLIC_CHAINS } from '../../constants/chains'
 
 type DaoCardProps = {
   dao: SavedDao | SearchDao
@@ -26,32 +26,46 @@ const DaoCard = ({ dao }: DaoCardProps) => {
     dao.address,
     dao.chainId
   )
-  const { migrated, error: migratedError } = useDaoMigrated(
-    dao.address,
-    dao.chainId
-  )
+  const { migrated } = useDaoMigrated(dao.address, dao.chainId)
+
+  const openDaoPage = () => {
+    const daoData: DAO = {
+      name: dao.name,
+      address: dao.address,
+      chainId: dao.chainId
+    }
+
+    navigation.navigate('Dao', {
+      dao: daoData
+    })
+  }
 
   if (error || !auction)
     return (
-      <View className="relative mb-3 rounded-lg">
-        <View className="flex flex-row items-center">
-          <View className="bg-grey-one rounded-lg w-36 h-36" />
-          <View className="ml-4">
-            <Text
-              className={clsx('text-xl font-bold', error && 'text-grey-four')}>
-              {error ? `Couldn't load Dao` : dao.name}
-            </Text>
-            <View className="pt-4 flex flex-col gap-2">
-              <Text className={clsx(error && 'text-grey-four')}>
-                {error ? `Try to refresh later` : `No active auction`}
+      <TouchableOpacity activeOpacity={0.8} onPress={openDaoPage}>
+        <View className="relative mb-3 rounded-lg">
+          <View className="flex flex-row items-center">
+            <View className="bg-grey-one rounded-lg w-36 h-36" />
+            <View className="ml-4">
+              <Text
+                className={clsx(
+                  'text-xl font-bold',
+                  error && 'text-grey-four'
+                )}>
+                {error ? `Couldn't load Dao` : dao.name}
               </Text>
-              <View className="bg-grey-one rounded-md h-5 w-20" />
-              <View className="bg-grey-one rounded-md h-5 w-16" />
+              <View className="pt-4 flex flex-col gap-2">
+                <Text className={clsx(error && 'text-grey-four')}>
+                  {error ? `Try to refresh later` : `No active auction`}
+                </Text>
+                <View className="bg-grey-one rounded-md h-5 w-20" />
+                <View className="bg-grey-one rounded-md h-5 w-16" />
+              </View>
             </View>
           </View>
+          {activeSearch && <SaveDaoIconButton dao={dao} />}
         </View>
-        {activeSearch && <SaveDaoIconButton dao={dao} />}
-      </View>
+      </TouchableOpacity>
     )
 
   const highestBid = formatBid(auction?.highestBid?.amount || '0')
@@ -60,22 +74,9 @@ const DaoCard = ({ dao }: DaoCardProps) => {
   const bid = `${highestBid} Ξ`
 
   const chainIcon = CHAIN_ICON[dao.chainId]
-
-  const openDaoPage = () => {
-    // Dao page won't open if dao was created,
-    // but no token was minted yet
-    if (auction) {
-      const daoData: DAO = {
-        name: dao.name,
-        address: dao.address,
-        chainId: dao.chainId
-      }
-
-      navigation.navigate('Dao', {
-        dao: daoData
-      })
-    }
-  }
+  const migratedChainName = PUBLIC_CHAINS.find(
+    chain => chain.id === migrated?.chainId
+  )?.name
 
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={openDaoPage}>
@@ -94,9 +95,17 @@ const DaoCard = ({ dao }: DaoCardProps) => {
                 This DAO has been migrated to L2.
               </Text>
             </View>
-            <View className="mt-3 w-8/12">
-              <Text className="text-sm text-grey-three">Update →</Text>
-            </View>
+            {activeSearch && migratedChainName ? (
+              <View className="mt-3 w-8/12">
+                <Text className="text-sm text-grey-three">
+                  Save L2 DAO on {migratedChainName} chain.
+                </Text>
+              </View>
+            ) : (
+              <View className="mt-3 w-8/12">
+                <Text className="text-sm text-grey-three">Update →</Text>
+              </View>
+            )}
           </View>
         ) : (
           <View className="ml-4 w-full h-36 flex flex-col flex-shrink justify-evenly">
