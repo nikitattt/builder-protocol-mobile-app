@@ -6,7 +6,7 @@ export default function useAllowWalletActions() {
 
   if (Platform.OS === 'android') {
     return true
-  } else if (Platform.OS === 'ios' && appActive > 10) {
+  } else if (Platform.OS === 'ios' && appActive >= 7) {
     return true
   } else {
     return false
