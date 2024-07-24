@@ -69,6 +69,7 @@ struct ArtEntryView: View {
       Image(uiImage: UIImage(data: entry.image!)!)
         .resizable()
         .aspectRatio(contentMode: .fit)
+        .widgetBackground(backgroundView: colorScheme == .light ? Color.white : Color.black)
     case .error:
       VStack(alignment: .center) {
         Image(systemName: "xmark.octagon")
