@@ -2,6 +2,7 @@
 builder = "NIXPACKS"
 buildCommand = "pnpm build:backend"
 watchPatterns = ["/apps/backend/**"]
+nixpacksConfigPath = "nixpacks.toml"
 
 [deploy]
 startCommand = "pnpm start:backend"
