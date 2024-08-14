@@ -1,13 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
-import { createPublicClient, fallback, http, isAddress } from 'viem'
-import { mainnet } from 'viem/chains'
-import { loadImage, loadImageFromUrl } from '../data/images'
+import { loadImageFromUrl } from '../data/images'
 
 require('dotenv').config()
-
-const ANKR_RPC_URL = process.env.ANKR_RPC_URL
-const BLOCKPI_RPC_URL = process.env.BLOCKPI_RPC_URL
-const ALCHEMY_RPC_URL = process.env.ALCHEMY_RPC_URL
 
 const getData = async (req: Request, res: Response, next: NextFunction) => {
   try {
