@@ -83,12 +83,12 @@ export default function WidgetInstallInstructions() {
               source={step.image}
               style={{
                 aspectRatio: 1074 / 1224,
-                width: '80%',
+                width: '92%',
                 height: 'auto'
               }}
               className="object-contain mx-auto"
             />
-            <View className="my-auto w-4/5">
+            <View className="mt-auto mb-4 w-4/5">
               <Text className="text-black text-xl font-bold text-center">
                 {step.text}
               </Text>
