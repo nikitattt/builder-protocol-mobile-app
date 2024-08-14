@@ -5,6 +5,7 @@ import BackButton from '../../components/BackButton'
 import Section from '../../components/Section'
 import { track } from '../../utils/track'
 import OutlineButton from '../../components/OutlineButton'
+import WidgetInstallInstructions from '../../components/WidgetsInstallInstructions'
 
 const appleVideoGuideUrl = 'https://www.youtube.com/watch?v=x49NAAOQyRA'
 
@@ -14,10 +15,12 @@ const WidgetsSetupInfoScreen = ({
 }: RootStackScreenProps<'WidgetsSetupInfo'>) => {
   return (
     <View className="flex-1 bg-white">
-      <SafeAreaView>
-        <View className="mx-4">
+      <SafeAreaView className="flex-1">
+        <View className="mx-4 h-20">
           <BackButton onPress={() => navigation.goBack()} />
-          <Section title="Adding Widgets">
+        </View>
+        <WidgetInstallInstructions />
+        {/* <Section title="Adding Widgets">
             <Text className="text-base mb-3">
               Here are the steps to add widgets to your Home screen:
             </Text>
@@ -40,8 +43,8 @@ const WidgetsSetupInfoScreen = ({
             <Text className="text-base mb-2">
               6. Tap Done to save your settings.
             </Text>
-          </Section>
-          <Section title="Video" className="mt-6">
+          </Section> */}
+        {/* <Section title="Video" className="mt-6">
             <OutlineButton
               onPress={async () => {
                 track('Watch Apple Widgets Guide')
@@ -53,8 +56,7 @@ const WidgetsSetupInfoScreen = ({
               icon="arrow-up-right"
               theme="secondary"
             />
-          </Section>
-        </View>
+          </Section> */}
       </SafeAreaView>
     </View>
   )
