@@ -12,6 +12,7 @@ import { useCallback, useState } from 'react'
 import { QUERY_KEYS } from '../../constants/queryKeys'
 import { useQueryClient } from '@tanstack/react-query'
 import OutlineButton from '../../components/OutlineButton'
+import { hasNotch } from 'react-native-device-info'
 
 const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
   const { dao } = route.params
@@ -54,44 +55,48 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
   }, [savedDaos])
 
   return (
-    <ScrollView
-      className="flex flex-col h-full bg-white"
-      showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
-      refreshControl={
-        <RefreshControl
-          colors={['#CCCCCC']}
-          tintColor={'#CCCCCC'}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          progressViewOffset={insets.top}
-        />
-      }>
-      <SafeAreaView>
-        <View className="mx-4 h-full">
-          <BackButton onPress={() => navigation.goBack()} />
-          <DaoAuction dao={dao} />
-          <DaoProposalsSection dao={dao} className="mt-8" />
-          <Section title="Actions" className="mt-8 mb-4">
-            {daoIsSaved ? (
-              <OutlineButton
-                onPress={saveOrUnsave}
-                text="Remove from saved"
-                icon="bookmark-slash"
-                theme="destructive"
-              />
-            ) : (
-              <OutlineButton
-                onPress={saveOrUnsave}
-                text="Save"
-                icon="bookmark"
-                theme="primary"
-              />
-            )}
-          </Section>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+    <SafeAreaView
+      style={{ backgroundColor: 'white' }}
+      edges={hasNotch() ? [] : ['top']}>
+      <ScrollView
+        className="flex flex-col h-full bg-white"
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        refreshControl={
+          <RefreshControl
+            colors={['#CCCCCC']}
+            tintColor={'#CCCCCC'}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressViewOffset={insets.top}
+          />
+        }>
+        <SafeAreaView edges={hasNotch() ? ['top'] : []}>
+          <View className="mx-4 h-full">
+            <BackButton onPress={() => navigation.goBack()} />
+            <DaoAuction dao={dao} />
+            <DaoProposalsSection dao={dao} className="mt-8" />
+            <Section title="Actions" className="mt-8 mb-4">
+              {daoIsSaved ? (
+                <OutlineButton
+                  onPress={saveOrUnsave}
+                  text="Remove from saved"
+                  icon="bookmark-slash"
+                  theme="destructive"
+                />
+              ) : (
+                <OutlineButton
+                  onPress={saveOrUnsave}
+                  text="Save"
+                  icon="bookmark"
+                  theme="primary"
+                />
+              )}
+            </Section>
+          </View>
+        </SafeAreaView>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

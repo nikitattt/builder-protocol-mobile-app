@@ -11,6 +11,7 @@ import { isAddressEqual } from 'viem'
 import useNonFinishedProposals from '../../hooks/useNonFinishedProposals'
 import { FlashList } from '@shopify/flash-list'
 import { AddressType } from '../../utils/types'
+import { hasNotch } from 'react-native-device-info'
 
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
@@ -65,77 +66,81 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
   const haveDaos = savedDaos.length > 0
 
   return (
-    <ScrollView
-      className="flex flex-col h-full bg-white"
-      showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
-      refreshControl={
-        <RefreshControl
-          colors={['#CCCCCC']}
-          tintColor={'#CCCCCC'}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          progressViewOffset={insets.top}
-        />
-      }>
-      <SafeAreaView>
-        <View className="mx-4 mt-6 flex flex-col h-full">
-          <View className="mb-3 flex flex-row items-center justify-between">
-            <Text className="text-4xl font-extrabold">Feed</Text>
+    <SafeAreaView
+      style={{ backgroundColor: 'white' }}
+      edges={hasNotch() ? [] : ['top']}>
+      <ScrollView
+        className="flex flex-col h-full bg-white"
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        refreshControl={
+          <RefreshControl
+            colors={['#CCCCCC']}
+            tintColor={'#CCCCCC'}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressViewOffset={insets.top}
+          />
+        }>
+        <SafeAreaView edges={hasNotch() ? ['top'] : []}>
+          <View className="mx-4 mt-6 flex flex-col h-full">
+            <View className="mb-3 flex flex-row items-center justify-between">
+              <Text className="text-4xl font-extrabold">Feed</Text>
+            </View>
+            {!haveDaos ? (
+              <View className="mx-auto mt-[80%] max-w-[160px] text-center">
+                <Text className="max-w-[160px] text-center">
+                  Add some DAOs to get started!
+                </Text>
+                <Text className="mt-2 text-center">⌐◨-◨</Text>
+              </View>
+            ) : isFetching ? (
+              <View className="flex flex-col gap-3">
+                {ShimmerBox(1)}
+                {ShimmerBox(0.2)}
+              </View>
+            ) : error ? (
+              <View className="mx-auto mt-[80%] max-w-[160px] text-center">
+                <Text className="max-w-[160px] text-center text-red">
+                  Couldn't load proposals
+                </Text>
+              </View>
+            ) : (
+              <FlashList
+                data={proposals}
+                estimatedItemSize={40}
+                renderItem={({ item, index }) => (
+                  <ProposalCard
+                    proposal={item}
+                    dao={
+                      savedDaos.find(dao =>
+                        isAddressEqual(
+                          dao.address as AddressType,
+                          item.dao.tokenAddress as AddressType
+                        )
+                      )!
+                    }
+                    key={`${index}-${item.dao.tokenAddress}-${item.proposalId}`}
+                  />
+                )}
+                keyExtractor={item => item.proposalId}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
+                keyboardShouldPersistTaps="handled"
+                ListEmptyComponent={
+                  <View className="mx-auto mt-[80%] max-w-[160px] text-center">
+                    <Text className="max-w-[160px] text-center">
+                      No active or pending proposals!
+                    </Text>
+                    <Text className="mt-2 text-center">⌐◨-◨</Text>
+                  </View>
+                }
+              />
+            )}
           </View>
-          {!haveDaos ? (
-            <View className="mx-auto mt-[80%] max-w-[160px] text-center">
-              <Text className="max-w-[160px] text-center">
-                Add some DAOs to get started!
-              </Text>
-              <Text className="mt-2 text-center">⌐◨-◨</Text>
-            </View>
-          ) : isFetching ? (
-            <View className="flex flex-col gap-3">
-              {ShimmerBox(1)}
-              {ShimmerBox(0.2)}
-            </View>
-          ) : error ? (
-            <View className="mx-auto mt-[80%] max-w-[160px] text-center">
-              <Text className="max-w-[160px] text-center text-red">
-                Couldn't load proposals
-              </Text>
-            </View>
-          ) : (
-            <FlashList
-              data={proposals}
-              estimatedItemSize={40}
-              renderItem={({ item, index }) => (
-                <ProposalCard
-                  proposal={item}
-                  dao={
-                    savedDaos.find(dao =>
-                      isAddressEqual(
-                        dao.address as AddressType,
-                        item.dao.tokenAddress as AddressType
-                      )
-                    )!
-                  }
-                  key={`${index}-${item.dao.tokenAddress}-${item.proposalId}`}
-                />
-              )}
-              keyExtractor={item => item.proposalId}
-              showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
-              keyboardShouldPersistTaps="handled"
-              ListEmptyComponent={
-                <View className="mx-auto mt-[80%] max-w-[160px] text-center">
-                  <Text className="max-w-[160px] text-center">
-                    No active or pending proposals!
-                  </Text>
-                  <Text className="mt-2 text-center">⌐◨-◨</Text>
-                </View>
-              }
-            />
-          )}
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+        </SafeAreaView>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

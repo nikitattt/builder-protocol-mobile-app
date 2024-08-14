@@ -55,7 +55,12 @@ export const loadImageFromUrl = async (url: string, size: number) => {
 
   const image = imageData.data
 
-  const pngBuffer = await sharp(image).resize(size).png().toBuffer()
+  const pngBuffer = await sharp(image)
+    .resize(size)
+    .png({
+      quality: 80
+    })
+    .toBuffer()
 
   return pngBuffer
 }
