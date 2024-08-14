@@ -10,8 +10,10 @@ const getData = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!url) return res.status(404).json({ message: 'Provide image url' })
 
+    const decodedUrl = decodeURIComponent(url)
+
     const size = type && type === 'thumbnail' ? 250 : 1500
-    const image = await loadImageFromUrl(url, size)
+    const image = await loadImageFromUrl(decodedUrl, size)
 
     res.setHeader('Content-Type', 'image/png')
     return res.status(200).send(image)
