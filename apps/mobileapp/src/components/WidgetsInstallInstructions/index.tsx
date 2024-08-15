@@ -31,15 +31,15 @@ const images = [
   },
   {
     image: require('../../assets/img/widgets/widget_instruction_5.png'),
-    text: 'Press and hold the widget, then click “Edit Widget” to select DAO.'
+    text: 'Press and hold the widget, then click “Edit Widget”.'
   },
   {
     image: require('../../assets/img/widgets/widget_instruction_6.png'),
-    text: 'Select you Dao from the list of your saved Daos and your are done!'
+    text: 'Select Dao for this widget and close the window.'
   },
   {
     image: require('../../assets/img/widgets/widget_instruction_7.png'),
-    text: 'You are Done!'
+    text: 'Done!'
   }
 ]
 
