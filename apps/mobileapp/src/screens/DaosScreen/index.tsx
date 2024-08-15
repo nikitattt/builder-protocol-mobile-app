@@ -16,6 +16,7 @@ import { FlashList } from '@shopify/flash-list'
 import usePrefetchNonFinishedProposals from '../../hooks/usePrefetchNonFinishedProposals'
 import useDaosForAddresses from '../../hooks/useDaosForAddresses'
 import { hasNotch } from 'react-native-device-info'
+import AppSafeAreaView from '../../components/AppSafeAreaView'
 
 const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
   const insets = useSafeAreaInsets()
@@ -80,9 +81,7 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
   const daos = searchActive && searchDaos.length > 0 ? searchDaos : savedDaos
 
   return (
-    <SafeAreaView
-      style={{ backgroundColor: 'white' }}
-      edges={hasNotch() ? [] : ['top']}>
+    <AppSafeAreaView solidStatusBar>
       <ScrollView
         className="flex flex-col h-full bg-white"
         showsVerticalScrollIndicator={false}
@@ -96,7 +95,7 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
             progressViewOffset={insets.top}
           />
         }>
-        <SafeAreaView edges={hasNotch() ? ['top'] : []}>
+        <AppSafeAreaView>
           <View className="mx-4 mt-6 flex flex-col h-full">
             <View className="mb-3 flex flex-row items-center justify-between">
               <Text className="text-4xl font-extrabold">DAOs</Text>
@@ -128,9 +127,9 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
               }
             />
           </View>
-        </SafeAreaView>
+        </AppSafeAreaView>
       </ScrollView>
-    </SafeAreaView>
+    </AppSafeAreaView>
   )
 }
 

@@ -13,6 +13,7 @@ import { QUERY_KEYS } from '../../constants/queryKeys'
 import { useQueryClient } from '@tanstack/react-query'
 import OutlineButton from '../../components/OutlineButton'
 import { hasNotch } from 'react-native-device-info'
+import AppSafeAreaView from '../../components/AppSafeAreaView'
 
 const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
   const { dao } = route.params
@@ -55,9 +56,7 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
   }, [savedDaos])
 
   return (
-    <SafeAreaView
-      style={{ backgroundColor: 'white' }}
-      edges={hasNotch() ? [] : ['top']}>
+    <AppSafeAreaView solidStatusBar>
       <ScrollView
         className="flex flex-col h-full bg-white"
         showsVerticalScrollIndicator={false}
@@ -71,7 +70,7 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
             progressViewOffset={insets.top}
           />
         }>
-        <SafeAreaView edges={hasNotch() ? ['top'] : []}>
+        <AppSafeAreaView>
           <View className="mx-4 h-full">
             <BackButton onPress={() => navigation.goBack()} />
             <DaoAuction dao={dao} />
@@ -94,9 +93,9 @@ const DaoScreen = ({ route, navigation }: RootStackScreenProps<'Dao'>) => {
               )}
             </Section>
           </View>
-        </SafeAreaView>
+        </AppSafeAreaView>
       </ScrollView>
-    </SafeAreaView>
+    </AppSafeAreaView>
   )
 }
 
