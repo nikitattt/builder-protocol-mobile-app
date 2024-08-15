@@ -86,11 +86,11 @@ const DaoCard = ({ dao }: DaoCardProps) => {
         </View>
         {migrated ? (
           <View className="ml-4 w-full h-36 flex flex-col flex-shrink">
-            <Text className="mt-3 text-xl font-bold flex-shrink leading-6 pr-6">
-              {dao.name}
+            <Text className="mt-3 text-xl font-bold flex-shrink leading-6 pr-[26px]">
+              {`${dao.name} `}
               <ChainIcon icon={chainIcon} />
             </Text>
-            <View className="mt-3 w-8/12">
+            <View className="mt-3">
               <Text className="text-sm text-grey-three">
                 This DAO has been migrated to L2.
               </Text>
@@ -110,14 +110,14 @@ const DaoCard = ({ dao }: DaoCardProps) => {
         ) : (
           <View className="ml-4 w-full h-36 flex flex-col flex-shrink justify-evenly">
             {isPending ? (
-              <Text className="text-xl font-bold flex-shrink leading-6 pr-6">
-                {dao.name}
+              <Text className="text-xl font-bold flex-shrink leading-6 pr-[26px]">
+                {`${dao.name} `}
                 <ChainIcon icon={chainIcon} />
               </Text>
             ) : (
               <Shimmer animating={isFetching}>
-                <Text className="text-xl font-bold flex-shrink leading-6 pr-6">
-                  {displayName}
+                <Text className="text-xl font-bold flex-shrink leading-6 pr-[26px]">
+                  {`${displayName} `}
                   <ChainIcon icon={chainIcon} />
                 </Text>
               </Shimmer>
@@ -162,7 +162,7 @@ export default DaoCard
 
 function ChainIcon({ icon }: { icon: any }) {
   return (
-    <View className="pl-1.5 h-5 w-5">
+    <View className="h-5 w-5">
       <Image width={20} height={20} className="mt-px h-5 w-5" source={icon} />
     </View>
   )
