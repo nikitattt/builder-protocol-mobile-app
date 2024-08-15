@@ -14,31 +14,31 @@ import Svg, { Path } from 'react-native-svg'
 
 const images = [
   {
-    image: require('../../assets/img/widgets/widget_instruction_1.jpg'),
+    image: require('../../assets/img/widgets/widget_instruction_1.png'),
     text: 'On your Home Screen, press and hold in an empty space.'
   },
   {
-    image: require('../../assets/img/widgets/widget_instruction_2.jpg'),
+    image: require('../../assets/img/widgets/widget_instruction_2.png'),
     text: 'Tap the plus button in the top left.'
   },
   {
-    image: require('../../assets/img/widgets/widget_instruction_3.jpg'),
+    image: require('../../assets/img/widgets/widget_instruction_3.png'),
     text: 'Find Builder DAOs, then choose a widget.'
   },
   {
-    image: require('../../assets/img/widgets/widget_instruction_4.jpg'),
+    image: require('../../assets/img/widgets/widget_instruction_4.png'),
     text: 'Place your widget(s), then press the Done button in the top right.'
   },
   {
-    image: require('../../assets/img/widgets/widget_instruction_5.jpg'),
+    image: require('../../assets/img/widgets/widget_instruction_5.png'),
     text: 'Press and hold the widget, then click “Edit Widget” to select DAO.'
   },
   {
-    image: require('../../assets/img/widgets/widget_instruction_6.jpg'),
+    image: require('../../assets/img/widgets/widget_instruction_6.png'),
     text: 'Select you Dao from the list of your saved Daos and your are done!'
   },
   {
-    image: require('../../assets/img/widgets/widget_instruction_7.jpg'),
+    image: require('../../assets/img/widgets/widget_instruction_7.png'),
     text: 'You are Done!'
   }
 ]
@@ -88,7 +88,7 @@ export default function WidgetInstallInstructions() {
               }}
               className="object-contain mx-auto"
             />
-            <View className="mt-auto mb-4 w-4/5">
+            <View className="mt-auto mb-8 w-4/5">
               <Text className="text-black text-xl font-bold text-center">
                 {step.text}
               </Text>
