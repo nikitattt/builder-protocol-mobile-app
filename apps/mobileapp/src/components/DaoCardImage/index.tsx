@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder'
 import Svg, { Path } from 'react-native-svg'
 import clsx from 'clsx'
-import SvgDaoImage from '../SvgDaoImage'
+import config from '../../../config'
 
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
@@ -18,14 +18,16 @@ const DaoCardImage = ({ image, imageType = 'full' }: DaoCardImageProps) => {
   const [loadError, setLoadError] = React.useState(false)
 
   const isSvg = String(image).includes('svg')
+  const url =
+    image && isSvg
+      ? `${config.app.imageEndpoint}/from-url?url=${encodeURIComponent(image)}`
+      : image
 
   return (
     <View className="bg-grey-one/60 w-full h-full">
       {image && (
         <View className="rounded-lg h-full w-full overflow-hidden">
-          {isSvg ? (
-            <SvgDaoImage image={image} />
-          ) : (
+          {
             <Image
               onError={() => setLoadError(true)}
               onLoad={() => {
@@ -33,12 +35,12 @@ const DaoCardImage = ({ image, imageType = 'full' }: DaoCardImageProps) => {
               }}
               onLoadEnd={() => setShowShimmer(false)}
               source={{
-                uri: image,
+                uri: url,
                 cache: 'force-cache'
               }}
               className="rounded-lg h-full w-full"
             />
-          )}
+          }
         </View>
       )}
       <View className="absolute w-full h-full border border-grey-three/20 z-10 rounded-lg" />

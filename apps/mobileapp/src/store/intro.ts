@@ -19,8 +19,10 @@ export enum IntroNextAction {
 interface IntroState {
   stage: IntroStage
   nextAction?: IntroNextAction
+  widgetsInstructionsModalSeen: boolean
   setState: (stage: IntroStage) => void
   setNextAction: (action: IntroNextAction) => void
+  setWidgetsInstructionsModalSeen: (seen: boolean) => void
 }
 
 export const useIntroStore = create<IntroState>()(
@@ -28,8 +30,11 @@ export const useIntroStore = create<IntroState>()(
     (set, get) => ({
       stage: IntroStage.NOT_STARTED,
       nextAction: undefined,
+      widgetsInstructionsModalSeen: false,
       setState: (stage: IntroStage) => set({ stage: stage }),
-      setNextAction: (action: IntroNextAction) => set({ nextAction: action })
+      setNextAction: (action: IntroNextAction) => set({ nextAction: action }),
+      setWidgetsInstructionsModalSeen: (seen: boolean) =>
+        set({ widgetsInstructionsModalSeen: seen })
     }),
     {
       name: 'intro',

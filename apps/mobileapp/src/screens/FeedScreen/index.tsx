@@ -12,6 +12,7 @@ import useNonFinishedProposals from '../../hooks/useNonFinishedProposals'
 import { FlashList } from '@shopify/flash-list'
 import { AddressType } from '../../utils/types'
 import { hasNotch } from 'react-native-device-info'
+import AppSafeAreaView from '../../components/AppSafeAreaView'
 
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
@@ -66,9 +67,7 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
   const haveDaos = savedDaos.length > 0
 
   return (
-    <SafeAreaView
-      style={{ backgroundColor: 'white' }}
-      edges={hasNotch() ? [] : ['top']}>
+    <AppSafeAreaView solidStatusBar>
       <ScrollView
         className="flex flex-col h-full bg-white"
         showsVerticalScrollIndicator={false}
@@ -82,7 +81,7 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
             progressViewOffset={insets.top}
           />
         }>
-        <SafeAreaView edges={hasNotch() ? ['top'] : []}>
+        <AppSafeAreaView>
           <View className="mx-4 mt-6 flex flex-col h-full">
             <View className="mb-3 flex flex-row items-center justify-between">
               <Text className="text-4xl font-extrabold">Feed</Text>
@@ -138,9 +137,9 @@ const FeedScreen = ({ route, navigation }: HomeTabScreenProps<'Feed'>) => {
               />
             )}
           </View>
-        </SafeAreaView>
+        </AppSafeAreaView>
       </ScrollView>
-    </SafeAreaView>
+    </AppSafeAreaView>
   )
 }
 
