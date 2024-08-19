@@ -25,6 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
     other: {
       'fc:frame': 'vNext',
       'fc:frame:image': `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/img/frame-image.jpg`,
+      'fc:frame:image:aspect_ratio': '1:1',
       'fc:frame:button:1': 'Install on iOS',
       'fc:frame:button:1:action': 'link',
       'fc:frame:button:1:target':
