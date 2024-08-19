@@ -5,6 +5,8 @@ import SolidButton from '../SolidButton'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useIntroStore } from '../../store/intro'
 import { useNavigation } from '@react-navigation/native'
+import { track } from '../../utils/track'
+import Svg, { Path } from 'react-native-svg'
 
 export default function AppModals({ children }: { children: React.ReactNode }) {
   const navigation = useNavigation()
@@ -27,12 +29,14 @@ export default function AppModals({ children }: { children: React.ReactNode }) {
 
     if (widgetInstructionsModalVisible) {
       setWidgetsInstructionsModalSeen(true)
+      track('Widgets Install Info Modal Dismissed')
     }
   }
 
   useEffect(() => {
     if (!widgetsInstructionsModalSeen && numberOfAppOpens === 2) {
       setWidgetInstructionsModalVisible(true)
+      track('Widgets Install Info Modal Showed')
     }
   }, [widgetsInstructionsModalSeen, numberOfAppOpens])
 
@@ -52,6 +56,9 @@ export default function AppModals({ children }: { children: React.ReactNode }) {
               style={{
                 marginBottom: insets.bottom
               }}>
+              <View className="absolute top-3 right-3">
+                <CloseButton onPress={closeAndReset} />
+              </View>
               <View className="flex flex-col p-4">
                 <Text className="text-2xl font-bold text-center w-8/12 mx-auto">
                   Have you tried the widgets yet?
@@ -82,5 +89,25 @@ export default function AppModals({ children }: { children: React.ReactNode }) {
       </Modal>
       {children}
     </View>
+  )
+}
+
+function CloseButton({ onPress }: { onPress: () => void }) {
+  return (
+    <Pressable onPress={onPress}>
+      <View className="bg-grey-one rounded-full p-1">
+        <Svg
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          className="h-6 w-6 stroke-grey-three">
+          <Path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </Svg>
+      </View>
+    </Pressable>
   )
 }
