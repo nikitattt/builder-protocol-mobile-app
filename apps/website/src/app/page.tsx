@@ -1,5 +1,45 @@
 import GithubLink from '@/components/github'
 import MadeBy from '@/components/madeBy'
+import { Metadata } from 'next'
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Builder Mobile App',
+    description:
+      'All your Builder Daos in the pocket. Track proposals and auctions. Vote and bid.',
+    openGraph: {
+      url: 'https://builderapp.wtf',
+      images: 'https://builderapp.wtf/img/og-image.png',
+      title: 'Builder Mobile App',
+      description:
+        'All your Builder Daos in the pocket. Track proposals and auctions. Vote and bid.'
+    },
+    twitter: {
+      title: 'Builder Mobile App',
+      description:
+        'All your Builder Daos in the pocket. Track proposals and auctions. Vote and bid.',
+      card: 'summary_large_image',
+      creator: '@iamng_eth',
+      images: ['https://builderapp.wtf/img/og-image.png']
+    },
+    other: {
+      'fc:frame': 'vNext',
+      'fc:frame:image': `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/img/frame-image.jpg`,
+      'fc:frame:image:aspect_ratio': '1:1',
+      'fc:frame:button:1': 'Install on iOS',
+      'fc:frame:button:1:action': 'link',
+      'fc:frame:button:1:target':
+        'https://apps.apple.com/us/app/builder-daos/id6450520394',
+      'fc:frame:button:2': 'Website',
+      'fc:frame:button:2:action': 'link',
+      'fc:frame:button:2:target': 'https://builderapp.wtf/',
+      'fc:frame:button:3': 'Share',
+      'fc:frame:button:3:action': 'link',
+      'fc:frame:button:3:target':
+        'https://warpcast.com/~/compose?text=This+Builder+app+is+awesome%21+I+use+it+to+track+everything+in+my+Dao.&embeds[]=https://builderapp.wtf/'
+    }
+  }
+}
 
 export default function Home() {
   return (
