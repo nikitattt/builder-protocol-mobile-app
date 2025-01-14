@@ -73,10 +73,14 @@ const getData = async (req: Request, res: Response, next: NextFunction) => {
         const auctionBidder = auctionData.highestBid.bidder
         const auctionAmount = formatEther(auctionData.highestBid.amount)
 
-        const ens = await client.getEnsName({
-          address: auctionBidder
-        })
-        bidder = ens ? shortENS(ens) : shortAddress(auctionBidder)
+        try {
+          const ens = await client.getEnsName({
+            address: auctionBidder
+          })
+          bidder = ens ? shortENS(ens) : shortAddress(auctionBidder)
+        } catch {
+          bidder = shortAddress(auctionBidder)
+        }
 
         amount = auctionAmount
       }
