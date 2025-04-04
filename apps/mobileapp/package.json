@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "postinstall": "rn-nodeify --install 'assert,buffer,process,stream,crypto,process,stream,events,net,http,https,zlib,url,fs,path,os,tls' --hack",
+    "postinstall": "rn-nodeify --install 'assert,buffer,process,stream,crypto,process,stream,events,net,http,https,zlib,url,fs,path,os,tls' --hack && node ./scripts/patch-gradle.js",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {

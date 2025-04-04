@@ -1,4 +1,4 @@
-package com.nouns.ng.builder
+package com.mobileapp
 
 import android.app.Application
 import com.facebook.react.PackageList
