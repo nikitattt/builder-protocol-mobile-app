@@ -88,7 +88,11 @@ const App = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" hidden={false} />
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor="white"
+      />
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <NavigationContainer>
