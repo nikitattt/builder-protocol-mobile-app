@@ -30,7 +30,7 @@ export default function SaveDaoIconButton({
       if (daoInSearch) {
         removeFromSaved(dao.address)
       } else {
-        Alert.prompt(
+        Alert.alert(
           'Remove Dao',
           `Are you sure you want to remove ${dao.name} from saved?`,
           [
@@ -44,8 +44,7 @@ export default function SaveDaoIconButton({
               onPress: () => removeFromSaved(dao.address),
               style: 'destructive'
             }
-          ],
-          'default'
+          ]
         )
       }
     } else {
