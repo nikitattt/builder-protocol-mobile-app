@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { SearchDao, useDaoSearchStore } from '../../store/daoSearch'
 import { SavedDao } from '../../store/daos'
@@ -11,8 +11,8 @@ import useAuction from '../../hooks/useAuction'
 import SaveDaoIconButton from '../SaveDaoIconButton'
 import { formatBid } from '../../utils/format'
 import useDaoMigrated from '../../hooks/useDaoMigrated'
-import Shimmer from 'react-native-shimmer'
 import { CHAIN_ICON, PUBLIC_CHAINS } from '../../constants/chains'
+import AppShimmer from '../AppShimmer'
 
 type DaoCardProps = {
   dao: SavedDao | SearchDao
@@ -115,12 +115,12 @@ const DaoCard = ({ dao }: DaoCardProps) => {
                 <ChainIcon icon={chainIcon} />
               </Text>
             ) : (
-              <Shimmer animating={isFetching}>
+              <AppShimmer animating={isFetching}>
                 <Text className="text-xl font-bold flex-shrink leading-6 pr-[26px]">
                   {`${displayName} `}
                   <ChainIcon icon={chainIcon} />
                 </Text>
-              </Shimmer>
+              </AppShimmer>
             )}
             <View className="flex flex-col gap-0.5">
               <View>
@@ -128,11 +128,11 @@ const DaoCard = ({ dao }: DaoCardProps) => {
                 {isPending ? (
                   <View className="bg-grey-one rounded-md h-5 w-16" />
                 ) : (
-                  <Shimmer animating={isFetching}>
+                  <AppShimmer animating={isFetching}>
                     <Text className="text-base font-bold text-black">
                       {bid}
                     </Text>
-                  </Shimmer>
+                  </AppShimmer>
                 )}
               </View>
               <View className="">
@@ -140,13 +140,13 @@ const DaoCard = ({ dao }: DaoCardProps) => {
                 {isPending ? (
                   <View className="bg-grey-one rounded-md h-5 w-24" />
                 ) : (
-                  <Shimmer animating={isFetching}>
+                  <AppShimmer animating={isFetching}>
                     <Countdown
                       timestamp={auction.endTime}
                       style="text-base font-bold text-black"
                       endText="Ended"
                     />
-                  </Shimmer>
+                  </AppShimmer>
                 )}
               </View>
             </View>
@@ -160,10 +160,10 @@ const DaoCard = ({ dao }: DaoCardProps) => {
 
 export default DaoCard
 
-function ChainIcon({ icon }: { icon: any }) {
+const ChainIcon = memo(function ChainIcon({ icon }: { icon: any }) {
   return (
-    <View className="h-5 w-5">
+    <Text className="relative">
       <Image width={20} height={20} className="mt-px h-5 w-5" source={icon} />
-    </View>
+    </Text>
   )
-}
+})

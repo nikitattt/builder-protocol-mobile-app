@@ -4,7 +4,7 @@ import { useEnsAvatar, useEnsName } from 'wagmi'
 import { shortAddress } from '../../utils/address'
 import { formatBid } from '../../utils/format'
 import { AddressType } from '../../utils/types'
-import Shimmer from 'react-native-shimmer'
+import AppShimmer from '../AppShimmer'
 
 type BidProps = {
   address: string
@@ -34,9 +34,9 @@ const Bid = ({ address, bid, className, isFetching }: BidProps) => {
         className
       )}>
       {noBid ? (
-        <Shimmer animating={isFetching} className="my-auto">
+        <AppShimmer animating={isFetching} className="my-auto">
           <Text className="my-auto">No bids!</Text>
-        </Shimmer>
+        </AppShimmer>
       ) : (
         <View className="-ml-1 h-full flex flex-row items-center justify-between">
           <View className="flex flex-row text-center items-center">
@@ -48,13 +48,13 @@ const Bid = ({ address, bid, className, isFetching }: BidProps) => {
                 }}
               />
             )}
-            <Shimmer animating={isFetching}>
+            <AppShimmer animating={isFetching}>
               <Text className="text-black ml-1">{displayName}</Text>
-            </Shimmer>
+            </AppShimmer>
           </View>
-          <Shimmer animating={isFetching}>
+          <AppShimmer animating={isFetching}>
             <Text className="text-black">{displayBid}</Text>
-          </Shimmer>
+          </AppShimmer>
         </View>
       )}
     </View>
