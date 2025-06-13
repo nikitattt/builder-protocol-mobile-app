@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Image, Modal, Pressable, Text, View } from 'react-native'
+import { Image, Modal, Platform, Pressable, Text, View } from 'react-native'
 import { useUsageStore } from '../../store/usage'
 import SolidButton from '../SolidButton'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -34,7 +34,11 @@ export default function AppModals({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    if (!widgetsInstructionsModalSeen && numberOfAppOpens === 2) {
+    if (
+      !widgetsInstructionsModalSeen &&
+      numberOfAppOpens === 2 &&
+      Platform.OS !== 'android'
+    ) {
       setWidgetInstructionsModalVisible(true)
       track('Widgets Install Info Modal Showed')
     }

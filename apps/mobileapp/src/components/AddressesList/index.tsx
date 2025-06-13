@@ -26,7 +26,8 @@ const ListElement = ({
   })
 
   const removeAddress = (address: string) => {
-    Alert.prompt(
+    console.log('removeAddress', address)
+    Alert.alert(
       'Remove Address',
       `Are you sure you want to remove ${ens ?? shortAddress(address)}?`,
       [
@@ -37,11 +38,10 @@ const ListElement = ({
         },
         {
           text: 'Remove',
-          onPress: () => removeManualAddress(address),
+          onPress: () => removeManualAddress(address as `0x${string}`),
           style: 'destructive'
         }
-      ],
-      'default'
+      ]
     )
   }
 

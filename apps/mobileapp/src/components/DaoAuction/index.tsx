@@ -7,7 +7,7 @@ import { formatBid } from '../../utils/format'
 import DaoCardImage from '../DaoCardImage'
 import Countdown from '../Countdown'
 import Bid from '../Bid'
-import Shimmer from 'react-native-shimmer'
+import AppShimmer from '../AppShimmer'
 import useDaoMigrated from '../../hooks/useDaoMigrated'
 import Svg, { Path } from 'react-native-svg'
 import { SavedDao, useDaosStore } from '../../store/daos'
@@ -73,29 +73,29 @@ export default function DaoAuction({ dao, className }: ProposalsSectionProps) {
         <DaoCardImage image={auction?.token.image ?? undefined} />
       </View>
       <View className="mt-4">
-        <Shimmer animating={isFetching}>
+        <AppShimmer animating={isFetching}>
           <Text className="text-3xl font-bold flex-shrink leading-7 pt-2">
             {displayName}
           </Text>
-        </Shimmer>
+        </AppShimmer>
         <View className="mt-3 flex flex-row">
           <View className="w-1/2">
             <Text className="text-grey-three">Highest Bid</Text>
-            <Shimmer animating={isFetching}>
+            <AppShimmer animating={isFetching}>
               <Text className="text-xl font-bold text-black flex-shrink leading-5 pt-1.5">
                 {bid}
               </Text>
-            </Shimmer>
+            </AppShimmer>
           </View>
           <View className="w-1/2 pl-[10%]">
             <Text className="text-grey-three">Ends In</Text>
-            <Shimmer animating={isFetching}>
+            <AppShimmer animating={isFetching}>
               <Countdown
                 timestamp={auction?.endTime}
                 style="text-xl font-bold text-black"
                 endText="Ended"
               />
-            </Shimmer>
+            </AppShimmer>
           </View>
         </View>
         <Bid

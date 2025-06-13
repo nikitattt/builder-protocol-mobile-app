@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { Pressable, Text, TouchableOpacity, View } from 'react-native'
+import { Platform, Pressable, Text, TouchableOpacity, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 import Section from '../Section'
 import SolidButton from '../SolidButton'
@@ -11,6 +11,10 @@ type WidgetsSectionProps = {
 
 const WidgetsSection = ({ className }: WidgetsSectionProps) => {
   const navigation = useNavigation()
+
+  if (Platform.OS === 'android') {
+    return null
+  }
 
   return (
     <Section title="Widgets" className={className}>

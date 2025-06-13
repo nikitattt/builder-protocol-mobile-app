@@ -106,12 +106,7 @@ const DaosScreen = ({ route, navigation }: HomeTabScreenProps<'Daos'>) => {
               <FlashList
                 data={daos}
                 estimatedItemSize={50}
-                renderItem={({ item }) => (
-                  <DaoCard
-                    key={`${item.name}-${item.chainId}-${item.address}`}
-                    dao={item}
-                  />
-                )}
+                renderItem={({ item }) => <DaoCard dao={item} />}
                 keyExtractor={item =>
                   `${item.name}-${item.chainId}-${item.address}`
                 }
