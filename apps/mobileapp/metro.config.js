@@ -44,7 +44,7 @@ const config = {
                 inlineRequires: true,
             },
         }),
-    },
+    }
 };
 
 module.exports = mergeConfig(defaultConfig, config);
