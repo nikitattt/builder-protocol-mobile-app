@@ -1,5 +1,6 @@
 package com.mobileapp.widgets.common.ui
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -16,46 +17,96 @@ import androidx.glance.text.TextStyle
 import com.mobileapp.widgets.models.ProposalData
 import java.util.concurrent.TimeUnit
 import androidx.glance.color.ColorProvider
+import androidx.glance.layout.Box
+import androidx.glance.background
+import com.mobileapp.R
+import androidx.glance.appwidget.cornerRadius
+import androidx.glance.unit.ColorProvider
 
 @Composable
-fun ProposalView(proposal: ProposalData, isLightTheme: Boolean) {
+fun ProposalView(proposal: ProposalData) {
     val endsIn = getRelativeTime(proposal.endTime)
     val isActive = proposal.state == "ACTIVE"
 
     val stateText = if (isActive) "Active" else "Pending"
-    val stateColor = if (isActive) Color(0xFF1DB087) else Color(0xFF8C8C8C)
-    val stateBorderColor = stateColor.copy(alpha = 0.3f)
+    val stateColor = if (isActive) {
+        ColorProvider(Color(0xFF1DB087))
+    } else {
+        ColorProvider(Color(0xFF8C8C8C))
+    }
+    val stateBorderColor = if (isActive) {
+        ColorProvider(Color(0x4D1DB087))
+    } else {
+        ColorProvider(Color(0x4D8C8C8C))
+    }
 
     val timePrefix = if (isActive) "Ends" else "Starts"
     val timeLeft = (proposal.endTime * 1000 - System.currentTimeMillis()).coerceAtLeast(0.0)
     val isEndingSoon = timeLeft <= TimeUnit.HOURS.toMillis(12) && isActive
-    val timeColor = if (isEndingSoon) Color(0xFFF03232) else Color(0xFF8C8C8C)
-    val timeBorderColor = if (isEndingSoon) timeColor.copy(alpha = 0.3f) else if (isLightTheme) Color(0xFFCCCCCC) else Color(0xFF333333)
+    val timeColor = if (isEndingSoon) {
+        ColorProvider(Color(0xFFF03232))
+    } else {
+        ColorProvider(Color(0xFF8C8C8C))
+    }
+    val timeBorderColor = if (isEndingSoon) {
+        ColorProvider(Color(0x4DF03232))
+    } else {
+        ColorProvider(Color(0xFFCCCCCC), Color(0xFF333333))
+    }
 
-    val ordinaryBorderColor = if (isLightTheme) Color(0xFFCCCCCC) else Color(0xFF333333)
+    val ordinaryBorderColor = ColorProvider(Color(0xFFCCCCCC), Color(0xFF333333))
 
-    Column(modifier = GlanceModifier.padding(vertical = 4.dp)) {
+    Column(modifier = GlanceModifier.padding(vertical = 2.dp)) {
         Text(
             text = "${proposal.number} • ${proposal.title}",
-            style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Medium, color = ColorProvider(Color.Black, Color.White)),
+            style = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                color = ColorProvider(Color.Black, Color.White)
+            ),
             maxLines = 1
         )
-        Row(modifier = GlanceModifier.padding(top = 4.dp)) {
-            BoxText(text = stateText, textColor = stateColor, borderColor = stateBorderColor)
+        Row(modifier = GlanceModifier.padding(top = 1.dp)) {
+            BoxText(
+                text = stateText,
+                textColor = stateColor,
+                borderColor = stateBorderColor
+            )
+
             Spacer(modifier = GlanceModifier.width(4.dp))
-            BoxText(text = "$timePrefix $endsIn", textColor = timeColor, borderColor = timeBorderColor)
+            BoxText(
+                text = "$timePrefix $endsIn",
+                textColor = timeColor,
+                borderColor = timeBorderColor
+            )
+
             if (isActive && proposal.votes != null) {
                 Spacer(modifier = GlanceModifier.width(6.dp))
-                BoxText(text = proposal.votes.yes.toString(), textColor = Color(0xFF1DB087), borderColor = Color(0x4D1DB087))
+                BoxText(
+                    text = proposal.votes.yes.toString(),
+                    textColor = ColorProvider(Color(0xFF1DB087)),
+                    borderColor = ColorProvider(Color(0x4D1DB087))
+                )
+
                 Spacer(modifier = GlanceModifier.width(4.dp))
-                BoxText(text = proposal.votes.abstain.toString(), textColor = Color(0xFF8C8C8C), borderColor = ordinaryBorderColor)
+                BoxText(
+                    text = proposal.votes.abstain.toString(),
+                    textColor = ColorProvider(Color(0xFF8C8C8C)),
+                    borderColor = ordinaryBorderColor
+                )
+
                 Spacer(modifier = GlanceModifier.width(4.dp))
-                BoxText(text = proposal.votes.no.toString(), textColor = Color(0xFFF03232), borderColor = Color(0x4DF03232))
+                BoxText(
+                    text = proposal.votes.no.toString(),
+                    textColor = ColorProvider(Color(0xFFF03232)),
+                    borderColor = ColorProvider(Color(0x4DF03232))
+                )
+
                 Spacer(modifier = GlanceModifier.width(6.dp))
                 BoxText(
                     text = proposal.quorum.toString(),
                     prefix = "Quorum:",
-                    textColor = Color(0xFF8C8C8C),
+                    textColor = ColorProvider(Color(0xFF8C8C8C)),
                     borderColor = ordinaryBorderColor,
                     prefixColor = ordinaryBorderColor
                 )
@@ -67,31 +118,43 @@ fun ProposalView(proposal: ProposalData, isLightTheme: Boolean) {
 @Composable
 private fun BoxText(
     text: String,
-    textColor: Color,
-    borderColor: Color,
+    textColor: ColorProvider,
+    borderColor: ColorProvider,
     prefix: String? = null,
-    prefixColor: Color? = null
+    prefixColor: ColorProvider? = null
 ) {
-    Row(
+    Box(
         modifier = GlanceModifier
-//            .border(1.dp, ColorProvider(borderColor, borderColor))
-            .padding(horizontal = 3.dp, vertical = 2.dp)
+            .background(borderColor)
+            .padding(all = 1.dp)
+            .cornerRadius(4.dp)
     ) {
-        prefix?.let {
+        Row(
+            modifier = GlanceModifier
+                .background(ColorProvider(Color.White, Color.Black))
+                .padding(horizontal = 3.dp, vertical = 2.dp)
+                .cornerRadius(3.dp)
+        ) {
+            prefix?.let {
+                Text(
+                    text = it,
+                    style = TextStyle(
+                        color = prefixColor ?: textColor,
+                        fontSize = 8.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = GlanceModifier.padding(end = 1.dp)
+                )
+            }
             Text(
-                text = it,
+                text = text,
                 style = TextStyle(
-                    color = ColorProvider(prefixColor ?: textColor, prefixColor ?: textColor),
+                    color = textColor,
                     fontSize = 8.sp,
                     fontWeight = FontWeight.Bold
-                ),
-                modifier = GlanceModifier.padding(end = 1.dp)
+                )
             )
         }
-        Text(
-            text = text,
-            style = TextStyle(color = ColorProvider(textColor, textColor), fontSize = 8.sp, fontWeight = FontWeight.Bold)
-        )
     }
 }
 

@@ -157,7 +157,7 @@ object GovernanceWidget : GlanceAppWidget() {
             } else {
                 LazyColumn {
                     items(proposals) { proposal ->
-                        ProposalView(proposal = proposal, isLightTheme = false)
+                        ProposalView(proposal = proposal)
                     }
                 }
             }
