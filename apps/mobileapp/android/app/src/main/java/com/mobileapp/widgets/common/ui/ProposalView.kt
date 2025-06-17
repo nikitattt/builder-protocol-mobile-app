@@ -22,9 +22,14 @@ import androidx.glance.background
 import com.mobileapp.R
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.unit.ColorProvider
+import androidx.glance.layout.Alignment
+
+enum class ProposalDisplayType {
+    COMPACT, FULL
+}
 
 @Composable
-fun ProposalView(proposal: ProposalData) {
+fun ProposalView(proposal: ProposalData, displayType: ProposalDisplayType = ProposalDisplayType.FULL) {
     val endsIn = getRelativeTime(proposal.endTime)
     val isActive = proposal.state == "ACTIVE"
 
@@ -56,62 +61,88 @@ fun ProposalView(proposal: ProposalData) {
 
     val ordinaryBorderColor = ColorProvider(Color(0xFFCCCCCC), Color(0xFF333333))
 
-    Column(modifier = GlanceModifier.padding(vertical = 2.dp)) {
-        Text(
-            text = "${proposal.number} • ${proposal.title}",
-            style = TextStyle(
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Medium,
-                color = ColorProvider(Color.Black, Color.White)
-            ),
-            maxLines = 1
-        )
-        Row(modifier = GlanceModifier.padding(top = 1.dp)) {
-            BoxText(
-                text = stateText,
-                textColor = stateColor,
-                borderColor = stateBorderColor
-            )
-
-            Spacer(modifier = GlanceModifier.width(4.dp))
-            BoxText(
-                text = "$timePrefix $endsIn",
-                textColor = timeColor,
-                borderColor = timeBorderColor
-            )
-
-            if (isActive && proposal.votes != null) {
-                Spacer(modifier = GlanceModifier.width(6.dp))
-                Row {
+    when (displayType) {
+        ProposalDisplayType.FULL -> {
+            Column(modifier = GlanceModifier.padding(vertical = 2.dp)) {
+                Text(
+                    text = "${proposal.number} • ${proposal.title}",
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = ColorProvider(Color.Black, Color.White)
+                    ),
+                    maxLines = 1
+                )
+                Row(modifier = GlanceModifier.padding(top = 1.dp)) {
                     BoxText(
-                        text = proposal.votes.yes.toString(),
-                        textColor = ColorProvider(Color(0xFF1DB087)),
-                        borderColor = ColorProvider(Color(0x4D1DB087))
+                        text = stateText,
+                        textColor = stateColor,
+                        borderColor = stateBorderColor
                     )
 
                     Spacer(modifier = GlanceModifier.width(4.dp))
                     BoxText(
-                        text = proposal.votes.abstain.toString(),
-                        textColor = ColorProvider(Color(0xFF8C8C8C)),
-                        borderColor = ordinaryBorderColor
+                        text = "$timePrefix $endsIn",
+                        textColor = timeColor,
+                        borderColor = timeBorderColor
                     )
 
-                    Spacer(modifier = GlanceModifier.width(4.dp))
-                    BoxText(
-                        text = proposal.votes.no.toString(),
-                        textColor = ColorProvider(Color(0xFFF03232)),
-                        borderColor = ColorProvider(Color(0x4DF03232))
-                    )
+                    if (isActive && proposal.votes != null) {
+                        Spacer(modifier = GlanceModifier.width(6.dp))
+                        Row {
+                            BoxText(
+                                text = proposal.votes.yes.toString(),
+                                textColor = ColorProvider(Color(0xFF1DB087)),
+                                borderColor = ColorProvider(Color(0x4D1DB087))
+                            )
 
-                    Spacer(modifier = GlanceModifier.width(6.dp))
-                    BoxText(
-                        text = proposal.quorum.toString(),
-                        prefix = "Quorum:",
-                        textColor = ColorProvider(Color(0xFF8C8C8C)),
-                        borderColor = ordinaryBorderColor,
-                        prefixColor = ordinaryBorderColor
-                    )
+                            Spacer(modifier = GlanceModifier.width(4.dp))
+                            BoxText(
+                                text = proposal.votes.abstain.toString(),
+                                textColor = ColorProvider(Color(0xFF8C8C8C)),
+                                borderColor = ordinaryBorderColor
+                            )
+
+                            Spacer(modifier = GlanceModifier.width(4.dp))
+                            BoxText(
+                                text = proposal.votes.no.toString(),
+                                textColor = ColorProvider(Color(0xFFF03232)),
+                                borderColor = ColorProvider(Color(0x4DF03232))
+                            )
+
+                            Spacer(modifier = GlanceModifier.width(6.dp))
+                            BoxText(
+                                text = proposal.quorum.toString(),
+                                prefix = "Quorum:",
+                                textColor = ColorProvider(Color(0xFF8C8C8C)),
+                                borderColor = ordinaryBorderColor,
+                                prefixColor = ordinaryBorderColor
+                            )
+                        }
+                    }
                 }
+            }
+        }
+        ProposalDisplayType.COMPACT -> {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = GlanceModifier.padding(vertical = 2.dp)
+            ) {
+                BoxText(
+                    text = "$timePrefix $endsIn",
+                    textColor = timeColor,
+                    borderColor = timeBorderColor
+                )
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                Text(
+                    text = proposal.title,
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = ColorProvider(Color.Black, Color.White)
+                    ),
+                    maxLines = 1
+                )
             }
         }
     }

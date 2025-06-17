@@ -28,6 +28,7 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.mobileapp.widgets.common.WidgetDataLoader
+import com.mobileapp.widgets.common.ui.ProposalDisplayType
 import com.mobileapp.widgets.common.ui.ProposalView
 import com.mobileapp.widgets.models.ProposalData
 import com.mobileapp.widgets.storage.WidgetPreferences
