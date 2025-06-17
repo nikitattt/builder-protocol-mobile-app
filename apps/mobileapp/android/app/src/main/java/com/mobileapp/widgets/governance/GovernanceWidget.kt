@@ -21,6 +21,7 @@ import androidx.glance.layout.Column
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.text.FontWeight
@@ -59,8 +60,7 @@ object GovernanceWidget : GlanceAppWidget() {
         }
 
         provideContent {
-            val isLightTheme = isLightTheme() // You'll need to implement this based on your app's theme logic
-            WidgetShell(isLightTheme = isLightTheme) {
+            WidgetShell {
                 when {
                     daoAddress == null || daoName == null || chainId == null -> {
                         NotConfiguredState()
@@ -71,8 +71,7 @@ object GovernanceWidget : GlanceAppWidget() {
                         } else {
                             Content(
                                 daoName = daoName,
-                                proposals = proposals,
-                                isLightTheme = isLightTheme
+                                proposals = proposals
                             )
                         }
                     }
@@ -87,43 +86,78 @@ object GovernanceWidget : GlanceAppWidget() {
     }
 
     @Composable
-    private fun Content(daoName: String, proposals: List<ProposalData>, isLightTheme: Boolean) {
+    private fun Content(daoName: String, proposals: List<ProposalData>) {
         val activeProps = proposals.count { it.state == "ACTIVE" }
         val pendingProps = proposals.count { it.state == "PENDING" }
 
         Column(modifier = GlanceModifier.fillMaxSize()) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(modifier = GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = daoName,
-                    style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = ColorProvider(Color.Black, Color.White)
+                    )
                 )
                 Spacer(modifier = GlanceModifier.defaultWeight())
                 if (activeProps > 0) {
-                    Text("Active", style = TextStyle(fontSize = 12.sp, color = ColorProvider(Color.DarkGray, Color.DarkGray)))
-                    Text(activeProps.toString(), style = TextStyle(fontSize = 12.sp))
+                    Text(
+                        "Active",
+                        modifier = GlanceModifier.padding(end = 4.dp),
+                        style = TextStyle(
+                            fontSize = 12.sp, 
+                            color = ColorProvider(Color(0xFF8C8C8C), Color(0xFF8C8C8C))
+                        )
+                    )
+                    Text(
+                        activeProps.toString(),
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            color = ColorProvider(Color.Black, Color.White)
+                        )
+                    )
                 }
                 if (pendingProps > 0) {
-                    Text("Pending", style = TextStyle(fontSize = 12.sp, color = ColorProvider(Color.DarkGray, Color.DarkGray)))
-                    Text(pendingProps.toString(), style = TextStyle(fontSize = 12.sp))
+                    Text(
+                        "Pending",
+                        modifier = GlanceModifier.padding(end = 4.dp, start = 8.dp),
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            color = ColorProvider(Color(0xFF8C8C8C), Color(0xFF8C8C8C))
+                        )
+                    )
+                    Text(
+                        pendingProps.toString(),
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            color = ColorProvider(Color.Black, Color.White)
+                        )
+                    )
                 }
             }
+
             Spacer(modifier = GlanceModifier.height(4.dp))
-            // Divider not directly available, use a Box with a background color
             Box(
                 modifier = GlanceModifier
                     .height(1.dp)
-                    .background(ColorProvider(Color(0xFFE5E5E5), Color(0xFF333333)))
+                    .background(ColorProvider(Color(0xFFCCCCCC), Color(0xFF141414)))
+                    .fillMaxWidth()
             ) {}
             Spacer(modifier = GlanceModifier.height(4.dp))
+
             if (proposals.isEmpty()) {
                 Text(
                     "All done. No Active or Pending props ⌐◨-◨",
-                    style = TextStyle(fontSize = 12.sp)
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        color = ColorProvider(Color.Black, Color.White)
+                    )
                 )
             } else {
                 LazyColumn {
                     items(proposals) { proposal ->
-                        ProposalView(proposal = proposal, isLightTheme = isLightTheme)
+                        ProposalView(proposal = proposal, isLightTheme = false)
                     }
                 }
             }
@@ -136,7 +170,13 @@ object GovernanceWidget : GlanceAppWidget() {
             modifier = GlanceModifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Tap and hold to set up widget", style = TextStyle(fontWeight = FontWeight.Bold))
+            Text(
+                "Error happened. Please add widget again.",
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(Color.Black, Color.White)
+                )
+            )
         }
     }
 
@@ -146,12 +186,18 @@ object GovernanceWidget : GlanceAppWidget() {
             modifier = GlanceModifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Error happened", style = TextStyle(fontWeight = FontWeight.Bold))
+            Text(
+                "Error happened",
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(Color.Black, Color.White)
+                )
+            )
         }
     }
 
     @Composable
-    private fun WidgetShell(isLightTheme: Boolean, content: @Composable () -> Unit) {
+    private fun WidgetShell(content: @Composable () -> Unit) {
         Box(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -161,15 +207,8 @@ object GovernanceWidget : GlanceAppWidget() {
             content()
         }
     }
-    
-    // A placeholder for your theme detection logic
-    @Composable
-    private fun isLightTheme(): Boolean {
-        // In a real app, you would check the system's theme.
-        // For Glance, this can be complex. Starting with a default.
-        return true
-    }
 }
+
 private fun GlanceId.toInt(): Int {
     val idString = this.toString()
         .substringAfter("appWidgetId=")
