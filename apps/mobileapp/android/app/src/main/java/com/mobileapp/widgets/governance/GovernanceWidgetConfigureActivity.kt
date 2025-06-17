@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,14 +15,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.glance.GlanceModifier
 import androidx.glance.appwidget.AppWidgetId
 import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.updateAll
+import androidx.glance.background
+import androidx.glance.layout.padding
+import androidx.glance.unit.ColorProvider
 import androidx.lifecycle.lifecycleScope
 import com.mobileapp.widgets.storage.WidgetPreferences
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 
 class GovernanceWidgetConfigureActivity : ComponentActivity() {
 
@@ -99,22 +109,26 @@ class GovernanceWidgetConfigureActivity : ComponentActivity() {
 @Composable
 fun ConfigureUi(daos: List<DAOData>, onDaoSelected: (DAOData) -> Unit) {
     MaterialTheme {
-        Surface {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text("Select a DAO", style = MaterialTheme.typography.headlineMedium)
-                Spacer(modifier = Modifier.height(16.dp))
-                LazyColumn {
-                    items(daos) { dao ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { onDaoSelected(dao) }
-                                .padding(vertical = 8.dp)
-                        ) {
-                            Text(dao.name, style = MaterialTheme.typography.bodyLarge)
-                        }
-                        Divider()
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text("Select DAO", style = MaterialTheme.typography.headlineLarge)
+            Spacer(modifier = Modifier.height(16.dp))
+            LazyColumn {
+                items(daos) { dao ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(color = Color.LightGray)
+                            .clickable { onDaoSelected(dao) }
+                    ) {
+                        Text(
+                            dao.name,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.Black,
+                            modifier = Modifier.padding(vertical = 20.dp, horizontal = 12.dp)
+                        )
                     }
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
             }
         }
