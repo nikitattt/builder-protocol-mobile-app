@@ -109,26 +109,28 @@ class GovernanceWidgetConfigureActivity : ComponentActivity() {
 @Composable
 fun ConfigureUi(daos: List<DAOData>, onDaoSelected: (DAOData) -> Unit) {
     MaterialTheme {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text("Select DAO", style = MaterialTheme.typography.headlineLarge)
-            Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn {
-                items(daos) { dao ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(color = Color.LightGray)
-                            .clickable { onDaoSelected(dao) }
-                    ) {
-                        Text(
-                            dao.name,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.Black,
-                            modifier = Modifier.padding(vertical = 20.dp, horizontal = 12.dp)
-                        )
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Select DAO", style = MaterialTheme.typography.headlineLarge)
+                Spacer(modifier = Modifier.height(16.dp))
+                LazyColumn {
+                    items(daos) { dao ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(color = MaterialTheme.colorScheme.surfaceVariant)
+                                .clickable { onDaoSelected(dao) }
+                        ) {
+                            Text(
+                                dao.name,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(vertical = 20.dp, horizontal = 12.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
                     }
-                    Spacer(modifier = Modifier.height(12.dp))
                 }
             }
         }
