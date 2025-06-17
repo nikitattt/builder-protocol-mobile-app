@@ -59,6 +59,8 @@ object GovernanceWidget : GlanceAppWidget() {
             null
         }
 
+        Log.d("GovernanceWidget", "data: $proposals")
+
         provideContent {
             WidgetShell {
                 when {

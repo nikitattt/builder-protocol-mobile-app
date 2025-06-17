@@ -82,34 +82,36 @@ fun ProposalView(proposal: ProposalData) {
 
             if (isActive && proposal.votes != null) {
                 Spacer(modifier = GlanceModifier.width(6.dp))
-                BoxText(
-                    text = proposal.votes.yes.toString(),
-                    textColor = ColorProvider(Color(0xFF1DB087)),
-                    borderColor = ColorProvider(Color(0x4D1DB087))
-                )
+                Row {
+                    BoxText(
+                        text = proposal.votes.yes.toString(),
+                        textColor = ColorProvider(Color(0xFF1DB087)),
+                        borderColor = ColorProvider(Color(0x4D1DB087))
+                    )
 
-                Spacer(modifier = GlanceModifier.width(4.dp))
-                BoxText(
-                    text = proposal.votes.abstain.toString(),
-                    textColor = ColorProvider(Color(0xFF8C8C8C)),
-                    borderColor = ordinaryBorderColor
-                )
+                    Spacer(modifier = GlanceModifier.width(4.dp))
+                    BoxText(
+                        text = proposal.votes.abstain.toString(),
+                        textColor = ColorProvider(Color(0xFF8C8C8C)),
+                        borderColor = ordinaryBorderColor
+                    )
 
-                Spacer(modifier = GlanceModifier.width(4.dp))
-                BoxText(
-                    text = proposal.votes.no.toString(),
-                    textColor = ColorProvider(Color(0xFFF03232)),
-                    borderColor = ColorProvider(Color(0x4DF03232))
-                )
+                    Spacer(modifier = GlanceModifier.width(4.dp))
+                    BoxText(
+                        text = proposal.votes.no.toString(),
+                        textColor = ColorProvider(Color(0xFFF03232)),
+                        borderColor = ColorProvider(Color(0x4DF03232))
+                    )
 
-                Spacer(modifier = GlanceModifier.width(6.dp))
-                BoxText(
-                    text = proposal.quorum.toString(),
-                    prefix = "Quorum:",
-                    textColor = ColorProvider(Color(0xFF8C8C8C)),
-                    borderColor = ordinaryBorderColor,
-                    prefixColor = ordinaryBorderColor
-                )
+                    Spacer(modifier = GlanceModifier.width(6.dp))
+                    BoxText(
+                        text = proposal.quorum.toString(),
+                        prefix = "Quorum:",
+                        textColor = ColorProvider(Color(0xFF8C8C8C)),
+                        borderColor = ordinaryBorderColor,
+                        prefixColor = ordinaryBorderColor
+                    )
+                }
             }
         }
     }
