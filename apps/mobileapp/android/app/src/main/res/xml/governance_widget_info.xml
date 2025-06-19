@@ -10,4 +10,5 @@
     android:previewImage="@drawable/widget_preview"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
+    android:widgetFeatures="reconfigurable"
     android:configure="com.mobileapp.widgets.governance.GovernanceWidgetConfigureActivity" /> 

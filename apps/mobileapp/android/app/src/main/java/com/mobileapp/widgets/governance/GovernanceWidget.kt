@@ -3,18 +3,19 @@ package com.mobileapp.widgets.governance
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
-import androidx.glance.LocalContext
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.color.ColorProvider
+import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
@@ -30,37 +31,27 @@ import androidx.glance.text.TextStyle
 import com.mobileapp.widgets.common.WidgetDataLoader
 import com.mobileapp.widgets.common.ui.ProposalView
 import com.mobileapp.widgets.models.ProposalData
-import com.mobileapp.widgets.storage.WidgetPreferences
 
-object GovernanceWidget : GlanceAppWidget() {
+class GovernanceWidget : GlanceAppWidget() {
+
+    override val stateDefinition = GovernanceStateDefinition
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        val prefs = WidgetPreferences(context)
-        
-//        val daoAddress = prefs.getDaoAddress(appWidgetId = id.toInt()).firstOrNull()
-//        val daoName = prefs.getDaoName(appWidgetId = id.toInt()).firstOrNull()
-//        val chainId = prefs.getChainId(appWidgetId = id.toInt()).firstOrNull()
-
-//        val daoAddress = "0xe8af882f2f5c79580230710ac0e2344070099432"
-//        val daoName = "Builder"
-//        val chainId = 8453
-
-        val daoAddress = "0x8de71d80ee2c4700bc9d4f8031a2504ca93f7088"
-        val daoName = "Purple"
-        val chainId = 8453
-
-        Log.d("GovernanceWidget", "prefs: $prefs")
-        Log.d("GovernanceWidget", "widgetId: ${id.toInt()} , daoAddress: $daoAddress, daoName: $daoName, chainId: $chainId")
-
-        val proposals = if (daoAddress != null && chainId != null) {
-            fetchData(context, daoAddress, chainId)
-        } else {
-            null
-        }
-
-        Log.d("GovernanceWidget", "data: $proposals")
-
         provideContent {
+            val currentState = currentState<GovernanceInfo>()
+//            Log.d("GovernanceWidget", "current state: $currentState")
+            val daoAddress = currentState.daoAddress
+            val daoName = currentState.daoName
+            val chainId = currentState.chainId
+
+            var proposals: List<ProposalData>? = null
+            LaunchedEffect(daoAddress, chainId) {
+                if (daoAddress != null && chainId != null) {
+                    proposals = fetchData(context, daoAddress, chainId)
+                }
+
+            }
+
             WidgetShell {
                 when {
                     daoAddress == null || daoName == null || chainId == null -> {
@@ -72,7 +63,7 @@ object GovernanceWidget : GlanceAppWidget() {
                         } else {
                             Content(
                                 daoName = daoName,
-                                proposals = proposals
+                                proposals = proposals!!
                             )
                         }
                     }

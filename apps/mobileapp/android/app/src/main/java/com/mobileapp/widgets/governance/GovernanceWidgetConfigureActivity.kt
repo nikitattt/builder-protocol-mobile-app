@@ -4,41 +4,36 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.glance.GlanceModifier
-import androidx.glance.appwidget.AppWidgetId
-import androidx.glance.appwidget.GlanceAppWidgetManager
-import androidx.glance.appwidget.cornerRadius
-import androidx.glance.appwidget.updateAll
-import androidx.glance.background
-import androidx.glance.layout.padding
-import androidx.glance.unit.ColorProvider
-import androidx.lifecycle.lifecycleScope
-import com.mobileapp.widgets.storage.WidgetPreferences
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import androidx.compose.foundation.border
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
+import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.state.updateAppWidgetState
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class GovernanceWidgetConfigureActivity : ComponentActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private val coroutineScope = MainScope()
 
-    // Placeholder data - replace with your actual DAO list
     private val sampleDaos = listOf(
         DAOData("Builder", "0xdf9b7d26c8fc806b1ae6273684556761ff02d422", 1),
         DAOData("Nouns", "0x9c8ff314c9bc7f6e59a9d9ac51c4d44102734004", 1),
@@ -71,36 +66,24 @@ class GovernanceWidgetConfigureActivity : ComponentActivity() {
 
     private suspend fun onDaoSelected(dao: DAOData) {
         val context = this
-        val prefs = WidgetPreferences(context)
+        val glanceId = GlanceAppWidgetManager(context).getGlanceIdBy(appWidgetId)
 
-        Log.d("WidgetDebug", "Config: Saving preferences...")
-        prefs.saveConfiguration(appWidgetId, dao.address, dao.name, dao.chainId)
-        Log.d("WidgetDebug", "Config: Preferences saved.")
+        updateAppWidgetState(
+            context = context,
+            definition = GovernanceStateDefinition,
+            glanceId = glanceId,
+            updateState = {
+                GovernanceInfo(
+                    daoAddress = dao.address,
+                    daoName = dao.name,
+                    chainId = dao.chainId
+                )
+            }
+        )
 
-//        val glanceId = GlanceAppWidgetManager(context).getGlanceIdBy(appWidgetId)
-//        if (glanceId != null) {
-//            Log.d("WidgetDebug", "Config: Got glanceId ($glanceId). Calling update.")
-//            GovernanceWidget.update(context, glanceId)
-//        } else {
-//            Log.d("WidgetDebug", "Config: glanceId is NULL. Cannot call update.")
-//        }
-//        Log.d("WidgetDebug", "Config: Sending broadcast to update widget ID $appWidgetId")
-//        val intent = Intent(context, GovernanceWidgetReceiver::class.java).apply {
-//            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-//            putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
-//        }
-//        context.sendBroadcast(intent)
+        GovernanceWidget().update(applicationContext, glanceId)
 
-        val manager = GlanceAppWidgetManager(context)
-        val widget = GovernanceWidget
-        val glanceIds = manager.getGlanceIds(widget.javaClass)
-        glanceIds.forEach { glanceId ->
-            widget.update(context, glanceId)
-        }
-
-        val resultValue = Intent().apply {
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        }
+        val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         setResult(Activity.RESULT_OK, resultValue)
         finish()
     }
@@ -137,4 +120,4 @@ fun ConfigureUi(daos: List<DAOData>, onDaoSelected: (DAOData) -> Unit) {
     }
 }
 
-data class DAOData(val name: String, val address: String, val chainId: Int) 
+data class DAOData(val name: String, val address: String, val chainId: Int)
