@@ -1,10 +1,8 @@
 package com.mobileapp.widgets.governance
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,22 +31,23 @@ import androidx.glance.layout.padding
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import com.mobileapp.widgets.common.DaoConfig
+import com.mobileapp.widgets.common.DaoWidgetStateDefinition
 import com.mobileapp.widgets.common.WidgetDataLoader
 import com.mobileapp.widgets.common.ui.ProposalView
 import com.mobileapp.widgets.models.ProposalData
-import kotlinx.coroutines.flow.first
 
 class GovernanceWidget : GlanceAppWidget() {
 
-    override val stateDefinition = GovernanceStateDefinition
+    override val stateDefinition = DaoWidgetStateDefinition
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
-            val currentState = currentState<GovernanceInfo>()
+            val config = currentState<DaoConfig>()
 
-            val daoAddress = currentState.daoAddress
-            val daoName = currentState.daoName
-            val chainId = currentState.chainId
+            val daoAddress = config.daoAddress
+            val daoName = config.daoName
+            val chainId = config.chainId
 
             var proposals: List<ProposalData>? by remember { mutableStateOf(null) }
             var isLoading by remember(daoAddress, chainId) { mutableStateOf(true) }

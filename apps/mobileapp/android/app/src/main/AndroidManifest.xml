@@ -70,7 +70,7 @@
         </receiver>
 
         <activity
-            android:name=".widgets.governance.GovernanceWidgetConfigureActivity"
+            android:name=".widgets.screens.DaoWidgetConfigureActivity"
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>

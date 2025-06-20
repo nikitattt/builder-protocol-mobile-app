@@ -11,4 +11,4 @@
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
     android:widgetFeatures="reconfigurable"
-    android:configure="com.mobileapp.widgets.governance.GovernanceWidgetConfigureActivity" /> 
+    android:configure="com.mobileapp.widgets.screens.DaoWidgetConfigureActivity" />

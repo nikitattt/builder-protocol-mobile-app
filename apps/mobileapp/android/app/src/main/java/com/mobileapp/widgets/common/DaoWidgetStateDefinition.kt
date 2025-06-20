@@ -1,4 +1,4 @@
-package com.mobileapp.widgets.governance
+package com.mobileapp.widgets.common
 
 import android.content.Context
 import androidx.datastore.core.CorruptionException
@@ -13,11 +13,11 @@ import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
 
-object GovernanceStateDefinition : GlanceStateDefinition<GovernanceInfo> {
+object DaoWidgetStateDefinition : GlanceStateDefinition<DaoConfig> {
 
     private const val DATA_STORE_FILE_NAME = "daoWidgetConfig"
 
-    override suspend fun getDataStore(context: Context, fileKey: String): DataStore<GovernanceInfo>
+    override suspend fun getDataStore(context: Context, fileKey: String): DataStore<DaoConfig>
     = DataStoreFactory.create(
         serializer = GovernanceInfoSerializer,
         produceFile = { context.dataStoreFile("${DATA_STORE_FILE_NAME}_$fileKey.json") }
@@ -27,13 +27,13 @@ object GovernanceStateDefinition : GlanceStateDefinition<GovernanceInfo> {
         return context.dataStoreFile("${DATA_STORE_FILE_NAME}_$fileKey.json")
     }
 
-    object GovernanceInfoSerializer : Serializer<GovernanceInfo> {
-        override val defaultValue = GovernanceInfo()
+    object GovernanceInfoSerializer : Serializer<DaoConfig> {
+        override val defaultValue = DaoConfig()
 
-        override suspend fun readFrom(input: InputStream): GovernanceInfo {
+        override suspend fun readFrom(input: InputStream): DaoConfig {
             try {
                 return Json.decodeFromString(
-                    GovernanceInfo.serializer(),
+                    DaoConfig.serializer(),
                     input.readBytes().decodeToString()
                 )
             } catch (exception: SerializationException) {
@@ -41,10 +41,10 @@ object GovernanceStateDefinition : GlanceStateDefinition<GovernanceInfo> {
             }
         }
 
-        override suspend fun writeTo(t: GovernanceInfo, output: OutputStream) {
+        override suspend fun writeTo(t: DaoConfig, output: OutputStream) {
             output.use {
                 it.write(
-                    Json.encodeToString(GovernanceInfo.serializer(), t).encodeToByteArray()
+                    Json.encodeToString(DaoConfig.serializer(), t).encodeToByteArray()
                 )
             }
         }

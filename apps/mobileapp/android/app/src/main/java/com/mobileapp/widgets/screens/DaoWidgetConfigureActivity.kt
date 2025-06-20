@@ -1,4 +1,4 @@
-package com.mobileapp.widgets.governance
+package com.mobileapp.widgets.screens
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
@@ -28,9 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.lifecycle.lifecycleScope
+import com.mobileapp.widgets.common.DaoConfig
+import com.mobileapp.widgets.common.DaoWidgetStateDefinition
+import com.mobileapp.widgets.governance.GovernanceWidget
 import kotlinx.coroutines.launch
 
-class GovernanceWidgetConfigureActivity : ComponentActivity() {
+class DaoWidgetConfigureActivity : ComponentActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
@@ -70,10 +73,10 @@ class GovernanceWidgetConfigureActivity : ComponentActivity() {
 
         updateAppWidgetState(
             context = context,
-            definition = GovernanceStateDefinition,
+            definition = DaoWidgetStateDefinition,
             glanceId = glanceId,
             updateState = {
-                GovernanceInfo(
+                DaoConfig(
                     daoAddress = dao.address,
                     daoName = dao.name,
                     chainId = dao.chainId

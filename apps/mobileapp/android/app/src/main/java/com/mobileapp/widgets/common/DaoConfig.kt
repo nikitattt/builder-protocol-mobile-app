@@ -1,10 +1,9 @@
-package com.mobileapp.widgets.governance
+package com.mobileapp.widgets.common
 
-import com.mobileapp.widgets.models.ProposalData
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GovernanceInfo(
+data class DaoConfig (
     val daoAddress: String? = null,
     val daoName: String? = null,
     val chainId: Int? = null
