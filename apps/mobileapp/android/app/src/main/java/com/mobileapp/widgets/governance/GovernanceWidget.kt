@@ -41,6 +41,11 @@ class GovernanceWidget : GlanceAppWidget() {
 
     override val stateDefinition = DaoWidgetStateDefinition
 
+    override suspend fun onDelete(context: Context, id: GlanceId) {
+        super.onDelete(context, id)
+        stateDefinition.getLocation(context, id.toString()).delete()
+    }
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
             val config = currentState<DaoConfig>()
@@ -230,9 +235,3 @@ class GovernanceWidget : GlanceAppWidget() {
     }
 }
 
-private fun GlanceId.toInt(): Int {
-    val idString = this.toString()
-        .substringAfter("appWidgetId=")
-        .substringBefore(")")
-    return idString.toInt()
-}
