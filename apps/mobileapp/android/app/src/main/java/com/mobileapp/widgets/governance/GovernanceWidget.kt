@@ -4,6 +4,11 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,6 +36,7 @@ import androidx.glance.text.TextStyle
 import com.mobileapp.widgets.common.WidgetDataLoader
 import com.mobileapp.widgets.common.ui.ProposalView
 import com.mobileapp.widgets.models.ProposalData
+import kotlinx.coroutines.flow.first
 
 class GovernanceWidget : GlanceAppWidget() {
 
@@ -39,17 +45,23 @@ class GovernanceWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
             val currentState = currentState<GovernanceInfo>()
-//            Log.d("GovernanceWidget", "current state: $currentState")
+
             val daoAddress = currentState.daoAddress
             val daoName = currentState.daoName
             val chainId = currentState.chainId
 
-            var proposals: List<ProposalData>? = null
+            var proposals: List<ProposalData>? by remember { mutableStateOf(null) }
+            var isLoading by remember(daoAddress, chainId) { mutableStateOf(true) }
+
             LaunchedEffect(daoAddress, chainId) {
                 if (daoAddress != null && chainId != null) {
+                    isLoading = true
                     proposals = fetchData(context, daoAddress, chainId)
+                    isLoading = false
+                } else {
+                    // If there's no config, we are not loading.
+                    isLoading = false
                 }
-
             }
 
             WidgetShell {
@@ -57,15 +69,18 @@ class GovernanceWidget : GlanceAppWidget() {
                     daoAddress == null || daoName == null || chainId == null -> {
                         NotConfiguredState()
                     }
+                    isLoading -> {
+                        LoadingState()
+                    }
+                    proposals != null -> {
+                        Content(
+                            daoName = daoName,
+                            proposals = proposals!!
+                        )
+                    }
                     else -> {
-                        if (proposals == null) {
-                            ErrorState()
-                        } else {
-                            Content(
-                                daoName = daoName,
-                                proposals = proposals!!
-                            )
-                        }
+                        // If not loading and proposals is null, it's a real error
+                        ErrorState()
                     }
                 }
             }
@@ -157,13 +172,28 @@ class GovernanceWidget : GlanceAppWidget() {
     }
 
     @Composable
+    private fun LoadingState() {
+        Box(
+            modifier = GlanceModifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                "Loading...",
+                style = TextStyle(
+                    color = ColorProvider(Color.LightGray, Color.DarkGray)
+                )
+            )
+        }
+    }
+
+    @Composable
     private fun NotConfiguredState() {
         Box(
             modifier = GlanceModifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                "Error happened. Please add widget again.",
+                "Select DAO to display",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     color = ColorProvider(Color.Black, Color.White)
