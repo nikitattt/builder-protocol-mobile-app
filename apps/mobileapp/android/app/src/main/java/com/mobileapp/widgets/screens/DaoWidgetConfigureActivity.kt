@@ -40,6 +40,7 @@ import com.mobileapp.widgets.common.DaoConfig
 import com.mobileapp.widgets.common.DaoWidgetStateDefinition
 import com.mobileapp.widgets.governance.GovernanceWidgetReceiver
 import com.mobileapp.widgets.auctiongovernance.AuctionGovernanceWidgetReceiver
+import com.mobileapp.widgets.auction.AuctionWidgetReceiver
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -125,6 +126,8 @@ class DaoWidgetConfigureActivity : ComponentActivity() {
             GovernanceWidgetReceiver().glanceAppWidget.update(applicationContext, glanceId)
         } else if (provider == AuctionGovernanceWidgetReceiver::class.java.name) {
             AuctionGovernanceWidgetReceiver().glanceAppWidget.update(applicationContext, glanceId)
+        } else if (provider == AuctionWidgetReceiver::class.java.name) {
+            AuctionWidgetReceiver().glanceAppWidget.update(applicationContext, glanceId)
         }
 
         val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)

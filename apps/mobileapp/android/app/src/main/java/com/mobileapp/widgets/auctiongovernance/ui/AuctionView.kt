@@ -29,6 +29,7 @@ import com.mobileapp.widgets.auctiongovernance.RefreshActionCallback
 @Composable
 fun AuctionView(auction: AuctionData) {
     val remainingSeconds = (auction.endTime - (System.currentTimeMillis() / 1000)).coerceAtLeast(0)
+    val hasBid = auction.currentBid > 0
     val size = LocalSize.current
 
     val imageBitmap = remember(auction.image) {
@@ -112,7 +113,7 @@ fun AuctionView(auction: AuctionData) {
                 )
             )
             Text(
-                "Ξ ${auction.currentBid}",
+                if (hasBid) "Ξ ${auction.currentBid}" else "No bids",
                 style = TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,

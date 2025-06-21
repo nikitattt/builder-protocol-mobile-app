@@ -1,6 +1,7 @@
 package com.mobileapp.widgets.common
 
 import android.content.Context
+import com.mobileapp.widgets.models.AuctionApiResponse
 import com.mobileapp.widgets.models.AuctionGovernanceApiResponse
 import com.mobileapp.widgets.models.GovernanceApiResponse
 import com.mobileapp.widgets.models.ProposalData
@@ -21,7 +22,20 @@ class WidgetDataLoader(private val context: Context) {
             json(Json {
                 ignoreUnknownKeys = true
                 prettyPrint = true
+                explicitNulls = false
             })
+        }
+    }
+
+    suspend fun fetchAuctionData(daoAddress: String, chainId: Int): AuctionApiResponse? {
+        val chain = getChainString(chainId)
+        val url = "$baseApiUrl/dao/$chain/$daoAddress?data=auction"
+
+        return try {
+            client.get(url).body<AuctionApiResponse>()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 

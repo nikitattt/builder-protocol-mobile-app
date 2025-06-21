@@ -23,4 +23,10 @@ data class AuctionGovernanceApiResponse(
     val dao: DaoInfo,
     val auction: AuctionData,
     val governance: GovernanceData
-) 
+)
+
+@Serializable
+data class AuctionApiResponse(
+    val dao: DaoInfo,
+    val auction: AuctionData
+)
