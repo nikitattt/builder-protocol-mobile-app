@@ -6,7 +6,7 @@
     -->
     <item>
         <bitmap
-            android:src="@drawable/governance_widget_preview_img"
+            android:src="@drawable/auction_governance_widget_preview_img"
             android:gravity="fill" />
     </item>
 

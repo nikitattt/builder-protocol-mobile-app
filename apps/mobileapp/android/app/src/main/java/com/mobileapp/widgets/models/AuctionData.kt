@@ -8,7 +8,7 @@ data class AuctionData(
     val id: Int,
     @SerialName("amount") val currentBid: Double,
     val bidder: String,
-    val endTime: Double,
+    val endTime: Int,
     val image: String,
     val duration: Int
 )

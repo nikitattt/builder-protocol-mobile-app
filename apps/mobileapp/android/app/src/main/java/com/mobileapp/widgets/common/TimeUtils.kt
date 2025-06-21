@@ -1,5 +1,7 @@
 package com.mobileapp.widgets.common
 
+import java.util.concurrent.TimeUnit
+
 // A simple relative time formatter. Android's built-in one requires a higher min SDK for widgets.
 fun getRelativeTime(epochSeconds: Double): String {
     val timeMillis = epochSeconds.toLong() * 1000
@@ -31,4 +33,31 @@ fun getRelativeTime(epochSeconds: Double): String {
             else -> "in $seconds${"s"}"
         }
     }
+}
+
+fun formatSecondsToDhms(totalSeconds: Long): String {
+    if (totalSeconds <= 0) return "Ended"
+    val days = TimeUnit.SECONDS.toDays(totalSeconds)
+    val hours = TimeUnit.SECONDS.toHours(totalSeconds) % 24
+    val minutes = TimeUnit.SECONDS.toMinutes(totalSeconds) % 60
+    val seconds = totalSeconds % 60
+
+    val parts = mutableListOf<String>()
+    if (days > 0) {
+        parts.add("${days}d")
+        parts.add("${hours}h")
+        parts.add("${minutes}m")
+        parts.add("${seconds}s")
+    } else if (hours > 0) {
+        parts.add("${hours}h")
+        parts.add("${minutes}m")
+        parts.add("${seconds}s")
+    } else if (minutes > 0) {
+        parts.add("${minutes}m")
+        parts.add("${seconds}s")
+    } else {
+        parts.add("${seconds}s")
+    }
+
+    return parts.joinToString(" ")
 } 

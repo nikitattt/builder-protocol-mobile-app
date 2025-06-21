@@ -23,11 +23,13 @@ import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
+import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
+import androidx.glance.layout.width
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
@@ -52,8 +54,6 @@ class AuctionGovernanceWidget : GlanceAppWidget() {
         provideContent {
             val config = currentState<DaoConfig>()
 
-            Log.d("WidgetDebug", "Config: ${config}")
-
             val daoAddress = config.daoAddress
             val daoName = config.daoName
             val chainId = config.chainId
@@ -69,16 +69,12 @@ class AuctionGovernanceWidget : GlanceAppWidget() {
                     if (data != null) {
                         auction = data.auction
                         proposals = data.governance.proposals
-                        Log.d("WidgetDebug", "Auction data: ${auction}")
-                        Log.d("WidgetDebug", "Proposals data: ${proposals?.size}")
                     }
                     isLoading = false
                 } else {
                     isLoading = false
                 }
             }
-
-            Log.d("WidgetDebug", "isLoading: ${isLoading}")
 
             WidgetShell {
                 when {
@@ -90,7 +86,6 @@ class AuctionGovernanceWidget : GlanceAppWidget() {
                     }
                     auction != null && proposals != null -> {
                         Content(
-                            daoName = daoName,
                             auction = auction!!,
                             proposals = proposals!!
                         )
@@ -107,29 +102,31 @@ class AuctionGovernanceWidget : GlanceAppWidget() {
         WidgetDataLoader(context).fetchAuctionGovernanceData(address, chainId)
 
     @Composable
-    private fun Content(daoName: String, auction: AuctionData, proposals: List<ProposalData>) {
+    private fun Content(auction: AuctionData, proposals: List<ProposalData>) {
         Column(modifier = GlanceModifier.fillMaxSize()) {
-            Text(
-                text = daoName,
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = ColorProvider(Color.Black, Color.White)
-                )
-            )
-
-            Spacer(modifier = GlanceModifier.height(4.dp))
-
-            // Implement AuctionView here or as a separate composable
             AuctionView(auction = auction)
 
             Spacer(modifier = GlanceModifier.height(4.dp))
-            Box(
-                modifier = GlanceModifier
-                    .height(1.dp)
-                    .background(ColorProvider(Color(0xFFCCCCCC), Color(0xFF141414)))
-                    .fillMaxWidth()
-            ) {}
+
+            Row(
+                modifier = GlanceModifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Active Proposals",
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        color = ColorProvider(Color(0xFF8C8C8C), Color(0xFF8C8C8C))
+                    )
+                )
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                Box(
+                    modifier = GlanceModifier
+                        .height(1.dp)
+                        .background(ColorProvider(Color(0xFFCCCCCC), Color(0xFF141414)))
+                        .fillMaxWidth()
+                ) {}
+            }
             Spacer(modifier = GlanceModifier.height(4.dp))
 
             if (proposals.isEmpty()) {
