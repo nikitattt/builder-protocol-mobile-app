@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Builder</string>
     <string name="governance_widget_description">Active and pending proposals.</string>
+    <string name="auction_governance_widget_description">Current auction and proposals.</string>
 </resources>

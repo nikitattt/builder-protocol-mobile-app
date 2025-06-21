@@ -38,7 +38,8 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.lifecycle.lifecycleScope
 import com.mobileapp.widgets.common.DaoConfig
 import com.mobileapp.widgets.common.DaoWidgetStateDefinition
-import com.mobileapp.widgets.governance.GovernanceWidget
+import com.mobileapp.widgets.governance.GovernanceWidgetReceiver
+import com.mobileapp.widgets.auctiongovernance.AuctionGovernanceWidgetReceiver
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -116,7 +117,15 @@ class DaoWidgetConfigureActivity : ComponentActivity() {
             }
         )
 
-        GovernanceWidget().update(applicationContext, glanceId)
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val providerInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
+        val provider = providerInfo.provider.className
+
+        if (provider == GovernanceWidgetReceiver::class.java.name) {
+            GovernanceWidgetReceiver().glanceAppWidget.update(applicationContext, glanceId)
+        } else if (provider == AuctionGovernanceWidgetReceiver::class.java.name) {
+            AuctionGovernanceWidgetReceiver().glanceAppWidget.update(applicationContext, glanceId)
+        }
 
         val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         setResult(Activity.RESULT_OK, resultValue)

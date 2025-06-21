@@ -1,6 +1,7 @@
 package com.mobileapp.widgets.common
 
 import android.content.Context
+import com.mobileapp.widgets.models.AuctionGovernanceApiResponse
 import com.mobileapp.widgets.models.GovernanceApiResponse
 import com.mobileapp.widgets.models.ProposalData
 import io.ktor.client.*
@@ -21,6 +22,18 @@ class WidgetDataLoader(private val context: Context) {
                 ignoreUnknownKeys = true
                 prettyPrint = true
             })
+        }
+    }
+
+    suspend fun fetchAuctionGovernanceData(daoAddress: String, chainId: Int): AuctionGovernanceApiResponse? {
+        val chain = getChainString(chainId)
+        val url = "$baseApiUrl/dao/$chain/$daoAddress?data=auction,governance"
+
+        return try {
+            client.get(url).body<AuctionGovernanceApiResponse>()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 

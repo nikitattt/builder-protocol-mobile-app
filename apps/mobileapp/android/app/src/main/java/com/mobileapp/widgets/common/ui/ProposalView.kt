@@ -1,6 +1,5 @@
 package com.mobileapp.widgets.common.ui
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -19,10 +18,10 @@ import java.util.concurrent.TimeUnit
 import androidx.glance.color.ColorProvider
 import androidx.glance.layout.Box
 import androidx.glance.background
-import com.mobileapp.R
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.unit.ColorProvider
 import androidx.glance.layout.Alignment
+import com.mobileapp.widgets.common.getRelativeTime
 
 enum class ProposalDisplayType {
     COMPACT, FULL
@@ -191,8 +190,8 @@ private fun BoxText(
     }
 }
 
-
 // A simple relative time formatter. Android's built-in one requires a higher min SDK for widgets.
+/*
 private fun getRelativeTime(epochSeconds: Double): String {
     val timeMillis = epochSeconds.toLong() * 1000
     val now = System.currentTimeMillis()
@@ -223,4 +222,5 @@ private fun getRelativeTime(epochSeconds: Double): String {
             else -> "in $seconds${"s"}"
         }
     }
-} 
+}
+*/ 
