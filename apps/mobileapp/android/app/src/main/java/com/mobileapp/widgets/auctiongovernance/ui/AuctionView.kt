@@ -52,13 +52,13 @@ fun AuctionView(auction: AuctionData) {
                 provider = ImageProvider(imageBitmap),
                 contentDescription = "Auction item",
                 modifier = GlanceModifier
-                    .size(52.dp)
+                    .size(58.dp)
                     .cornerRadius(8.dp)
             )
         } else {
             Box(
                 modifier = GlanceModifier
-                    .size(52.dp)
+                    .size(58.dp)
                     .cornerRadius(8.dp)
                     .background(ColorProvider(Color.LightGray, Color.DarkGray))
             ) {}
