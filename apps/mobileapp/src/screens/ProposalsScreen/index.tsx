@@ -32,8 +32,6 @@ const ProposalsScreen = ({
     ? `https://nouns.build/dao/${chain.slug}/${dao.address}?tab=activity`
     : `https://proposals.builderapp.wtf/dao/${chain.slug}/${dao.address}?tab=activity&auct=false&walletActions=${walletActionsStr}`
 
-  // let uri = `https://proposals.builderapp.wtf/dao/${chain.slug}/${dao.address}?tab=activity&auct=false&walletActions=${walletActionsStr}`
-
   const injectedJavaScriptOnLoad = `
     if (window.location.href.startsWith('https://nouns.build/dao/')) {
       const selector = 'div.zord-text-heading-sm';
