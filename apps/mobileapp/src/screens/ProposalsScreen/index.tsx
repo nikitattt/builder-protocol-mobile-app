@@ -10,6 +10,7 @@ const ProposalsScreen = ({
   navigation
 }: RootStackScreenProps<'Proposals'>) => {
   const [loading, setLoading] = React.useState(true)
+  const webViewRef = React.useRef<WebView>(null)
   const allowWalletActions = useAllowWalletActions()
 
   const dao = route.params.dao
@@ -31,8 +32,6 @@ const ProposalsScreen = ({
   const uri = allowWalletActions
     ? `https://nouns.build/dao/${chain.slug}/${dao.address}?tab=activity`
     : `https://proposals.builderapp.wtf/dao/${chain.slug}/${dao.address}?tab=activity&auct=false&walletActions=${walletActionsStr}`
-
-  // let uri = `https://proposals.builderapp.wtf/dao/${chain.slug}/${dao.address}?tab=activity&auct=false&walletActions=${walletActionsStr}`
 
   const injectedJavaScriptOnLoad = `
     if (window.location.href.startsWith('https://nouns.build/dao/')) {
@@ -94,9 +93,15 @@ const ProposalsScreen = ({
   return (
     <View className="flex-1">
       <WebView
+        ref={webViewRef}
         source={{ uri: uri }}
         onLoadStart={() => setLoading(true)}
-        onLoadEnd={() => setLoading(false)}
+        onLoadEnd={() => {
+          setLoading(false)
+          if (Platform.OS === 'ios' && webViewRef.current) {
+            webViewRef.current.injectJavaScript(injectedJavaScriptOnLoad)
+          }
+        }}
         className="flex-1 bg-white"
         originWhitelist={[
           'https://*',
@@ -119,7 +124,9 @@ const ProposalsScreen = ({
         thirdPartyCookiesEnabled={true}
         // Enable mixed content for better compatibility
         mixedContentMode="compatibility"
-        injectedJavaScript={injectedJavaScriptOnLoad}
+        injectedJavaScript={
+          Platform.OS === 'android' ? injectedJavaScriptOnLoad : undefined
+        }
       />
       {loading && (
         <View className="absolute h-full w-full bg-white items-center justify-center">
