@@ -11,5 +11,8 @@
   },
   "devDependencies": {
     "prettier": "^2.5.1"
-  }
+  },
+  "workspaces": [
+    "apps/*"
+  ]
 }

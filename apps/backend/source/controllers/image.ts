@@ -1,27 +1,36 @@
-import { Request, Response, NextFunction } from 'express'
 import { loadImageFromUrl } from '../data/images'
+import { BunRequest } from 'bun'
 
-require('dotenv').config()
-
-const getData = async (req: Request, res: Response, next: NextFunction) => {
+const getData = async (req: BunRequest<'/image/from-url'>) => {
   try {
-    const url = req.query.url as string
-    const type = req.query.type
+    const searchParams = new URL(req.url).searchParams
+    const url = searchParams.get('url')
+    const type = searchParams.get('type')
 
-    if (!url) return res.status(404).json({ message: 'Provide image url' })
+    if (!url) {
+      return Response.json(
+        { message: 'Provide image url' },
+        {
+          status: 404
+        }
+      )
+    }
 
     const decodedUrl = decodeURIComponent(url)
 
     const size = type && type === 'thumbnail' ? 250 : 1500
     const image = await loadImageFromUrl(decodedUrl, size)
 
-    res.setHeader('Content-Type', 'image/png')
-    return res.status(200).send(image)
+    return new Response(new Blob([new Uint8Array(image)]), {
+      status: 200,
+      headers: { 'Content-Type': 'image/png' }
+    })
   } catch (e) {
     console.error(e)
-    return res
-      .status(500)
-      .json({ error: 'Error happened during image loading' })
+    return Response.json(
+      { error: 'Error happened during image loading' },
+      { status: 500 }
+    )
   }
 }
 
