@@ -9,7 +9,9 @@ const PORT = process.env.PORT ?? 6060
 const withMiddleware =
   (handler: (req: BunRequest) => Response | Promise<Response>) =>
   async (req: BunRequest) => {
-    console.log(`${req.method} ${new URL(req.url).pathname}`)
+    if (req.url.includes('image')) {
+      console.log(`${req.method} ${new URL(req.url).toString()}`)
+    }
 
     if (req.method === 'OPTIONS') {
       return new Response(null, {

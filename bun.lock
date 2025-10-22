@@ -7,7 +7,7 @@
       },
     },
     "apps/backend": {
-      "name": "builder-widgets-backend",
+      "name": "backend",
       "version": "1.0.0",
       "dependencies": {
         "@types/axios": "^0.14.0",
@@ -1139,6 +1139,8 @@
 
     "babel-preset-jest": ["babel-preset-jest@29.6.3", "", { "dependencies": { "babel-plugin-jest-hoist": "29.6.3", "babel-preset-current-node-syntax": "1.1.0" }, "peerDependencies": { "@babel/core": "7.27.4" } }, "sha512-0B3bhxR6snWXJZtR/RliHTDPRgn1sNHOR0yVtq/IiQFyuOVjFS+wuio/R4gSNkyYmKmJB4wGZv2NZanmKmTnNA=="],
 
+    "backend": ["backend@workspace:apps/backend"],
+
     "balanced-match": ["balanced-match@1.0.2", "", {}, "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw=="],
 
     "base-64": ["base-64@1.0.0", "", {}, "sha512-kwDPIFCGx0NZHog36dj+tHiwP4QMzsZ3AgMViUBKI0+V5n4U0ufTCUMhnQ04diaRI8EX/QcPfql7zlhZ7j4zgg=="],
@@ -1196,8 +1198,6 @@
     "buffer-xor": ["buffer-xor@1.0.3", "", {}, "sha512-571s0T7nZWK6vB67HI5dyUF7wXiNcfaPPPTl6zYCNApANjIvYJTg7hlud/+cJpdAhS7dVzqMLmfhfHR3rAcOjQ=="],
 
     "bufferutil": ["bufferutil@4.0.9", "", { "dependencies": { "node-gyp-build": "4.8.4" } }, "sha512-WDtdLmJvAuNNPzByAYpRo2rF1Mmradw6gvWsQKf63476DDXmomT9zUiGypLcG4ibIM67vhAj8jJRdbmEws2Aqw=="],
-
-    "builder-widgets-backend": ["builder-widgets-backend@workspace:apps/backend"],
 
     "builtin-status-codes": ["builtin-status-codes@3.0.0", "", {}, "sha512-HpGFw18DgFWlncDfjTa2rcQ4W88O1mC8e8yZ2AvQY5KDaktSTwo+KRf6nHK6FRI5FyRyb/5T6+TSxfP7QyGsmQ=="],
 
