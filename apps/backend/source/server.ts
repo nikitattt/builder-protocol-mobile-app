@@ -1,48 +1,62 @@
-import http from 'http'
-import express, { Express } from 'express'
-import morgan from 'morgan'
-import routes from './routes/nouns'
+import dao from './controllers/dao'
+import image from './controllers/image'
+import v1Dao from './controllers/v1/dao'
+import v1Image from './controllers/v1/image'
+import { BunRequest } from 'bun'
 
-const router: Express = express()
+const PORT = process.env.PORT ?? 6060
 
-/** Logging */
-router.use(morgan('dev'))
-/** Parse the request */
-router.use(express.urlencoded({ extended: false }))
-/** Takes care of JSON data */
-router.use(express.json())
+const withMiddleware =
+  (handler: (req: BunRequest) => Response | Promise<Response>) =>
+  async (req: BunRequest) => {
+    if (req.url.includes('image')) {
+      console.log(`${req.method} ${new URL(req.url).toString()}`)
+    }
 
-/** RULES OF OUR API */
-router.use((req, res, next) => {
-  // set the CORS policy
-  res.header('Access-Control-Allow-Origin', '*')
-  // set the CORS headers
-  res.header(
-    'Access-Control-Allow-Headers',
-    'origin, X-Requested-With,Content-Type,Accept, Authorization'
-  )
-  // set the CORS method headers
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'GET')
-    return res.status(200).json({})
+    if (req.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers':
+            'origin, X-Requested-With,Content-Type,Accept, Authorization',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS'
+        }
+      })
+    }
+
+    if (req.method !== 'GET') {
+      return Response.json(
+        { message: 'Method Not Allowed' },
+        {
+          status: 405
+        }
+      )
+    }
+
+    const resp = await handler(req)
+    resp.headers.set('Access-Control-Allow-Origin', '*')
+    return resp
   }
-  next()
+
+Bun.serve({
+  port: PORT,
+  routes: {
+    '/health': () => new Response('OK'),
+    '/dao/:chain/:address': {
+      GET: withMiddleware(dao.getData)
+    },
+    '/image/from-url': {
+      GET: withMiddleware(image.getData)
+    },
+    '/dao/:slug': {
+      GET: withMiddleware(v1Dao.getData)
+    },
+    '/image/:address/:id': {
+      GET: withMiddleware(v1Image.getData)
+    },
+    '/*': new Response('Not Found', { status: 404 })
+  }
 })
 
-/** Routes */
-router.use('/', routes)
-
-/** Error handling */
-router.use((req, res, next) => {
-  const error = new Error('Not Found')
-  return res.status(404).json({
-    message: error.message
-  })
-})
-
-/** Server */
-const httpServer = http.createServer(router)
-const PORT: any = process.env.PORT ?? 6060
-httpServer.listen(PORT, () =>
-  console.log(`The server is running on port ${PORT}`)
-)
+console.log(`The server is running on port ${PORT}`)

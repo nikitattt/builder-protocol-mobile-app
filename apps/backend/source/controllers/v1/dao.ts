@@ -1,4 +1,3 @@
-import { Request, Response, NextFunction } from 'express'
 import axios, { AxiosResponse } from 'axios'
 import {
   createPublicClient,
@@ -16,8 +15,7 @@ import { shortENS, shortAddress } from '../../utils/addressAndENSDisplayUtils'
 import { getQuery } from '../../utils/query'
 import { PUBLIC_SUBGRAPH_URL } from '../../constants/subgraph'
 import { CHAIN_ID } from '../../types/chains'
-
-require('dotenv').config()
+import { BunRequest } from 'bun'
 
 const { addresses } = config
 
@@ -25,15 +23,26 @@ const ANKR_RPC_URL = process.env.ANKR_RPC_URL
 const BLOCKPI_RPC_URL = process.env.BLOCKPI_RPC_URL
 const ALCHEMY_RPC_URL = process.env.ALCHEMY_RPC_UR
 
-const getData = async (req: Request, res: Response, next: NextFunction) => {
+const getData = async (req: BunRequest<'/dao/:slug'>) => {
   try {
     const address = req.params.slug
-    const dataToLoad = String(req.query.data).split(',') ?? []
+    const searchParams = new URL(req.url).searchParams
+    const dataToLoad = searchParams.get('data')?.split(',') ?? []
 
     if (!address)
-      return res.status(404).json({ message: 'Provide DAO address' })
+      return Response.json(
+        { message: 'Provide DAO address' },
+        {
+          status: 404
+        }
+      )
     if (!isAddress(address))
-      return res.status(400).json({ error: 'Incorrect DAO address' })
+      return Response.json(
+        { error: 'Incorrect DAO address' },
+        {
+          status: 400
+        }
+      )
 
     const ankr = http(ANKR_RPC_URL)
     const blockpi = http(BLOCKPI_RPC_URL)
@@ -145,10 +154,15 @@ const getData = async (req: Request, res: Response, next: NextFunction) => {
       }
     }
 
-    return res.status(200).json(returnData)
+    return Response.json(returnData, {
+      status: 200
+    })
   } catch (e) {
     console.error(e)
-    return res.status(500).json({ error: 'Error happened during data loading' })
+    return Response.json(
+      { error: 'Error happened during data loading' },
+      { status: 500 }
+    )
   }
 }
 
