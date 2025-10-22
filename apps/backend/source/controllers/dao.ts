@@ -1,4 +1,3 @@
-import { Request, Response, NextFunction } from 'express'
 import axios, { AxiosResponse } from 'axios'
 import { shortAddress, shortENS } from '../utils/addressAndENSDisplayUtils'
 import { getQuery } from '../utils/query'
@@ -10,31 +9,45 @@ import {
   isAddress
 } from 'viem'
 import { mainnet } from 'viem/chains'
-
 import { Proposal } from '../types/nouns'
 import { loadImageFromUrl } from '../data/images'
 import { PUBLIC_CHAINS } from '../constants/chains'
 import { PUBLIC_SUBGRAPH_URL } from '../constants/subgraph'
-
-require('dotenv').config()
+import { BunRequest } from 'bun'
 
 const ANKR_RPC_URL = process.env.ANKR_RPC_URL
 const BLOCKPI_RPC_URL = process.env.BLOCKPI_RPC_URL
 const ALCHEMY_RPC_URL = process.env.ALCHEMY_RPC_UR
 
-const getData = async (req: Request, res: Response, next: NextFunction) => {
+const getData = async (req: BunRequest<'/dao/:chain/:address'>) => {
   try {
-    const chainFromParams = req.params.chain
-    const address = req.params.address
-    const dataToLoad = String(req.query.data).split(',') ?? []
+    const { chain: chainFromParams, address } = req.params
+    const searchParams = new URL(req.url).searchParams
+    const dataToLoad = searchParams.get('data')?.split(',') ?? []
 
     const chain = PUBLIC_CHAINS.find((c) => c.slug === chainFromParams)
 
     if (!address)
-      return res.status(404).json({ message: 'Provide DAO address' })
+      return Response.json(
+        { message: 'Provide DAO address' },
+        {
+          status: 404
+        }
+      )
     if (!isAddress(address))
-      return res.status(400).json({ error: 'Incorrect DAO address' })
-    if (!chain) return res.status(400).json({ error: 'Incorrect chain' })
+      return Response.json(
+        { error: 'Incorrect DAO address' },
+        {
+          status: 400
+        }
+      )
+    if (!chain)
+      return Response.json(
+        { error: 'Incorrect chain' },
+        {
+          status: 400
+        }
+      )
 
     const ankr = http(ANKR_RPC_URL)
     const blockpi = http(BLOCKPI_RPC_URL)
@@ -144,10 +157,15 @@ const getData = async (req: Request, res: Response, next: NextFunction) => {
       }
     }
 
-    return res.status(200).json(returnData)
+    return Response.json(returnData, {
+      status: 200
+    })
   } catch (e) {
     console.error(e)
-    return res.status(500).json({ error: 'Error happened during data loading' })
+    return Response.json(
+      { error: 'Error happened during data loading' },
+      { status: 500 }
+    )
   }
 }
 
