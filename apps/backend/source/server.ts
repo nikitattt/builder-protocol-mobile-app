@@ -24,10 +24,12 @@ const withMiddleware =
     }
 
     if (req.method !== 'GET') {
-      return new Response(JSON.stringify({ message: 'Method Not Allowed' }), {
-        status: 405,
-        headers: { 'Content-Type': 'application/json' }
-      })
+      return Response.json(
+        { message: 'Method Not Allowed' },
+        {
+          status: 405
+        }
+      )
     }
 
     const resp = await handler(req)
@@ -43,13 +45,13 @@ Bun.serve({
       GET: withMiddleware(dao.getData)
     },
     '/image/from-url': {
-      GET: image.getData
+      GET: withMiddleware(image.getData)
     },
     '/dao/:slug': {
       GET: withMiddleware(v1Dao.getData)
     },
     '/image/:address/:id': {
-      GET: v1Image.getData
+      GET: withMiddleware(v1Image.getData)
     },
     '/*': new Response('Not Found', { status: 404 })
   }

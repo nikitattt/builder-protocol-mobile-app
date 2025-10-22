@@ -1,9 +1,13 @@
 {
+  "name": "builder-protocol-mobile-app",
   "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "build:backend": "pnpm --filter \"./apps/backend\" build",
-    "start:backend": "pnpm --filter \"./apps/backend\" start",
+    "build:backend": "bun --filter backend build",
+    "start:backend": "bun --filter backend start",
     "dev:backend": "pnpm --filter \"./apps/backend\" dev",
     "start:mobile": "pnpm --filter \"./apps/mobileapp\" start",
     "codegen:mobile": "pnpm --filter \"./apps/mobileapp\" codegen",
@@ -11,8 +15,5 @@
   },
   "devDependencies": {
     "prettier": "^2.5.1"
-  },
-  "workspaces": [
-    "apps/*"
-  ]
+  }
 }
