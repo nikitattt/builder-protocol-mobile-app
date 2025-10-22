@@ -21,7 +21,8 @@ const getData = async (req: BunRequest<'/image/from-url'>) => {
     const size = type && type === 'thumbnail' ? 250 : 1500
     const image = await loadImageFromUrl(decodedUrl, size)
 
-    return new Response(new Blob([new Uint8Array(image)]), {
+    // @ts-ignore
+    return new Response(image, {
       status: 200,
       headers: { 'Content-Type': 'image/png' }
     })
