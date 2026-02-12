@@ -5,10 +5,12 @@
   "main": "index.ts",
   "scripts": {
     "dev": "PORT=3051 bun --watch run ./source/server.ts",
-    "build": "bun compile",
+    "build": "echo 'No build step needed'",
+    "start": "bun run --smol ./source/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./dist/backend",
-    "compile": "bun build --compile --compile-exec-argv=\"--smol\" --minify --sourcemap ./source/server.ts --outfile dist/backend"
+    "_start": "./dist/backend",
+    "_build": "bun compile",
+    "_compile": "bun build --compile --compile-exec-argv=\"--smol\" --minify --sourcemap ./source/server.ts --outfile dist/backend"
   },
   "author": "ng",
   "license": "ISC",
