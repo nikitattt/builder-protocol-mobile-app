@@ -51,6 +51,7 @@ export const getQuery = (
         proposalId
         proposalNumber
         quorumVotes
+        description
         title
         vetoed
         voteEnd

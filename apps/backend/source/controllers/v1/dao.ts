@@ -12,6 +12,7 @@ import config from '../../config'
 import { loadImage, loadImageFromUrl } from '../../data/images'
 import { Proposal } from '../../types/nouns'
 import { shortENS, shortAddress } from '../../utils/addressAndENSDisplayUtils'
+import { getDisplayProposalTitle } from '../../utils/proposalHelpers'
 import { getQuery } from '../../utils/query'
 import { PUBLIC_SUBGRAPH_URL } from '../../constants/subgraph'
 import { CHAIN_ID } from '../../types/chains'
@@ -131,7 +132,7 @@ const getData = async (req: BunRequest<'/dao/:slug'>) => {
           let propToAdd: Proposal = {
             id: prop.proposalId,
             number: Number(prop.proposalNumber),
-            title: prop.title,
+            title: getDisplayProposalTitle(prop),
             state: state,
             endTime: endTime,
             quorum: Number(prop.quorumVotes)

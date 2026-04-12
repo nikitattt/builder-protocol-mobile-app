@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { shortAddress, shortENS } from '../utils/addressAndENSDisplayUtils'
+import { getDisplayProposalTitle } from '../utils/proposalHelpers'
 import { getQuery } from '../utils/query'
 import {
   createPublicClient,
@@ -134,7 +135,7 @@ const getData = async (req: BunRequest<'/dao/:chain/:address'>) => {
           let propToAdd: Proposal = {
             id: prop.proposalId,
             number: Number(prop.proposalNumber),
-            title: prop.title,
+            title: getDisplayProposalTitle(prop),
             state: state,
             endTime: endTime,
             quorum: Number(prop.quorumVotes)
